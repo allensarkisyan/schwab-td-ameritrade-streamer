@@ -4,7 +4,7 @@
  * @license MIT Open Source License
  */
 
-import { EventEmitter } from 'eventemitter3/index.mjs';
+import { EventEmitter } from 'eventemitter3/dist/eventemitter3.esm';
 
 import { STATE, EVENT, COMMANDS, SERVICES } from './td-constants';
 
