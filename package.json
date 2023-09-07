@@ -2,6 +2,7 @@
   "name": "@allensarkisyan/schwab-td-ameritrade-streamer",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "author": {
     "name": "Allen Sarkisyan",
     "url": "https://github.com/allensarkisyan",
