@@ -4,16 +4,19 @@
  * @license MIT Open Source License
  */
 
-import EventEmitter from 'eventemitter3';
+import { EventEmitter } from 'eventemitter3';
+
 import { STATE, EVENT, COMMANDS, SERVICES } from './td-constants';
 
 import TDAmeritradeStreamEventProcessor from './td-stream-event-processor';
+
+// const EventEmitter = require('eventemitter3');
 
 const randomID = () => Math.floor(Math.random() * 2000000000);
 
 const jsonToQueryString = (json) => Object.keys(json).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(json[key])}`).join('&');
 
-export default class TDAmeritradeStreamer {
+export class TDAmeritradeStreamer {
   constructor(
     streamerInfo,
     handleLevelOneFeedUpdate = (data) => {},

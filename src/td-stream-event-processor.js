@@ -4,8 +4,16 @@
  * @license MIT Open Source License
  */
 
-import { SERVICES, FIELDS } from './td-constants';
-import { parseOrderEntryMessage, parseOrderFillMessage, parseCancelMessage } from './td-notifications';
+import {
+  SERVICES,
+  FIELDS
+} from './td-constants';
+
+import {
+  parseOrderEntryMessage,
+  parseOrderFillMessage,
+  parseCancelMessage,
+} from './td-notifications';
 
 const BID_FIELD_KEYS = Object.keys(FIELDS.BID_FIELDS);
 const BID_FIELD_VALUES = Object.values(FIELDS.BID_FIELDS);
@@ -14,7 +22,10 @@ const ASK_FIELD_VALUES = Object.values(FIELDS.ASK_FIELDS);
 const ORDER_BOOK_EXCHANGE_KEYS = Object.keys(FIELDS.ORDER_BOOK_EXCHANGE_FIELDS);
 const ORDER_BOOK_EXCHANGE_VALUES = Object.values(FIELDS.ORDER_BOOK_EXCHANGE_FIELDS);
 
-const chunk = (arr = [], size) => Array.from({ length: Math.ceil(arr.length / size) }, (v, i) => arr.slice(i * size, i * size + size));
+const chunk = (arr = [], size) => Array.from(
+  { length: Math.ceil(arr.length / size) },
+  (_, i) => arr.slice(i * size, i * size + size)
+);
 
 const transformMessageData = (data, fieldKeys, fieldValues) => {
   return data.map(msg => {
@@ -127,7 +138,7 @@ const parseListedBook = (data) => {
  * @property {Date} heartbeat - Heartbeat.
  */
 
-export default class TDAmeritradeStreamEventProcessor {
+export class TDAmeritradeStreamEventProcessor {
   /**
    * TDAmeritradeStreamEventProcessor - Handle's stream response
    * @param {EventEmitter} emitter 
