@@ -4,11 +4,11 @@
  * @license MIT Open Source License
  */
 
-import { EventEmitter } from 'eventemitter3/dist/eventemitter3.esm';
+import { EventEmitter } from 'eventemitter3';
 
-import { STATE, EVENT, COMMANDS, SERVICES } from './td-constants';
+import { STATE, EVENT, COMMANDS, SERVICES } from './td-constants.js';
 
-import { TDAmeritradeStreamEventProcessor } from './td-stream-event-processor';
+import { TDAmeritradeStreamEventProcessor } from './td-stream-event-processor.js';
 
 // const EventEmitter = require('eventemitter3');
 
