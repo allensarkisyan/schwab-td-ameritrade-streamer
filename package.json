@@ -1,0 +1,15 @@
+{
+  "name": "@allensarkisyan/schwab-td-ameritrade-streamer",
+  "version": "0.0.1",
+  "private": true,
+  "author": {
+    "name": "Allen Sarkisyan",
+    "url": "https://github.com/allensarkisyan",
+    "email": "allensarkisyan@gmail.com"
+  },
+  "main": "./src/td-streamer.js",
+  "dependencies": {
+    "eventemitter3": "5.0.1",
+    "xml-js": "1.6.11"
+  }
+}
