@@ -6,9 +6,9 @@
 
 import { EventEmitter } from 'eventemitter3';
 
-import { STATE, EVENT, COMMANDS, SERVICES } from './td-constants.js';
+import { STATE, EVENT, COMMANDS, SERVICES } from './td-constants';
 
-import { TDAmeritradeStreamEventProcessor } from './td-stream-event-processor.js';
+import { TDAmeritradeStreamEventProcessor } from './td-stream-event-processor';
 
 const randomID = () => Math.floor(Math.random() * 2000000000);
 

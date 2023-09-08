@@ -15,26 +15,26 @@ export default [
     input: 'src/td-streamer.js',
     output: [
       {
-        file: 'dist/td-streamer.cjs',
+        file: 'dist/commonjs/td-streamer.js',
         format: 'cjs'
       },
       {
-        file: 'dist/td-streamer.mjs',
+        file: 'dist/esm/td-streamer.js',
         format: 'es'
       },
     ],
     ...sharedConfig,
-    external: [...sharedConfig.external, './td-constants.js', './td-stream-event-processor.js', './td-notifications.js'],
+    external: [...sharedConfig.external, './td-constants', './td-stream-event-processor', './td-notifications'],
   },
   {
     input: 'src/td-constants.js',
     output: [
       {
-        file: 'dist/td-constants.cjs',
+        file: 'dist/commonjs/td-constants.js',
         format: 'cjs'
       },
       {
-        file: 'dist/td-constants.mjs',
+        file: 'dist/esm/td-constants.js',
         format: 'es'
       },
     ],
@@ -44,30 +44,30 @@ export default [
     input: 'src/td-stream-event-processor.js',
     output: [
       {
-        file: 'dist/td-stream-event-processor.cjs',
+        file: 'dist/commonjs/td-stream-event-processor.js',
         format: 'cjs'
       },
       {
-        file: 'dist/td-stream-event-processor.mjs',
+        file: 'dist/esm/td-stream-event-processor.js',
         format: 'es'
       },
     ],
     ...sharedConfig,
-    external: [...sharedConfig.external,'./td-notifications.js'],
+    external: [...sharedConfig.external,'./td-notifications'],
   },
   {
     input: 'src/td-notifications.js',
     output: [
       {
-        file: 'dist/td-notifications.cjs',
+        file: 'dist/commonjs/td-notifications.js',
         format: 'cjs'
       },
       {
-        file: 'dist/td-notifications.mjs',
+        file: 'dist/esm/td-notifications.js',
         format: 'es'
       },
     ],
     ...sharedConfig,
-    external: [...sharedConfig.external,'./td-notifications.js'],
+    external: [...sharedConfig.external,'./td-notifications'],
   },
 ];

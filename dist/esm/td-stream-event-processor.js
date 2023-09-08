@@ -1,4 +1,4 @@
-import { parseCancelMessage, parseOrderFillMessage, parseOrderEntryMessage } from './td-notifications.js';
+import { parseCancelMessage, parseOrderFillMessage, parseOrderEntryMessage } from './td-notifications';
 
 /**
  * @author Allen Sarkisyan

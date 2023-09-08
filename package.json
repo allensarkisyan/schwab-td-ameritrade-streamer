@@ -3,29 +3,29 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
-  "main": "./dist/td-streamer.cjs",
-  "module": "./dist/td-streamer.mjs",
+  "main": "./dist/commonjs/td-streamer.js",
+  "module": "./dist/esm/td-streamer.js",
   "author": "Allen Sarkisyan",
   "exports": {
     ".": {
-      "import": "./dist/td-streamer.mjs",
-      "require": "./dist/td-streamer.cjs"
+      "import": "./dist/esm/td-streamer.js",
+      "require": "./dist/commonjs/td-streamer.js"
     },
     "./streamer/": {
-      "import": "./dist/streamer.mjs",
-      "require": "./dist/streamer.cjs"
+      "import": "./dist/esm/streamer.js",
+      "require": "./dist/commonjs/streamer.js"
     },
     "./td-constants/": {
-      "import": "./dist/td-constants.mjs",
-      "require": "./dist/td-constants.cjs"
+      "import": "./dist/esm/td-constants.js",
+      "require": "./dist/commonjs/td-constants.js"
     },
     "./td-notifications/": {
-      "import": "./dist/td-notifications.mjs",
-      "require": "./dist/td-notifications.cjs"
+      "import": "./dist/esm/td-notifications.js",
+      "require": "./dist/commonjs/td-notifications.js"
     },
     "./td-stream-event-processor/": {
-      "import": "./dist/td-stream-event-processor.mjs",
-      "require": "./dist/td-stream-event-processor.cjs"
+      "import": "./dist/esm/td-stream-event-processor.js",
+      "require": "./dist/commonjs/td-stream-event-processor.js"
     }
   },
   "scripts": {

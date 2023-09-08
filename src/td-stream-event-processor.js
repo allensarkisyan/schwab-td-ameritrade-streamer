@@ -7,13 +7,13 @@
 import {
   SERVICES,
   FIELDS
-} from './td-constants.js';
+} from './td-constants';
 
 import {
   parseOrderEntryMessage,
   parseOrderFillMessage,
   parseCancelMessage,
-} from './td-notifications.js';
+} from './td-notifications';
 
 const BID_FIELD_KEYS = Object.keys(FIELDS.BID_FIELDS);
 const BID_FIELD_VALUES = Object.values(FIELDS.BID_FIELDS);
