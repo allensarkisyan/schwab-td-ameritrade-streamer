@@ -5,6 +5,7 @@
  */
 
 import { EventEmitter } from 'eventemitter3';
+import ws from 'isomorphic-ws';
 
 import { STATE, EVENT, COMMANDS, SERVICES } from './td-constants.js';
 
@@ -63,7 +64,7 @@ export class TDAmeritradeStreamer {
   }
 
   connect() {
-    this.socket = new WebSocket(`wss://${this.streamerInfo.streamerSocketUrl}/ws`);
+    this.socket = new ws(`wss://${this.streamerInfo.streamerSocketUrl}/ws`);
     this.socket.onopen = () => this.emitter.emit(STATE.CONNECTED);
     this.socket.onclose = () => this.emitter.emit(STATE.DISCONNECTING);
     this.socket.onmessage = (evt) => {

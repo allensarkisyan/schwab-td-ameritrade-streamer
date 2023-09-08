@@ -1,6 +1,7 @@
 'use strict';
 
 var eventemitter3 = require('eventemitter3');
+var ws = require('isomorphic-ws');
 var tdConstants_js = require('./td-constants.js');
 var tdStreamEventProcessor_js = require('./td-stream-event-processor.js');
 
@@ -64,7 +65,7 @@ class TDAmeritradeStreamer {
   }
 
   connect() {
-    this.socket = new WebSocket(`wss://${this.streamerInfo.streamerSocketUrl}/ws`);
+    this.socket = new ws(`wss://${this.streamerInfo.streamerSocketUrl}/ws`);
     this.socket.onopen = () => this.emitter.emit(tdConstants_js.STATE.CONNECTED);
     this.socket.onclose = () => this.emitter.emit(tdConstants_js.STATE.DISCONNECTING);
     this.socket.onmessage = (evt) => {

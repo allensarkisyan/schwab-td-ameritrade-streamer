@@ -3,7 +3,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 const sharedConfig = {
   // external: [],
-  external: ['xml-js', 'eventemitter3'],
+  external: ['xml-js', 'eventemitter3', 'isomorphic-ws'],
   plugins: [
     // nodeResolve(),
     commonjs(),
