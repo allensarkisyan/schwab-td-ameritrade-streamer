@@ -312,8 +312,6 @@ export class TDAmeritradeStreamEventProcessor {
       // this.emitEvent('LEVELONE_FUTURES_UPDATE', data[0]);
       this.handleLevelOneFeedUpdate(data[0]);
     }
-
-    return update;
   }
 
   handleNews(msg) {
