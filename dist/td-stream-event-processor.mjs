@@ -1,6 +1,4 @@
-'use strict';
-
-var tdNotifications_js = require('./td-notifications.js');
+import { parseCancelMessage, parseOrderFillMessage, parseOrderEntryMessage } from './td-notifications.js';
 
 /**
  * @author Allen Sarkisyan
@@ -564,14 +562,14 @@ class TDAmeritradeStreamEventProcessor {
   
       switch (message.type) {
         case 'OrderEntryRequest':
-          parsedMessage = tdNotifications_js.parseOrderEntryMessage(message);
+          parsedMessage = parseOrderEntryMessage(message);
           break;
         case 'OrderFill':
         case 'OrderPartialFill':
-          parsedMessage = tdNotifications_js.parseOrderFillMessage(message);
+          parsedMessage = parseOrderFillMessage(message);
           break;
         case 'UROUT':
-          parsedMessage = tdNotifications_js.parseCancelMessage(message);
+          parsedMessage = parseCancelMessage(message);
           break;
       }
   
@@ -724,4 +722,4 @@ class TDAmeritradeStreamEventProcessor {
   }
 }
 
-exports.TDAmeritradeStreamEventProcessor = TDAmeritradeStreamEventProcessor;
+export { TDAmeritradeStreamEventProcessor };

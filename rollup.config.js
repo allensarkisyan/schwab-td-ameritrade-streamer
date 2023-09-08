@@ -16,11 +16,11 @@ export default [
     output: [
       {
         file: 'dist/td-streamer.js',
-        format: 'es'
+        format: 'cjs'
       },
       {
-        file: 'dist/td-streamer.cjs',
-        format: 'cjs'
+        file: 'dist/td-streamer.mjs',
+        format: 'es'
       },
     ],
     ...sharedConfig,
@@ -31,11 +31,11 @@ export default [
     output: [
       {
         file: 'dist/td-constants.js',
-        format: 'es'
+        format: 'cjs'
       },
       {
-        file: 'dist/td-constants.cjs',
-        format: 'cjs'
+        file: 'dist/td-constants.mjs',
+        format: 'es'
       },
     ],
     ...sharedConfig
@@ -45,11 +45,11 @@ export default [
     output: [
       {
         file: 'dist/td-stream-event-processor.js',
-        format: 'es'
+        format: 'cjs'
       },
       {
-        file: 'dist/td-stream-event-processor.cjs',
-        format: 'cjs'
+        file: 'dist/td-stream-event-processor.mjs',
+        format: 'es'
       },
     ],
     ...sharedConfig,
@@ -60,11 +60,11 @@ export default [
     output: [
       {
         file: 'dist/td-notifications.js',
-        format: 'es'
+        format: 'cjs'
       },
       {
-        file: 'dist/td-notifications.cjs',
-        format: 'cjs'
+        file: 'dist/td-notifications.mjs',
+        format: 'es'
       },
     ],
     ...sharedConfig,

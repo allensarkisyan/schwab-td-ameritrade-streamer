@@ -1,4 +1,6 @@
-import { xml2js } from 'xml-js';
+'use strict';
+
+var xmlJs = require('xml-js');
 
 /**
  * @author Allen Sarkisyan
@@ -60,7 +62,7 @@ const parseOrderData = (data = []) => {
 
 const parseMessage = ({ timestamp, type, data }) => {
   try {
-    const xml = xml2js(data);
+    const xml = xmlJs.xml2js(data);
     const xmlData = xml.elements[0].elements;
     const activityTimestamp = getElementText(xmlData, 'ActivityTimestamp');
     const orderData = parseOrderData(xmlData);
@@ -139,4 +141,6 @@ const parseCancelMessage = (msg) => {
   }
 };
 
-export { parseCancelMessage, parseOrderEntryMessage, parseOrderFillMessage };
+exports.parseCancelMessage = parseCancelMessage;
+exports.parseOrderEntryMessage = parseOrderEntryMessage;
+exports.parseOrderFillMessage = parseOrderFillMessage;
