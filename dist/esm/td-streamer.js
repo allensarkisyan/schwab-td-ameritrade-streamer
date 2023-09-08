@@ -1,6 +1,6 @@
 import { EventEmitter } from 'eventemitter3';
-import { STATE, EVENT, SERVICES, COMMANDS } from './td-constants';
-import { TDAmeritradeStreamEventProcessor } from './td-stream-event-processor';
+import { STATE, EVENT, SERVICES, COMMANDS } from './td-constants.js';
+import { TDAmeritradeStreamEventProcessor } from './td-stream-event-processor.js';
 
 /**
  * @author Allen Sarkisyan

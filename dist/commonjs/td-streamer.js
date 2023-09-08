@@ -1,8 +1,8 @@
 'use strict';
 
 var eventemitter3 = require('eventemitter3');
-var tdConstants = require('./td-constants');
-var tdStreamEventProcessor = require('./td-stream-event-processor');
+var tdConstants_js = require('./td-constants.js');
+var tdStreamEventProcessor_js = require('./td-stream-event-processor.js');
 
 /**
  * @author Allen Sarkisyan
@@ -25,15 +25,15 @@ class TDAmeritradeStreamer {
     this.streamerInfo = streamerInfo;
     this.emitter = new eventemitter3.EventEmitter();
 
-    this.streamEventProcessor = new tdStreamEventProcessor.TDAmeritradeStreamEventProcessor(
+    this.streamEventProcessor = new tdStreamEventProcessor_js.TDAmeritradeStreamEventProcessor(
       this.emitter,
       handleLevelOneFeedUpdate,
       handleLevelOneTimeSaleUpdate,
     );
 
-    this.emitter.on(tdConstants.STATE.CONNECTED, () => this.login());
-    this.emitter.on(tdConstants.STATE.DISCONNECTING, () => this.logout());
-    this.emitter.on(tdConstants.EVENT.MESSAGE, (evtData) => this.streamEventProcessor.handleMessage(evtData));
+    this.emitter.on(tdConstants_js.STATE.CONNECTED, () => this.login());
+    this.emitter.on(tdConstants_js.STATE.DISCONNECTING, () => this.logout());
+    this.emitter.on(tdConstants_js.EVENT.MESSAGE, (evtData) => this.streamEventProcessor.handleMessage(evtData));
 
     this.connect();
 
@@ -65,12 +65,12 @@ class TDAmeritradeStreamer {
 
   connect() {
     this.socket = new WebSocket(`wss://${this.streamerInfo.streamerSocketUrl}/ws`);
-    this.socket.onopen = () => this.emitter.emit(tdConstants.STATE.CONNECTED);
-    this.socket.onclose = () => this.emitter.emit(tdConstants.STATE.DISCONNECTING);
+    this.socket.onopen = () => this.emitter.emit(tdConstants_js.STATE.CONNECTED);
+    this.socket.onclose = () => this.emitter.emit(tdConstants_js.STATE.DISCONNECTING);
     this.socket.onmessage = (evt) => {
       try {
         const data = JSON.parse(evt.data);
-        this.emitter.emit(tdConstants.EVENT.MESSAGE, data);
+        this.emitter.emit(tdConstants_js.EVENT.MESSAGE, data);
       } catch (e) {
         console.log('TDAmeritradeStreamer error', e);
       }
@@ -111,8 +111,8 @@ class TDAmeritradeStreamer {
 
     this.sendRequest([
       { 
-        service: tdConstants.SERVICES.ADMIN,
-        command: tdConstants.COMMANDS.LOGIN,
+        service: tdConstants_js.SERVICES.ADMIN,
+        command: tdConstants_js.COMMANDS.LOGIN,
         parameters: {
           credential,
           version: '1.0',
@@ -130,8 +130,8 @@ class TDAmeritradeStreamer {
   logout() {
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.ADMIN,
-        command: tdConstants.COMMANDS.LOGOUT,
+        service: tdConstants_js.SERVICES.ADMIN,
+        command: tdConstants_js.COMMANDS.LOGOUT,
         parameters: {}
       }
     ]);
@@ -141,8 +141,8 @@ class TDAmeritradeStreamer {
     const keys = this.streamerInfo.streamerSubscriptionKeys.keys[0].key;
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.ACCT_ACTIVITY,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.ACCT_ACTIVITY,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys, fields: '0,1,2,3' }
       },
     ]);
@@ -158,8 +158,8 @@ class TDAmeritradeStreamer {
     const fields = '0,1,2,3,4,5,8,9,10,11,12,13,15,17,18,24,28,29,30,31,48,49,50,51';
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.QUOTE,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.QUOTE,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys, fields }
       },
     ]);
@@ -169,8 +169,8 @@ class TDAmeritradeStreamer {
     const fields = '0,1,2,3,4,5,6,7,8';
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.CHART_EQUITY,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.CHART_EQUITY,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys, fields }
       },
     ]);
@@ -180,8 +180,8 @@ class TDAmeritradeStreamer {
     const fields = '0,1,2,3,4,5,6,7,8,9,10,11,12,13,19,20,21,22,23,24,25,26,27,29,30,31,32,33,34,35,36,37,38,39,40,41';
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.OPTION,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.OPTION,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys, fields }
       },
     ]);
@@ -191,8 +191,8 @@ class TDAmeritradeStreamer {
     const fields = '0,1,2,3,4';
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.TIMESALE_EQUITY,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.TIMESALE_EQUITY,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys, fields }
       },
       // {
@@ -207,23 +207,23 @@ class TDAmeritradeStreamer {
     const fields = '0,1,2,3,4,5,8,9,10,11,12,13,14,18,23';
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.CHART_HISTORY_FUTURES,
-        command: tdConstants.COMMANDS.GET,
+        service: tdConstants_js.SERVICES.CHART_HISTORY_FUTURES,
+        command: tdConstants_js.COMMANDS.GET,
         parameters: { symbol, frequency: 'm1', period: 'd1' }
       },
       {
-        service: tdConstants.SERVICES.CHART_FUTURES,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.CHART_FUTURES,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys: symbol, fields: '0,1,2,3,4,5,6,7' }
       },
       {
-        service: tdConstants.SERVICES.TIMESALE_FUTURES,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.TIMESALE_FUTURES,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys: symbol, fields: '0,1,2,3,4' }
       },
       {
-        service: tdConstants.SERVICES.LEVELONE_FUTURES,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.LEVELONE_FUTURES,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys: symbol, fields }
       },
     ]);
@@ -232,8 +232,8 @@ class TDAmeritradeStreamer {
   subscribeTimeSalesFutures(symbol = '/ES') {
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.TIMESALE_FUTURES,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.TIMESALE_FUTURES,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys: symbol, fields: '0,1,2,3,4' }
       },
     ]);
@@ -244,8 +244,8 @@ class TDAmeritradeStreamer {
     const fields = '0,1,2,3,4,5,8,9,10,11,12,13,14,18,23';
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.LEVELONE_FUTURES_OPTIONS,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.LEVELONE_FUTURES_OPTIONS,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys, fields }
       }
     ]);
@@ -254,18 +254,18 @@ class TDAmeritradeStreamer {
   subscribeActives() {
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.ACTIVES_NASDAQ,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.ACTIVES_NASDAQ,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys: 'NASDAQ-60', fields: '0,1' }
       },
       {
-        service: tdConstants.SERVICES.ACTIVES_NYSE,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.ACTIVES_NYSE,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys: 'NYSE-ALL', fields: '0,1' }
       },
       {
-        service: tdConstants.SERVICES.ACTIVES_OPTIONS,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.ACTIVES_OPTIONS,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys: 'OPTS-DESC-ALL', fields: '0,1' }
       },
     ]);
@@ -274,8 +274,8 @@ class TDAmeritradeStreamer {
   subscribeNewsHeadlines(keys = '*ALL*') {
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.NEWS_HEADLINE,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.NEWS_HEADLINE,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys, fields: '0,1,2,3,4,5,6,7,8,9,10' }
       }
     ]);
@@ -290,8 +290,8 @@ class TDAmeritradeStreamer {
   setQualityOfService(qoslevel = 0) {
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.ADMIN,
-        command: tdConstants.COMMANDS.QOS,
+        service: tdConstants_js.SERVICES.ADMIN,
+        command: tdConstants_js.COMMANDS.QOS,
         parameters: { qoslevel }
       },
     ]);
@@ -301,8 +301,8 @@ class TDAmeritradeStreamer {
     const fields = '0,1,2,3';
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.LISTED_BOOK,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.LISTED_BOOK,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys, fields }
       },
     ]);
@@ -312,8 +312,8 @@ class TDAmeritradeStreamer {
     const fields = '0,1,2,3';
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.NASDAQ_BOOK,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.NASDAQ_BOOK,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys, fields }
       },
     ]);
@@ -323,8 +323,8 @@ class TDAmeritradeStreamer {
     const fields = '0,1,2,3';
     this.sendRequest([
       {
-        service: tdConstants.SERVICES.OPTIONS_BOOK,
-        command: tdConstants.COMMANDS.SUBS,
+        service: tdConstants_js.SERVICES.OPTIONS_BOOK,
+        command: tdConstants_js.COMMANDS.SUBS,
         parameters: { keys, fields }
       },
     ]);

@@ -24,7 +24,7 @@ export default [
       },
     ],
     ...sharedConfig,
-    external: [...sharedConfig.external, './td-constants', './td-stream-event-processor', './td-notifications'],
+    external: [...sharedConfig.external, './td-constants.js', './td-stream-event-processor.js', './td-notifications.js'],
   },
   {
     input: 'src/td-constants.js',
@@ -53,7 +53,7 @@ export default [
       },
     ],
     ...sharedConfig,
-    external: [...sharedConfig.external,'./td-notifications'],
+    external: [...sharedConfig.external,'./td-notifications.js'],
   },
   {
     input: 'src/td-notifications.js',
@@ -68,6 +68,6 @@ export default [
       },
     ],
     ...sharedConfig,
-    external: [...sharedConfig.external,'./td-notifications'],
+    external: [...sharedConfig.external,'./td-notifications.js'],
   },
 ];
