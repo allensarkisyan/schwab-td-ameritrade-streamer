@@ -1,3 +1,15 @@
+import commonjs from '@rollup/plugin-commonjs';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+
+const sharedConfig = {
+  // external: [],
+  external: ['xml-js', 'eventemitter3'],
+  plugins: [
+    // nodeResolve(),
+    commonjs(),
+  ],
+};
+
 export default [
   {
     input: 'src/td-streamer.js',
@@ -11,7 +23,8 @@ export default [
         format: 'cjs'
       },
     ],
-    external: ['xml-js', 'eventemitter3', './td-constants.js', './td-stream-event-processor.js', './td-notifications.js']
+    ...sharedConfig,
+    external: [...sharedConfig.external, './td-constants.js', './td-stream-event-processor.js', './td-notifications.js'],
   },
   {
     input: 'src/td-constants.js',
@@ -24,7 +37,8 @@ export default [
         file: 'dist/td-constants.cjs',
         format: 'cjs'
       },
-    ]
+    ],
+    ...sharedConfig
   },
   {
     input: 'src/td-stream-event-processor.js',
@@ -38,7 +52,8 @@ export default [
         format: 'cjs'
       },
     ],
-    external: ['xml-js', './td-notifications.js']
+    ...sharedConfig,
+    external: [...sharedConfig.external,'./td-notifications.js'],
   },
   {
     input: 'src/td-notifications.js',
@@ -52,6 +67,7 @@ export default [
         format: 'cjs'
       },
     ],
-    external: ['xml-js']
+    ...sharedConfig,
+    external: [...sharedConfig.external,'./td-notifications.js'],
   },
 ];
