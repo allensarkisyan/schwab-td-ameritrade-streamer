@@ -1,5 +1,6 @@
 'use strict';
 
+var tdConstants_js = require('./td-constants.js');
 var tdNotifications_js = require('./td-notifications.js');
 
 /**
@@ -9,315 +10,12 @@ var tdNotifications_js = require('./td-notifications.js');
  */
 
 
-const SERVICES = Object.freeze({
-  ACCT_ACTIVITY: 'ACCT_ACTIVITY',
-  ADMIN: 'ADMIN',
-  ACTIVES_NASDAQ: 'ACTIVES_NASDAQ',
-  ACTIVES_NYSE: 'ACTIVES_NYSE',
-  ACTIVES_OTCBB: 'ACTIVES_OTCBB',
-  ACTIVES_OPTIONS: 'ACTIVES_OPTIONS',
-  FOREX_BOOK: 'FOREX_BOOK',
-  FUTURES_BOOK: 'FUTURES_BOOK',
-  LISTED_BOOK: 'LISTED_BOOK',
-  NASDAQ_BOOK: 'NASDAQ_BOOK',
-  OPTIONS_BOOK: 'OPTIONS_BOOK',
-  FUTURES_OPTIONS_BOOK: 'FUTURES_OPTIONS_BOOK',
-  CHART_EQUITY: 'CHART_EQUITY',
-  CHART_FUTURES: 'CHART_FUTURES',
-  CHART_HISTORY_FUTURES: 'CHART_HISTORY_FUTURES',
-  QUOTE: 'QUOTE',
-  LEVELONE_FUTURES: 'LEVELONE_FUTURES',
-  LEVELONE_FOREX: 'LEVELONE_FOREX',
-  LEVELONE_FUTURES_OPTIONS: 'LEVELONE_FUTURES_OPTIONS',
-  OPTION: 'OPTION',
-  LEVELTWO_FUTURES: 'LEVELTWO_FUTURES',
-  NEWS_HEADLINE: 'NEWS_HEADLINE',
-  NEWS_STORY: 'NEWS_STORY',
-  NEWS_HEADLINE_LIST: 'NEWS_HEADLINE_LIST',
-  STREAMER_SERVER: 'STREAMER_SERVER',
-  TIMESALE_EQUITY: 'TIMESALE_EQUITY',
-  TIMESALE_FUTURES: 'TIMESALE_FUTURES',
-  TIMESALE_FOREX: 'TIMESALE_FOREX',
-  TIMESALE_OPTIONS: 'TIMESALE_OPTIONS',
-});
-
-const QOS = Object.freeze({
-  express: 0,
-  realtime: 1,
-  fast: 2,
-  moderate: 3,
-  slow: 4,
-  delayed: 5,
-});
-
-const ACCT_ACTIVITY = Object.freeze({
-  subscriptionKey: 0,
-  accountNumber: 1,
-  messageType: 2,
-  messageData: 3,
-});
-
-const CHART_EQUITY = Object.freeze({
-  key: 0,
-  openPrice: 1,
-  highPrice: 2,
-  lowPrice: 3,
-  closePrice: 4,
-  volume: 5,
-  sequence: 6,
-  chartTime: 7,
-  chartDay: 8,
-});
-
-const CHART_FUTURES = Object.freeze({
-  key: 0,
-  chartTime: 1,
-  openPrice: 2,
-  highPrice: 3,
-  lowPrice: 4,
-  closePrice: 5,
-  volume: 6,
-});
-
-const CHART_OPTIONS = Object.freeze({
-  key: 0,
-  chartTime: 1,
-  openPrice: 2,
-  highPrice: 3,
-  lowPrice: 4,
-  closePrice: 5,
-  volume: 6,
-});
-
-const NEWS_HEADLINE = Object.freeze({
-  symbol: 0,
-  errorCode: 1,
-  storyDatetime: 2,
-  headlineId: 3,
-  status: 4,
-  headline: 5,
-  storyId: 6,
-  countForKeyword: 7,
-  keywordArray: 8,
-  isHot: 9,
-  storySource: 10,
-});
-
-const TIMESALE = Object.freeze({
-  symbol: 0,
-  tradeTime: 1,
-  lastPrice: 2,
-  lastSize: 3,
-  lastSequence: 4,
-});
-
-const LEVEL_ONE_EQUITY = Object.freeze({
-  symbol: 0,
-  bidPrice: 1,
-  askPrice: 2,
-  lastPrice: 3,
-  bidSize: 4,
-  askSize: 5,
-  askID: 6,
-  bidID: 7,
-  totalVolume: 8,
-  lastSize: 9,
-  tradeTime: 10,
-  quoteTime: 11,
-  highPrice: 12,
-  lowPrice: 13,
-  bidTick: 14,
-  closePrice: 15,
-  exchangeID: 16,
-  marginable: 17,
-  shortable: 18,
-  // islandBid: 19,
-  // islandAsk: 20,
-  // islandVolume: 21,
-  quoteDay: 22,
-  tradeDay: 23,
-  volatility: 24,
-  description: 25,
-  lastID: 26,
-  digits: 27,
-  openPrice: 28,
-  netChange: 29,
-  '52WeekHigh': 30,
-  '52WeekLow': 31,
-  peRatio: 32,
-  dividendAmount: 33,
-  dividendYield: 34,
-  // islandBidSize: 35,
-  // islandAskSize: 36,
-  nav: 37,
-  fundPrice: 38,
-  exchangeName: 39,
-  dividendDate: 40,
-  regularMarketQuote: 41,
-  regularMarketTrade: 42,
-  regularMarketLastPrice: 43,
-  regularMarketLastSize: 44,
-  regularMarketTradeTime: 45,
-  regularMarketTradeDay: 46,
-  regularMarketNetChange: 47,
-  securityStatus: 48,
-  mark: 49,
-  quoteTimeInLong: 50,
-  tradeTimeInLong: 51,
-  regularMarketTradeTimeInLong: 52,
-});
-
-const LEVEL_ONE_FUTURES = Object.freeze({
-  symbol: 0,
-  bidPrice: 1,
-  askPrice: 2,
-  lastPrice: 3,
-  bidSize: 4,
-  askSize: 5,
-  askID: 6,
-  bidID: 7,
-  totalVolume: 8,
-  lastSize: 9,
-  quoteTime: 10,
-  tradeTime: 11,
-  highPrice: 12,
-  lowPrice: 13,
-  closePrice: 14,
-  exchangeID: 15,
-  description: 16,
-  lastID: 17,
-  openPrice: 18,
-  netChange: 19,
-  futurePercentChange: 20,
-  exhangeName: 21,
-  securityStatus: 22,
-  openInterest: 23,
-  mark: 24,
-  tick: 25,
-  tickAmount: 26,
-  product: 27,
-  futurePriceFormat: 28,
-  futureTradingHours: 29,
-  futureIsTradable: 30,
-  futureMultiplier: 31,
-  futureIsActive: 32,
-  futureSettlementPrice: 33,
-  futureActiveSymbol: 34,
-  futureExpirationDate: 35,
-});
-
-const LEVEL_ONE_OPTION = Object.freeze({
-  symbol: 0,
-  description: 1,
-  bidPrice: 2,
-  askPrice: 3,
-  lastPrice: 4,
-  highPrice: 5,
-  lowPrice: 6,
-  closePrice: 7,
-  totalVolume: 8,
-  openInterest: 9,
-  volatility: 10,
-  quoteTime: 11,
-  tradeTime: 12,
-  intrinsicValue: 13,
-  openPrice: 19,
-  bidSize: 20,
-  askSize: 21,
-  lastSize: 22,
-  netChange: 23,
-  strikePrice: 24,
-  contractType: 25,
-  underlying: 26,
-  expirationMonth: 27,
-  timeValue: 29,
-  expirationDay: 30,
-  dte: 31,
-  delta: 32,
-  gamma: 33,
-  theta: 34,
-  vega: 35,
-  rho: 36,
-  securityStatus: 37,
-  theoreticalOptionValue: 38,
-  underlyingPrice: 39,
-  expirationType: 40,
-  mark: 41,
-});
-
-const LISTED_BOOK = Object.freeze({
-  symbol: 0,
-  bookTime: 1,
-  bids: 2,
-  asks: 3,
-});
-
-const NASDAQ_BOOK = Object.freeze({
-  symbol: 0,
-  bookTime: 1,
-  bids: 2,
-  asks: 3,
-});
-
-const OPTIONS_BOOK = Object.freeze({
-  symbol: 0,
-  bookTime: 1,
-  bids: 2,
-  asks: 3,
-});
-
-const BID_FIELDS = Object.freeze({
-  price: 0,
-  totalVolume: 1,
-  numBids: 2,
-  bids: 3,
-});
-
-const ASK_FIELDS = Object.freeze({
-  price: 0,
-  totalVolume: 1,
-  numAsks: 2,
-  asks: 3,
-});
-
-const ORDER_BOOK_EXCHANGE_FIELDS = Object.freeze({
-  exchange: 0,
-  volume: 1,
-  sequence: 2,
-});
-
-const FIELDS = Object.freeze({
-  QOS,
-  ACCT_ACTIVITY,
-  CHART_EQUITY,
-  CHART_FUTURES,
-  CHART_OPTIONS,
-  NEWS_HEADLINE,
-  TIMESALE,
-  LEVEL_ONE_EQUITY,
-  LEVEL_ONE_FUTURES,
-  LEVEL_ONE_OPTION,
-  LISTED_BOOK,
-  NASDAQ_BOOK,
-  OPTIONS_BOOK,
-  BID_FIELDS,
-  ASK_FIELDS,
-  ORDER_BOOK_EXCHANGE_FIELDS,
-});
-
-/**
- * @author Allen Sarkisyan
- * @copyright 2019 - 2023 XT-TX
- * @license MIT Open Source License
- */
-
-
-const BID_FIELD_KEYS = Object.keys(FIELDS.BID_FIELDS);
-const BID_FIELD_VALUES = Object.values(FIELDS.BID_FIELDS);
-const ASK_FIELD_KEYS = Object.keys(FIELDS.ASK_FIELDS);
-const ASK_FIELD_VALUES = Object.values(FIELDS.ASK_FIELDS);
-const ORDER_BOOK_EXCHANGE_KEYS = Object.keys(FIELDS.ORDER_BOOK_EXCHANGE_FIELDS);
-const ORDER_BOOK_EXCHANGE_VALUES = Object.values(FIELDS.ORDER_BOOK_EXCHANGE_FIELDS);
+const BID_FIELD_KEYS = Object.keys(tdConstants_js.FIELDS.BID_FIELDS);
+const BID_FIELD_VALUES = Object.values(tdConstants_js.FIELDS.BID_FIELDS);
+const ASK_FIELD_KEYS = Object.keys(tdConstants_js.FIELDS.ASK_FIELDS);
+const ASK_FIELD_VALUES = Object.values(tdConstants_js.FIELDS.ASK_FIELDS);
+const ORDER_BOOK_EXCHANGE_KEYS = Object.keys(tdConstants_js.FIELDS.ORDER_BOOK_EXCHANGE_FIELDS);
+const ORDER_BOOK_EXCHANGE_VALUES = Object.values(tdConstants_js.FIELDS.ORDER_BOOK_EXCHANGE_FIELDS);
 
 const chunk = (arr = [], size) => Array.from(
   { length: Math.ceil(arr.length / size) },
@@ -369,7 +67,7 @@ const parseActivesMessage = (msg) => {
 
 const parseListedBook = (data) => {
   try {
-    const book = transformData(data, FIELDS.LISTED_BOOK);
+    const book = transformData(data, tdConstants_js.FIELDS.LISTED_BOOK);
 
     for (let i = 0; i < book.length; i++) {
       book[i].bids = transformMessageData(
@@ -474,61 +172,61 @@ class TDAmeritradeStreamEventProcessor {
       } else if (data) {
         data?.forEach(msg => {
           switch (msg.service) {
-            case SERVICES.ACCT_ACTIVITY:
+            case tdConstants_js.SERVICES.ACCT_ACTIVITY:
               this.handleAccountActivity(msg);
               break;
-            case SERVICES.QUOTE:
+            case tdConstants_js.SERVICES.QUOTE:
               this.handleQuotes(msg);
               break;
-            case SERVICES.OPTION:
+            case tdConstants_js.SERVICES.OPTION:
               console.log('NOT_IMPLEMENTED - OPTION', msg.content);
               break;
-            case SERVICES.CHART_HISTORY_FUTURES:
+            case tdConstants_js.SERVICES.CHART_HISTORY_FUTURES:
               this.emitEvent('CHART_SNAPSHOT', msg.content.snapshot);
               break;
-            case SERVICES.CHART_FUTURES:
+            case tdConstants_js.SERVICES.CHART_FUTURES:
               this.emitEvent('CHART_UPDATE', msg.content[0]);
               break;
-            case SERVICES.LEVELONE_FUTURES:
+            case tdConstants_js.SERVICES.LEVELONE_FUTURES:
               this.handleLevelOneFutures(msg);
               break;
-            case SERVICES.LEVELONE_FUTURES_OPTIONS:
+            case tdConstants_js.SERVICES.LEVELONE_FUTURES_OPTIONS:
               console.log('NOT_IMPLEMENTED - LEVELONE_FUTURES_OPTIONS', msg.content);
               break;
-            case SERVICES.FUTURES_BOOK:
+            case tdConstants_js.SERVICES.FUTURES_BOOK:
               console.log('NOT_IMPLEMENTED - FUTURES_BOOK', msg.content);
               break;
-            case SERVICES.FUTURES_OPTIONS_BOOK:
+            case tdConstants_js.SERVICES.FUTURES_OPTIONS_BOOK:
               console.log('NOT_IMPLEMENTED - FUTURES_OPTIONS_BOOK', msg.content);
               break;
-            case SERVICES.LISTED_BOOK:
+            case tdConstants_js.SERVICES.LISTED_BOOK:
               this.handleListedBook(msg);
               break;
-            case SERVICES.NASDAQ_BOOK:
+            case tdConstants_js.SERVICES.NASDAQ_BOOK:
               this.handleNasdaqBook(msg);
               break;
-            case SERVICES.OPTIONS_BOOK:
+            case tdConstants_js.SERVICES.OPTIONS_BOOK:
               console.log('NOT_IMPLEMENTED - OPTIONS_BOOK', msg);
               break;
-            case SERVICES.TIMESALE_EQUITY:
+            case tdConstants_js.SERVICES.TIMESALE_EQUITY:
               this.handleTimeSales(msg);
               break;
-            case SERVICES.TIMESALE_FUTURES:
+            case tdConstants_js.SERVICES.TIMESALE_FUTURES:
               this.handleLevelOneFutures(msg, true);
               break;
-            case SERVICES.CHART_EQUITY:
+            case tdConstants_js.SERVICES.CHART_EQUITY:
               console.log('NOT_IMPLEMENTED - CHART_EQUITY', msg.content[0]);
               break;
-            case SERVICES.ACTIVES_NASDAQ:
+            case tdConstants_js.SERVICES.ACTIVES_NASDAQ:
               this.handleActivesNasdaq(msg);
               break;
-            case SERVICES.ACTIVES_NYSE:
+            case tdConstants_js.SERVICES.ACTIVES_NYSE:
               this.handleActivesNYSE(msg);
               break;
-            case SERVICES.ACTIVES_OPTIONS:
+            case tdConstants_js.SERVICES.ACTIVES_OPTIONS:
               this.handleActiveOptions(msg);
               break;
-            case SERVICES.NEWS_HEADLINE:
+            case tdConstants_js.SERVICES.NEWS_HEADLINE:
               this.handleNews(msg);
               break;
           }
@@ -584,23 +282,23 @@ class TDAmeritradeStreamEventProcessor {
   }
 
   handleQuotes(msg) {
-    const data = transformData(msg, FIELDS.LEVEL_ONE_EQUITY);
+    const data = transformData(msg, tdConstants_js.FIELDS.LEVEL_ONE_EQUITY);
     this.emitEvent('QUOTE', data);
   }
 
   handleTimeSales(msg) {
-    const data = transformData(msg, FIELDS.TIMESALE);
+    const data = transformData(msg, tdConstants_js.FIELDS.TIMESALE);
     this.emitEvent('TIMESALE_EQUITY_UPDATE', data);
     this.handleLevelOneTimeSaleUpdate(data);
   }
 
   handleOptions(msg) {
-    const data = transformData(msg, FIELDS.OPTION);
+    const data = transformData(msg, tdConstants_js.FIELDS.OPTION);
     this.emitEvent('OPTION', data);
   }
 
   handleLevelOneFutures(msg, timeSales = false) {
-    const data = transformData(msg, (timeSales ? FIELDS.TIMESALE : FIELDS.LEVEL_ONE_FUTURES));
+    const data = transformData(msg, (timeSales ? tdConstants_js.FIELDS.TIMESALE : tdConstants_js.FIELDS.LEVEL_ONE_FUTURES));
 
     if (timeSales) {
       this.emitEvent('TIMESALE_FUTURES_UPDATE', data);
@@ -612,7 +310,7 @@ class TDAmeritradeStreamEventProcessor {
   }
 
   handleNews(msg) {
-    const data = transformData(msg, FIELDS.NEWS_HEADLINE);
+    const data = transformData(msg, tdConstants_js.FIELDS.NEWS_HEADLINE);
     this.emitEvent('NEWS_HEADLINE', data);
   }
 

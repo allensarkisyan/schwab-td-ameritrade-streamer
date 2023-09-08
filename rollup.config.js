@@ -53,7 +53,7 @@ export default [
       },
     ],
     ...sharedConfig,
-    external: [...sharedConfig.external,'./td-notifications.js'],
+    external: [...sharedConfig.external, './td-constants.js', './td-notifications.js'],
   },
   {
     input: 'src/td-notifications.js',
