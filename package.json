@@ -3,29 +3,29 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
-  "main": "./dist/td-streamer.js",
+  "main": "./dist/td-streamer.cjs",
   "module": "./dist/td-streamer.mjs",
   "author": "Allen Sarkisyan",
   "exports": {
     ".": {
       "import": "./dist/td-streamer.mjs",
-      "require": "./dist/td-streamer.js"
+      "require": "./dist/td-streamer.cjs"
     },
     "./streamer/": {
       "import": "./dist/streamer.mjs",
-      "require": "./dist/streamer.js"
+      "require": "./dist/streamer.cjs"
     },
     "./td-constants/": {
       "import": "./dist/td-constants.mjs",
-      "require": "./dist/td-constants.js"
+      "require": "./dist/td-constants.cjs"
     },
     "./td-notifications/": {
       "import": "./dist/td-notifications.mjs",
-      "require": "./dist/td-notifications.js"
+      "require": "./dist/td-notifications.cjs"
     },
     "./td-stream-event-processor/": {
       "import": "./dist/td-stream-event-processor.mjs",
-      "require": "./dist/td-stream-event-processor.js"
+      "require": "./dist/td-stream-event-processor.cjs"
     }
   },
   "scripts": {

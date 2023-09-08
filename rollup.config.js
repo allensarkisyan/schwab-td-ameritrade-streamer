@@ -15,7 +15,7 @@ export default [
     input: 'src/td-streamer.js',
     output: [
       {
-        file: 'dist/td-streamer.js',
+        file: 'dist/td-streamer.cjs',
         format: 'cjs'
       },
       {
@@ -30,7 +30,7 @@ export default [
     input: 'src/td-constants.js',
     output: [
       {
-        file: 'dist/td-constants.js',
+        file: 'dist/td-constants.cjs',
         format: 'cjs'
       },
       {
@@ -44,7 +44,7 @@ export default [
     input: 'src/td-stream-event-processor.js',
     output: [
       {
-        file: 'dist/td-stream-event-processor.js',
+        file: 'dist/td-stream-event-processor.cjs',
         format: 'cjs'
       },
       {
@@ -59,7 +59,7 @@ export default [
     input: 'src/td-notifications.js',
     output: [
       {
-        file: 'dist/td-notifications.js',
+        file: 'dist/td-notifications.cjs',
         format: 'cjs'
       },
       {
