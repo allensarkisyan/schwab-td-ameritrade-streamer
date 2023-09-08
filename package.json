@@ -3,14 +3,38 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
-  "author": {
-    "name": "Allen Sarkisyan",
-    "url": "https://github.com/allensarkisyan",
-    "email": "allensarkisyan@gmail.com"
+  "main": "./dist/td-streamer.js",
+  "author": "Allen Sarkisyan",
+  "exports": {
+    ".": {
+      "import": "./dist/td-streamer.js",
+      "require": "./dist/td-streamer.cjs",
+      "node": "./dist/td-streamer.cjs"
+    },
+    "./td-constants": {
+      "import": "./dist/td-constants.js",
+      "require": "./dist/td-constants.cjs",
+      "node": "./dist/td-constants.cjs"
+    },
+    "./td-notifications": {
+      "import": "./dist/td-notifications.js",
+      "require": "./dist/td-notifications.cjs",
+      "node": "./dist/td-notifications.cjs"
+    },
+    "./td-stream-event-processor": {
+      "import": "./dist/td-stream-event-processor.js",
+      "require": "./dist/td-stream-event-processor.cjs",
+      "node": "./dist/td-stream-event-processor.cjs"
+    }
   },
-  "main": "./src/td-streamer.js",
+  "scripts": {
+    "build": "rollup --config"
+  },
   "dependencies": {
     "eventemitter3": "5.0.1",
     "xml-js": "1.6.11"
+  },
+  "devDependencies": {
+    "rollup": "3.29.0"
   }
 }
