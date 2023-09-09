@@ -576,7 +576,7 @@ class TDAmeritradeStreamer {
     handleLevelOneFeedUpdate = (data) => {},
     handleLevelOneTimeSaleUpdate = (data) => {},
   ) {
-    console.log('TDAmeritradeStreamer Client', { streamerInfo });
+    console.log('TDAmeritradeStreamer', streamerInfo?.primaryAccountId, streamerInfo?.tokenExpirationTime, streamerInfo?.quotes);
     this.streamerInfo = streamerInfo;
     this.emitter = new EventEmitter();
 
@@ -591,9 +591,6 @@ class TDAmeritradeStreamer {
     this.emitter.on(EVENT.MESSAGE, (evtData) => this.streamEventProcessor.handleMessage(evtData));
 
     this.connect();
-
-    // TODO: REMOVE
-    // this.test();
   }
 
   on(evt, method, context) {
@@ -602,20 +599,6 @@ class TDAmeritradeStreamer {
   
   add(evt, method, context) {
     this.emitter.addListener(evt, method, context);
-  }
-
-  test() {
-    var idx = 0;
-    var interval = setInterval(() => {
-      this.emitter.emit('TIMESALE_FUTURES_UPDATE', [{ lastPrice: Math.random() }, { lastPrice: Math.random() }, { lastPrice: Math.random() }, { lastPrice: Math.random() }]);
-      // this.emitter.emit(EVENT.MESSAGE, logs[idx]);
-
-      idx++;
-
-      if (idx >= 1000) {
-        clearInterval(interval);
-      }
-    }, 500);
   }
 
   connect() {

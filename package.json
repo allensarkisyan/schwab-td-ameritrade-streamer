@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "author": "Allen Sarkisyan",
   "main": "./dist/commonjs/td-streamer.js",
   "module": "./dist/esm/td-streamer.js",
-  "author": "Allen Sarkisyan",
   "exports": {
     ".": {
       "import": "./dist/esm/td-streamer.js",
