@@ -11,21 +11,9 @@
       "import": "./dist/esm/td-streamer.js",
       "require": "./dist/commonjs/td-streamer.js"
     },
-    "./streamer/": {
-      "import": "./dist/esm/streamer.js",
-      "require": "./dist/commonjs/streamer.js"
-    },
-    "./td-constants/": {
+    "./td-constants": {
       "import": "./dist/esm/td-constants.js",
       "require": "./dist/commonjs/td-constants.js"
-    },
-    "./td-notifications/": {
-      "import": "./dist/esm/td-notifications.js",
-      "require": "./dist/commonjs/td-notifications.js"
-    },
-    "./td-stream-event-processor/": {
-      "import": "./dist/esm/td-stream-event-processor.js",
-      "require": "./dist/commonjs/td-stream-event-processor.js"
     }
   },
   "scripts": {
