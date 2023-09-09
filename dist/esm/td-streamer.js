@@ -318,7 +318,7 @@ class TDAmeritradeStreamEventProcessor {
               this.handleQuotes(msg);
               break;
             case SERVICES.OPTION:
-              console.log('NOT_IMPLEMENTED - OPTION', msg.content);
+              this.handleOptions(msg);
               break;
             case SERVICES.CHART_HISTORY_FUTURES:
               this.emitEvent('CHART_SNAPSHOT', msg.content.snapshot);
@@ -432,7 +432,7 @@ class TDAmeritradeStreamEventProcessor {
   }
 
   handleOptions(msg) {
-    const data = transformData(msg, FIELDS.OPTION);
+    const data = transformData(msg, FIELDS.LEVEL_ONE_OPTION);
     this.emitEvent('OPTION', data);
   }
 
