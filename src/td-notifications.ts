@@ -6,11 +6,9 @@
 
 import { xml2js } from 'xml-js';
 
-export type TDAmeritradeActivityMessage = {
-  timestamp: Date;
-  type: string;
-  data: string;
-}
+import {
+  TDAmeritradeActivityMessage
+} from './@types/index.js'
 
 const getElementText = (elements: any[] | null, key: string, field: string = 'text') => {
   try {

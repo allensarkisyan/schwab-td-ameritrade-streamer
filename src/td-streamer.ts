@@ -11,70 +11,12 @@ import { STATE, EVENT, COMMANDS, SERVICES } from './td-constants.js';
 
 import { TDAmeritradeStreamEventProcessor } from './td-stream-event-processor.js';
 
-import type {
-  TDAmeritradeStreamServiceResponse,
-  TDAmeritradeStreamDataResponse
-} from './td-stream-event-processor.js';
-
-/**
- * TD Ameritrade Stream Connection Options
- */
-export type TDAmeritradeStreamerConnectionOptions = {
-  /** Primary Account ID */
-  primaryAccountId: string;
-  /** Account ID to connect */
-  accountId: string;
-  /** Token from streamerInfo */
-  token: string;
-  /** Account CD Domain ID from accounts */
-  accountCdDomainId: string;
-  /** Streamer Socket URL */
-  streamerSocketUrl: string;
-  /** Token Timestamp */
-  tokenTimestamp: Date;
-  /** Token Expiration Time */
-  tokenExpirationTime: Date;
-  /** App ID */
-  appId: string;
-  /** ACL from streamerInfo */
-  acl: string;
-  /** User Group */
-  userGroup: string;
-  /** Access Level */
-  accessLevel: string;
-  /** Company Name */
-  company: string;
-  /** Segment */
-  segment: string;
-  /** Streamer Subscription Keys */
-  streamerSubscriptionKeys: { key: string }[];
-  /** Realtime Quotes */
-  quotes: Record<string, any>;
-}
-
-/**
- * TD Ameritrade Stream Command
- */
-export type TDAmeritradeStreamerCommand = {
-  /** Service Name */
-  service: string;
-  /** Command Name */
-  command: string;
-  /** Service Command Parameters */
-  parameters: Record<string, any>;
-}
-
-/** Type for Ticker Symbol Keys */
-export type TickerSymbolKeys = string | string[];
-
-/** Type for Futures Symbol */
-export type FuturesSymbol = string | string[];
-
-export type TDAmeritradeStreamEventProcessorEventMessage = {
-  response: TDAmeritradeStreamServiceResponse[],
-  data: TDAmeritradeStreamDataResponse[],
-  snapshot: TDAmeritradeStreamDataResponse 
-}
+import {
+  TDAmeritradeStreamerConnectionOptions,
+  TDAmeritradeStreamerCommand,
+  TickerSymbolKeys,
+  TDAmeritradeStreamEventProcessorEventMessage
+} from './@types/index.js'
 
 const randomID = () => Math.floor(Math.random() * 2000000000);
 
