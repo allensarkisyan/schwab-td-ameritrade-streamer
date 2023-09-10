@@ -1,14 +1,14 @@
 "use strict";
-/**
- * @author Allen Sarkisyan
- * @copyright 2019 - 2023 XT-TX
- * @license MIT Open Source License
- */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TDAmeritradeStreamer = void 0;
+/**
+ * @author Allen Sarkisyan
+ * @copyright 2019 - 2023 XT-TX
+ * @license MIT Open Source License
+ */
 const eventemitter3_1 = require("eventemitter3");
 const isomorphic_ws_1 = __importDefault(require("isomorphic-ws"));
 const td_constants_js_1 = require("./td-constants.js");

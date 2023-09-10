@@ -9,7 +9,7 @@
     "strict": true,
     "noImplicitAny": false,
     "baseUrl": ".",
-    "outDir": "./dist",
+    // "outDir": "./dist",
     "esModuleInterop": true
   }
 }

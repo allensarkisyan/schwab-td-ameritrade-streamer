@@ -1,8 +1,3 @@
-/**
- * @author Allen Sarkisyan
- * @copyright 2019 - 2023 XT-TX
- * @license MIT Open Source License
- */
 import type { TDAmeritradeStreamServiceResponse, TDAmeritradeStreamDataResponse } from './td-stream-event-processor.js';
 /**
  * TD Ameritrade Stream Connection Options
