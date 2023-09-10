@@ -36,7 +36,7 @@
     "build:types": "tsc --declaration --project tsconfig.types.json",
     "build:esm": "tsc --project tsconfig.esm.json",
     "build:cjs": "tsc --project tsconfig.cjs.json",
-    "build": "npm run build:types && npm run build:esm && npm run build:cjs"
+    "build": "npm run build:types && npm run build:esm && npm run build:cjs && cd dist && prettier . --write"
   },
   "dependencies": {
     "eventemitter3": "5.0.1",
@@ -48,7 +48,16 @@
     "@rollup/plugin-commonjs": "25.0.4",
     "@rollup/plugin-node-resolve": "15.2.1",
     "@types/node": "20.6.0",
+    "prettier": "3.0.3",
     "rollup": "3.29.0",
     "typescript": "5.2.2"
+  },
+  "prettier": {
+    "semi": true,
+    "trailingComma": "all",
+    "singleQuote": true,
+    "printWidth": 80,
+    "tabWidth": 2,
+    "arrowParens": "always"
   }
 }

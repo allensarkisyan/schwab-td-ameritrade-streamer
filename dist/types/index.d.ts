@@ -1,91 +1,91 @@
-declare module "@allensarkisyan/schwab-td-ameritrade-streamer/td-constants" {
+declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-constants' {
   /**
    * @author Allen Sarkisyan
    * @copyright 2019 - 2023 XT-TX
    * @license MIT Open Source License
    */
   export const STATE: Readonly<{
-    CONNECTING: "connecting";
-    CONNECTED: "connected";
-    AUTHENTICATED: "authenticated";
-    DISCONNECTING: "disconnecting";
-    DISCONNECTED: "disconnected";
+    CONNECTING: 'connecting';
+    CONNECTED: 'connected';
+    AUTHENTICATED: 'authenticated';
+    DISCONNECTING: 'disconnecting';
+    DISCONNECTED: 'disconnected';
   }>;
   export const EVENT: Readonly<{
-    STATE_CHANGE: "state_change";
-    MESSAGE: "message";
-    ACCOUNT_ACTIVITY: "account_activity";
-    CHART: "chart";
-    CHART_EQUITY: "chart_equity";
-    CHART_FUTURES: "chart_futures";
-    CHART_OPTIONS: "chart_options";
-    NEWS_HEADLINE: "news_headline";
-    TIMESALE: "timesale";
-    TIMESALE_EQUITY: "timesale_equity";
-    TIMESALE_FUTURES: "timesale_futures";
-    TIMESALE_OPTIONS: "timesale_options";
-    TIMESALE_FOREX: "timesale_forex";
-    LEVEL_ONE_EQUITY: "level_one_equity";
-    LEVEL_ONE_FUTURES: "level_one_futures";
-    CHART_HISTORY_FUTURES: "chart_history_futures";
-    FUTURES_BOOK: "futures_book";
-    LISTED_BOOK: "listed_book";
-    NASDAQ_BOOK: "nasdaq_book";
-    OPTIONS_BOOK: "options_book";
-    FUTURES_OPTIONS_BOOK: "futures_options_book";
-    ERROR: "error";
+    STATE_CHANGE: 'state_change';
+    MESSAGE: 'message';
+    ACCOUNT_ACTIVITY: 'account_activity';
+    CHART: 'chart';
+    CHART_EQUITY: 'chart_equity';
+    CHART_FUTURES: 'chart_futures';
+    CHART_OPTIONS: 'chart_options';
+    NEWS_HEADLINE: 'news_headline';
+    TIMESALE: 'timesale';
+    TIMESALE_EQUITY: 'timesale_equity';
+    TIMESALE_FUTURES: 'timesale_futures';
+    TIMESALE_OPTIONS: 'timesale_options';
+    TIMESALE_FOREX: 'timesale_forex';
+    LEVEL_ONE_EQUITY: 'level_one_equity';
+    LEVEL_ONE_FUTURES: 'level_one_futures';
+    CHART_HISTORY_FUTURES: 'chart_history_futures';
+    FUTURES_BOOK: 'futures_book';
+    LISTED_BOOK: 'listed_book';
+    NASDAQ_BOOK: 'nasdaq_book';
+    OPTIONS_BOOK: 'options_book';
+    FUTURES_OPTIONS_BOOK: 'futures_options_book';
+    ERROR: 'error';
   }>;
   export const ERROR: Readonly<{
-    UNKNOWN: "unknown_error";
-    UNKNOWN_MESSAGE: "unknown_message";
-    UNKNOWN_RESPONSE: "unknown_response";
-    UNKNOWN_NOTIFICATION: "unknown_notification";
-    UNKNOWN_DATA: "unknown_data";
-    INVALID_MESSAGE: "invalid_message";
-    CONNECTION_REFUSED: "connection_refused";
-    AUTHENTICATION_FAILED: "authentication_failed";
+    UNKNOWN: 'unknown_error';
+    UNKNOWN_MESSAGE: 'unknown_message';
+    UNKNOWN_RESPONSE: 'unknown_response';
+    UNKNOWN_NOTIFICATION: 'unknown_notification';
+    UNKNOWN_DATA: 'unknown_data';
+    INVALID_MESSAGE: 'invalid_message';
+    CONNECTION_REFUSED: 'connection_refused';
+    AUTHENTICATION_FAILED: 'authentication_failed';
   }>;
   export const COMMANDS: Readonly<{
-    LOGIN: "LOGIN";
-    STREAM: "STREAM";
-    QOS: "QOS";
-    SUBS: "SUBS";
-    ADD: "ADD";
-    UNSUBS: "UNSUBS";
-    VIEW: "VIEW";
-    LOGOUT: "LOGOUT";
-    GET: "GET";
+    LOGIN: 'LOGIN';
+    STREAM: 'STREAM';
+    QOS: 'QOS';
+    SUBS: 'SUBS';
+    ADD: 'ADD';
+    UNSUBS: 'UNSUBS';
+    VIEW: 'VIEW';
+    LOGOUT: 'LOGOUT';
+    GET: 'GET';
   }>;
   export const SERVICES: Readonly<{
-    ACCT_ACTIVITY: "ACCT_ACTIVITY";
-    ADMIN: "ADMIN";
-    ACTIVES_NASDAQ: "ACTIVES_NASDAQ";
-    ACTIVES_NYSE: "ACTIVES_NYSE";
-    ACTIVES_OTCBB: "ACTIVES_OTCBB";
-    ACTIVES_OPTIONS: "ACTIVES_OPTIONS";
-    FOREX_BOOK: "FOREX_BOOK";
-    FUTURES_BOOK: "FUTURES_BOOK";
-    LISTED_BOOK: "LISTED_BOOK";
-    NASDAQ_BOOK: "NASDAQ_BOOK";
-    OPTIONS_BOOK: "OPTIONS_BOOK";
-    FUTURES_OPTIONS_BOOK: "FUTURES_OPTIONS_BOOK";
-    CHART_EQUITY: "CHART_EQUITY";
-    CHART_FUTURES: "CHART_FUTURES";
-    CHART_HISTORY_FUTURES: "CHART_HISTORY_FUTURES";
-    QUOTE: "QUOTE";
-    LEVELONE_FUTURES: "LEVELONE_FUTURES";
-    LEVELONE_FOREX: "LEVELONE_FOREX";
-    LEVELONE_FUTURES_OPTIONS: "LEVELONE_FUTURES_OPTIONS";
-    OPTION: "OPTION";
-    LEVELTWO_FUTURES: "LEVELTWO_FUTURES";
-    NEWS_HEADLINE: "NEWS_HEADLINE";
-    NEWS_STORY: "NEWS_STORY";
-    NEWS_HEADLINE_LIST: "NEWS_HEADLINE_LIST";
-    STREAMER_SERVER: "STREAMER_SERVER";
-    TIMESALE_EQUITY: "TIMESALE_EQUITY";
-    TIMESALE_FUTURES: "TIMESALE_FUTURES";
-    TIMESALE_FOREX: "TIMESALE_FOREX";
-    TIMESALE_OPTIONS: "TIMESALE_OPTIONS";
+    ACCT_ACTIVITY: 'ACCT_ACTIVITY';
+    ADMIN: 'ADMIN';
+    ACTIVES_NASDAQ: 'ACTIVES_NASDAQ';
+    ACTIVES_NYSE: 'ACTIVES_NYSE';
+    ACTIVES_OTCBB: 'ACTIVES_OTCBB';
+    ACTIVES_OPTIONS: 'ACTIVES_OPTIONS';
+    FOREX_BOOK: 'FOREX_BOOK';
+    FUTURES_BOOK: 'FUTURES_BOOK';
+    LISTED_BOOK: 'LISTED_BOOK';
+    NASDAQ_BOOK: 'NASDAQ_BOOK';
+    OPTIONS_BOOK: 'OPTIONS_BOOK';
+    FUTURES_OPTIONS_BOOK: 'FUTURES_OPTIONS_BOOK';
+    CHART_EQUITY: 'CHART_EQUITY';
+    CHART_FUTURES: 'CHART_FUTURES';
+    CHART_HISTORY_FUTURES: 'CHART_HISTORY_FUTURES';
+    QUOTE: 'QUOTE';
+    LEVELONE_FUTURES: 'LEVELONE_FUTURES';
+    LEVELONE_FOREX: 'LEVELONE_FOREX';
+    LEVELONE_FUTURES_OPTIONS: 'LEVELONE_FUTURES_OPTIONS';
+    OPTION: 'OPTION';
+    LEVELTWO_FUTURES: 'LEVELTWO_FUTURES';
+    NEWS_HEADLINE: 'NEWS_HEADLINE';
+    NEWS_STORY: 'NEWS_STORY';
+    NEWS_HEADLINE_LIST: 'NEWS_HEADLINE_LIST';
+    STREAMER_SERVER: 'STREAMER_SERVER';
+    TIMESALE_EQUITY: 'TIMESALE_EQUITY';
+    TIMESALE_FUTURES: 'TIMESALE_FUTURES';
+    TIMESALE_FOREX: 'TIMESALE_FOREX';
+    TIMESALE_OPTIONS: 'TIMESALE_OPTIONS';
   }>;
   export const QOS: Readonly<{
     express: 0;
@@ -178,8 +178,8 @@ declare module "@allensarkisyan/schwab-td-ameritrade-streamer/td-constants" {
     digits: 27;
     openPrice: 28;
     netChange: 29;
-    "52WeekHigh": 30;
-    "52WeekLow": 31;
+    '52WeekHigh': 30;
+    '52WeekLow': 31;
     peRatio: 32;
     dividendAmount: 33;
     dividendYield: 34;
@@ -330,7 +330,7 @@ declare module "@allensarkisyan/schwab-td-ameritrade-streamer/td-constants" {
     ORDER_BOOK_EXCHANGE_FIELDS: typeof ORDER_BOOK_EXCHANGE_FIELDS;
   }>;
 }
-declare module "@allensarkisyan/schwab-td-ameritrade-streamer/@types" {
+declare module '@allensarkisyan/schwab-td-ameritrade-streamer/@types' {
   /**
    * @author Allen Sarkisyan
    * @copyright 2019 - 2023 XT-TX
@@ -443,24 +443,26 @@ declare module "@allensarkisyan/schwab-td-ameritrade-streamer/@types" {
     data: string;
   };
 }
-declare module "@allensarkisyan/schwab-td-ameritrade-streamer/td-notifications" {
-  import { TDAmeritradeActivityMessage } from "@allensarkisyan/schwab-td-ameritrade-streamer/@types";
-  export const parseOrderEntryMessage: (msg: TDAmeritradeActivityMessage) => any;
+declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-notifications' {
+  import type { TDAmeritradeActivityMessage } from '@allensarkisyan/schwab-td-ameritrade-streamer/@types';
+  export const parseOrderEntryMessage: (
+    msg: TDAmeritradeActivityMessage,
+  ) => any;
   export const parseOrderFillMessage: (msg: TDAmeritradeActivityMessage) => any;
   export const parseCancelMessage: (msg: TDAmeritradeActivityMessage) => any;
 }
-declare module "@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-processor" {
+declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-processor' {
   /**
    * @author Allen Sarkisyan
    * @copyright 2019 - 2023 XT-TX
    * @license MIT Open Source License
    */
-  import { EventEmitter } from "eventemitter3";
-  import {
+  import { EventEmitter } from 'eventemitter3';
+  import type {
     TDAmeritradeStreamServiceResponse,
     TDAmeritradeStreamDataResponse,
     TDAmeritradeStreamEventProcessorEventMessage,
-  } from "@allensarkisyan/schwab-td-ameritrade-streamer/@types";
+  } from '@allensarkisyan/schwab-td-ameritrade-streamer/@types';
   /**
    * TD Ameritrade Stream Response
    * @typedef {Object} TDAmeritradeStreamServiceResponse
@@ -501,7 +503,7 @@ declare module "@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-pr
     constructor(
       emitter: EventEmitter,
       handleLevelOneFeedUpdate?: Function,
-      handleLevelOneTimeSaleUpdate?: Function
+      handleLevelOneTimeSaleUpdate?: Function,
     );
     /**
      *
@@ -516,12 +518,18 @@ declare module "@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-pr
      * @param {string} evt - Event Name
      * @param {(Object|Array|string|number|boolean)} [data] - Event Data
      */
-    emitEvent(evt: string, data?: object | symbol | string | number | boolean | null): void;
+    emitEvent(
+      evt: string,
+      data?: object | symbol | string | number | boolean | null,
+    ): void;
     handleAccountActivity(msg: TDAmeritradeStreamDataResponse): void;
     handleQuotes(msg: TDAmeritradeStreamDataResponse): void;
     handleTimeSales(msg: TDAmeritradeStreamDataResponse): void;
     handleOptions(msg: TDAmeritradeStreamDataResponse): void;
-    handleLevelOneFutures(msg: TDAmeritradeStreamDataResponse, timeSales?: boolean): void;
+    handleLevelOneFutures(
+      msg: TDAmeritradeStreamDataResponse,
+      timeSales?: boolean,
+    ): void;
     handleNews(msg: TDAmeritradeStreamDataResponse): void;
     handleActivesNasdaq(msg: TDAmeritradeStreamDataResponse): void;
     handleActivesNYSE(msg: TDAmeritradeStreamDataResponse): void;
@@ -530,12 +538,12 @@ declare module "@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-pr
     handleActiveOptions(msg: TDAmeritradeStreamDataResponse): void;
   }
 }
-declare module "@allensarkisyan/schwab-td-ameritrade-streamer" {
-  import {
+declare module '@allensarkisyan/schwab-td-ameritrade-streamer' {
+  import type {
     TDAmeritradeStreamerConnectionOptions,
     TDAmeritradeStreamerCommand,
     TickerSymbolKeys,
-  } from "@allensarkisyan/schwab-td-ameritrade-streamer/@types";
+  } from '@allensarkisyan/schwab-td-ameritrade-streamer/@types';
   /**
    * TD Ameritrade Stream Connection Options
    * @typedef {Object} TDAmeritradeStreamerConnectionOptions
@@ -578,7 +586,7 @@ declare module "@allensarkisyan/schwab-td-ameritrade-streamer" {
     constructor(
       streamerConnectionOptions: TDAmeritradeStreamerConnectionOptions,
       handleLevelOneFeedUpdate?: Function,
-      handleLevelOneTimeSaleUpdate?: Function
+      handleLevelOneTimeSaleUpdate?: Function,
     );
     on(evt: string, method: any, context?: any): void;
     add(evt: string, method: any, context?: any): void;
