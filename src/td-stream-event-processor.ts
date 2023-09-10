@@ -16,7 +16,7 @@ import {
   parseCancelMessage,
 } from './td-notifications.js';
 
-import {
+import type {
   TDAmeritradeStreamServiceResponse,
   TDAmeritradeStreamDataResponse,
   TDAmeritradeStreamNotifyResponse,
@@ -29,7 +29,7 @@ const ASK_FIELD_VALUES = Object.values(FIELDS.ASK_FIELDS);
 const ORDER_BOOK_EXCHANGE_KEYS = Object.keys(FIELDS.ORDER_BOOK_EXCHANGE_FIELDS);
 const ORDER_BOOK_EXCHANGE_VALUES = Object.values(FIELDS.ORDER_BOOK_EXCHANGE_FIELDS);
 
-const chunk = (arr: any[] = [], size: number) => Array.from(
+const chunk = (arr: any[] = [], size: number): any[][] => Array.from(
   { length: Math.ceil(arr.length / size) },
   (_, i) => arr.slice(i * size, i * size + size)
 );

@@ -11,18 +11,18 @@ import { STATE, EVENT, COMMANDS, SERVICES } from './td-constants.js';
 
 import { TDAmeritradeStreamEventProcessor } from './td-stream-event-processor.js';
 
-import {
+import type {
   TDAmeritradeStreamerConnectionOptions,
   TDAmeritradeStreamerCommand,
   TickerSymbolKeys,
   TDAmeritradeStreamEventProcessorEventMessage
 } from './@types/index.js'
 
-const randomID = () => Math.floor(Math.random() * 2000000000);
+const randomID = (): number => Math.floor(Math.random() * 2000000000);
 
-const jsonToQueryString = (json: object) => Object.keys(json).map((key: string) => `${encodeURIComponent(key)}=${encodeURIComponent(json[key])}`).join('&');
+const jsonToQueryString = (json: object): string => Object.keys(json).map((key: string) => `${encodeURIComponent(key)}=${encodeURIComponent(json[key])}`).join('&');
 
-const getKeys = (symbol: string | string[]) => Array.isArray(symbol) ? symbol.join(', ') : symbol;
+const getKeys = (symbol: string | string[]): string => (Array.isArray(symbol) ? symbol.join(', ') : symbol);
 
 /**
  * TD Ameritrade Stream Connection Options
@@ -52,9 +52,12 @@ const getKeys = (symbol: string | string[]) => Array.isArray(symbol) ? symbol.jo
  * @property {Object} parameters - Service Command Parameters
  */
 
-/** @typedef {(string|Array<string>)} TickerSymbolKeys */
+/**
+ * Single Symbol, Comma Seperated Symbols or Array of Symbols ("SPY" | "SPY, QQQ" | ["SPY", "QQQ"])
+ * @typedef {(string|string[])} TickerSymbolKeys
+ */
 
-/** @typedef {(string|Array<string>)} FuturesSymbol */
+/** @typedef {(string|string[])} FuturesSymbol */
 
 export class TDAmeritradeStreamer {
   /** @type {WebSocket} */
@@ -77,8 +80,8 @@ export class TDAmeritradeStreamer {
    */
   constructor(
     streamerConnectionOptions: TDAmeritradeStreamerConnectionOptions,
-    handleLevelOneFeedUpdate: Function = (data: string) => {},
-    handleLevelOneTimeSaleUpdate: Function = (data: string) => {},
+    handleLevelOneFeedUpdate: Function = (data?: any) => {},
+    handleLevelOneTimeSaleUpdate: Function = (data?: any) => {},
   ) {
     console.log('TDAmeritradeStreamer',
       streamerConnectionOptions?.primaryAccountId,
@@ -108,15 +111,7 @@ export class TDAmeritradeStreamer {
     this.#connect();
   }
 
-  on(evt: string, method: string|any, context?: object | symbol) {
-    this.#emitter.on(evt, method, context);
-  }
-  
-  add(evt: string, method: string|any, context?: object | symbol) {
-    this.#emitter.addListener(evt, method, context);
-  }
-
-  #connect() {
+  #connect(): void {
     this.#socket = new ws(`wss://${this.#streamerConnectionOptions?.streamerSocketUrl}/ws`);
 
     if (!this.#socket) {
@@ -139,7 +134,7 @@ export class TDAmeritradeStreamer {
    * Send requests to TD Ameritrades WebSocket server
    * @param {TDAmeritradeStreamerCommand[]} commands - Streamer commands to send
    */
-  sendRequest(commands: TDAmeritradeStreamerCommand[] = []) {
+  #sendRequest(commands: TDAmeritradeStreamerCommand[] = []): void {
     try {
       const requests = commands?.map(cmd => ({
         ...cmd,
@@ -154,7 +149,7 @@ export class TDAmeritradeStreamer {
     }
   }
 
-  #login() {
+  #login(): void {
     if (!this.#streamerConnectionOptions) { return; }
 
     const credential = jsonToQueryString({
@@ -171,7 +166,7 @@ export class TDAmeritradeStreamer {
       acl: this.#streamerConnectionOptions?.acl
     });
 
-    this.sendRequest([
+    this.#sendRequest([
       { 
         service: SERVICES.ADMIN,
         command: COMMANDS.LOGIN,
@@ -189,8 +184,8 @@ export class TDAmeritradeStreamer {
     ]);
   }
 
-  #logout() {
-    this.sendRequest([
+  #logout(): void {
+    this.#sendRequest([
       {
         service: SERVICES.ADMIN,
         command: COMMANDS.LOGOUT,
@@ -199,9 +194,20 @@ export class TDAmeritradeStreamer {
     ]);
   }
 
-  subscribeAccountActivity() {
+  on(evt: string, method: any, context?: any): void {
+    this.#emitter.on(evt, method, context);
+  }
+  
+  add(evt: string, method: any, context?: any): void {
+    this.#emitter.addListener(evt, method, context);
+  }
+
+  /**
+   * Subscribe to Account Activity Service
+   */
+  subscribeAccountActivity(): void {
     const keys = this.#streamerConnectionOptions?.streamerSubscriptionKeys[0].key;
-    this.sendRequest([
+    this.#sendRequest([
       {
         service: SERVICES.ACCT_ACTIVITY,
         command: COMMANDS.SUBS,
@@ -211,23 +217,23 @@ export class TDAmeritradeStreamer {
   }
 
   /**
-   * 
+   * Subscribe to Chart and Quotes Service
    * @param {TickerSymbolKeys} symbol 
    */
-  getChartHistoryAndSubscribeQuotes(symbol: TickerSymbolKeys) {
+  getChartHistoryAndSubscribeQuotes(symbol: TickerSymbolKeys): void {
     const keys = getKeys(symbol);
     this.subscribeQuotes(keys);
     this.subscribeCharts(keys);
   }
 
   /**
-   * 
+   * Subscribe to Quote Service
    * @param {TickerSymbolKeys} symbol 
    */
-  subscribeQuotes(symbol: TickerSymbolKeys) {
+  subscribeQuotes(symbol: TickerSymbolKeys): void {
     const keys = getKeys(symbol);
     const fields = '0,1,2,3,4,5,8,9,10,11,12,13,15,17,18,24,28,29,30,31,48,49,50,51';
-    this.sendRequest([
+    this.#sendRequest([
       {
         service: SERVICES.QUOTE,
         command: COMMANDS.SUBS,
@@ -237,13 +243,13 @@ export class TDAmeritradeStreamer {
   }
 
   /**
-   * 
+   * Subscribe to Chart Equity Service
    * @param {TickerSymbolKeys} symbol 
    */
-  subscribeCharts(symbol: TickerSymbolKeys) {
+  subscribeCharts(symbol: TickerSymbolKeys): void {
     const keys = getKeys(symbol);
     const fields = '0,1,2,3,4,5,6,7,8';
-    this.sendRequest([
+    this.#sendRequest([
       {
         service: SERVICES.CHART_EQUITY,
         command: COMMANDS.SUBS,
@@ -253,13 +259,13 @@ export class TDAmeritradeStreamer {
   }
 
   /**
-   * 
+   * Subscribe to Option Service
    * @param {TickerSymbolKeys} symbol 
    */
-  subscribeOptions(symbol: TickerSymbolKeys) {
+  subscribeOptions(symbol: TickerSymbolKeys): void {
     const keys = getKeys(symbol);
     const fields = '0,1,2,3,4,5,6,7,8,9,10,11,12,13,19,20,21,22,23,24,25,26,27,29,30,31,32,33,34,35,36,37,38,39,40,41';
-    this.sendRequest([
+    this.#sendRequest([
       {
         service: SERVICES.OPTION,
         command: COMMANDS.SUBS,
@@ -269,13 +275,13 @@ export class TDAmeritradeStreamer {
   }
 
   /**
-   * Subscribe to Time & Sales Feed
+   * Subscribe to Time & Sales Equity Service
    * @param {TickerSymbolKeys} symbol 
    */
-  subscribeTimeAndSales(symbol: TickerSymbolKeys) {
+  subscribeTimeAndSales(symbol: TickerSymbolKeys): void {
     const keys = getKeys(symbol);
     const fields = '0,1,2,3,4';
-    this.sendRequest([
+    this.#sendRequest([
       {
         service: SERVICES.TIMESALE_EQUITY,
         command: COMMANDS.SUBS,
@@ -289,46 +295,61 @@ export class TDAmeritradeStreamer {
     ]);
   }
 
-  subscribeFutures(symbol = '/ES') {
+  /**
+   * Subscribe to Futures Chart History, Chart, Time & Sales & Level One Services
+   * @param {TickerSymbolKeys} symbol 
+   */
+  subscribeFutures(symbol: TickerSymbolKeys = '/ES'): void {
+    const keys = getKeys(symbol);
     const fields = '0,1,2,3,4,5,8,9,10,11,12,13,14,18,23';
-    this.sendRequest([
+    this.#sendRequest([
       {
         service: SERVICES.CHART_HISTORY_FUTURES,
         command: COMMANDS.GET,
-        parameters: { symbol, frequency: 'm1', period: 'd1' }
+        parameters: { symbol: keys, frequency: 'm1', period: 'd1' }
       },
       {
         service: SERVICES.CHART_FUTURES,
         command: COMMANDS.SUBS,
-        parameters: { keys: symbol, fields: '0,1,2,3,4,5,6,7' }
+        parameters: { keys, fields: '0,1,2,3,4,5,6,7' }
       },
       {
         service: SERVICES.TIMESALE_FUTURES,
         command: COMMANDS.SUBS,
-        parameters: { keys: symbol, fields: '0,1,2,3,4' }
+        parameters: { keys, fields: '0,1,2,3,4' }
       },
       {
         service: SERVICES.LEVELONE_FUTURES,
         command: COMMANDS.SUBS,
-        parameters: { keys: symbol, fields }
+        parameters: { keys, fields }
       },
     ]);
   }
   
-  subscribeTimeSalesFutures(symbol = '/ES') {
-    this.sendRequest([
+  /**
+   * Subscribe to Futures Time & Sales Service
+   * @param {TickerSymbolKeys} symbol 
+   */
+  subscribeTimeSalesFutures(symbol: TickerSymbolKeys = '/ES'): void {
+    const keys = getKeys(symbol);
+    this.#sendRequest([
       {
         service: SERVICES.TIMESALE_FUTURES,
         command: COMMANDS.SUBS,
-        parameters: { keys: symbol, fields: '0,1,2,3,4' }
+        parameters: { keys, fields: '0,1,2,3,4' }
       },
     ]);
   }
 
-  // './EW1X20C3510, ./EW1X20C3525'
-  subscribeFuturesOptions(keys: TickerSymbolKeys) {
+  /**
+   * Subscribe to Level One Futures Options Service
+   * './EW1X20C3510, ./EW1X20C3525'
+   * @param {TickerSymbolKeys} symbol 
+   */
+  subscribeFuturesOptions(symbol: TickerSymbolKeys): void {
+    const keys = getKeys(symbol);
     const fields = '0,1,2,3,4,5,8,9,10,11,12,13,14,18,23';
-    this.sendRequest([
+    this.#sendRequest([
       {
         service: SERVICES.LEVELONE_FUTURES_OPTIONS,
         command: COMMANDS.SUBS,
@@ -340,8 +361,8 @@ export class TDAmeritradeStreamer {
   /**
    * Subscribe to Actives Feed
    */
-  subscribeActives() {
-    this.sendRequest([
+  subscribeActives(): void {
+    this.#sendRequest([
       {
         service: SERVICES.ACTIVES_NASDAQ,
         command: COMMANDS.SUBS,
@@ -364,9 +385,9 @@ export class TDAmeritradeStreamer {
    * Subscribe to News Headlines
    * @param {TickerSymbolKeys} symbol 
    */
-  subscribeNewsHeadlines(symbol: TickerSymbolKeys = '*ALL*') {
+  subscribeNewsHeadlines(symbol: TickerSymbolKeys = '*ALL*'): void {
     const keys = getKeys(symbol);
-    this.sendRequest([
+    this.#sendRequest([
       {
         service: SERVICES.NEWS_HEADLINE,
         command: COMMANDS.SUBS,
@@ -381,8 +402,8 @@ export class TDAmeritradeStreamer {
   // 3 = Moderate(1, 500 ms)
   // 4 = Slow(3, 000 ms)
   // 5 = Delayed(5, 000 ms)
-  setQualityOfService(qoslevel = 0) {
-    this.sendRequest([
+  setQualityOfService(qoslevel = 0): void {
+    this.#sendRequest([
       {
         service: SERVICES.ADMIN,
         command: COMMANDS.QOS,
@@ -392,13 +413,13 @@ export class TDAmeritradeStreamer {
   }
 
   /**
-   * Subscribe to Listed Order Book Feed
+   * Subscribe to Listed Order Book Service
    * @param {TickerSymbolKeys} symbol 
    */
-  subscribeListedBook(symbol: TickerSymbolKeys) {
+  subscribeListedBook(symbol: TickerSymbolKeys): void {
     const keys = getKeys(symbol);
     const fields = '0,1,2,3';
-    this.sendRequest([
+    this.#sendRequest([
       {
         service: SERVICES.LISTED_BOOK,
         command: COMMANDS.SUBS,
@@ -408,13 +429,13 @@ export class TDAmeritradeStreamer {
   }
 
   /**
-   * Subscribe to Nasdaq Order Book Feed
+   * Subscribe to Nasdaq Order Book Service
    * @param {TickerSymbolKeys} symbol 
    */
-  subscribeNasdaqBook(symbol: TickerSymbolKeys) {
+  subscribeNasdaqBook(symbol: TickerSymbolKeys): void {
     const keys = getKeys(symbol);
     const fields = '0,1,2,3';
-    this.sendRequest([
+    this.#sendRequest([
       {
         service: SERVICES.NASDAQ_BOOK,
         command: COMMANDS.SUBS,
@@ -424,13 +445,13 @@ export class TDAmeritradeStreamer {
   }
 
   /**
-   * Subscribe to Options Order Book Feed
+   * Subscribe to Options Order Book Service
    * @param {TickerSymbolKeys} symbol 
    */
-  subscribeOptionsBook(symbol: TickerSymbolKeys) {
+  subscribeOptionsBook(symbol: TickerSymbolKeys): void {
     const keys = getKeys(symbol);
     const fields = '0,1,2,3';
-    this.sendRequest([
+    this.#sendRequest([
       {
         service: SERVICES.OPTIONS_BOOK,
         command: COMMANDS.SUBS,

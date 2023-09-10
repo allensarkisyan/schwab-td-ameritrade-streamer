@@ -54,7 +54,9 @@ export type TDAmeritradeStreamerCommand = {
   parameters: Record<string, any>;
 };
 
-/** Type for Ticker Symbol Keys */
+/**
+ * Type for Ticker Symbol Keys - Single Symbol, Comma Seperated Symbols or Array of Symbols ("SPY" | "SPY, QQQ" | ["SPY", "QQQ"])
+ */
 export type TickerSymbolKeys = string | string[];
 
 /** Type for Futures Symbol */

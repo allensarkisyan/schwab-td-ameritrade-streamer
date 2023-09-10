@@ -6,7 +6,7 @@
 
 import { xml2js } from 'xml-js';
 
-import {
+import type {
   TDAmeritradeActivityMessage
 } from './@types/index.js'
 

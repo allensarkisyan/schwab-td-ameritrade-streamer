@@ -384,7 +384,9 @@ declare module "@allensarkisyan/schwab-td-ameritrade-streamer/@types" {
         /** Service Command Parameters */
         parameters: Record<string, any>;
     };
-    /** Type for Ticker Symbol Keys */
+    /**
+     * Type for Ticker Symbol Keys - Single Symbol, Comma Seperated Symbols or Array of Symbols ("SPY" | "SPY, QQQ" | ["SPY", "QQQ"])
+     */
     export type TickerSymbolKeys = string | string[];
     /** Type for Futures Symbol */
     export type FuturesSymbol = string | string[];
@@ -552,8 +554,11 @@ declare module "@allensarkisyan/schwab-td-ameritrade-streamer" {
      * @property {string} command - Command Name
      * @property {Object} parameters - Service Command Parameters
      */
-    /** @typedef {(string|Array<string>)} TickerSymbolKeys */
-    /** @typedef {(string|Array<string>)} FuturesSymbol */
+    /**
+     * Single Symbol, Comma Seperated Symbols or Array of Symbols ("SPY" | "SPY, QQQ" | ["SPY", "QQQ"])
+     * @typedef {(string|string[])} TickerSymbolKeys
+     */
+    /** @typedef {(string|string[])} FuturesSymbol */
     export class TDAmeritradeStreamer {
         #private;
         /**
@@ -563,42 +568,53 @@ declare module "@allensarkisyan/schwab-td-ameritrade-streamer" {
          * @param {Function} handleLevelOneTimeSaleUpdate
          */
         constructor(streamerConnectionOptions: TDAmeritradeStreamerConnectionOptions, handleLevelOneFeedUpdate?: Function, handleLevelOneTimeSaleUpdate?: Function);
-        on(evt: string, method: string | any, context?: object | symbol): void;
-        add(evt: string, method: string | any, context?: object | symbol): void;
+        on(evt: string, method: any, context?: any): void;
+        add(evt: string, method: any, context?: any): void;
         /**
-         * Send requests to TD Ameritrades WebSocket server
-         * @param {TDAmeritradeStreamerCommand[]} commands - Streamer commands to send
+         * Subscribe to Account Activity Service
          */
-        sendRequest(commands?: TDAmeritradeStreamerCommand[]): void;
         subscribeAccountActivity(): void;
         /**
-         *
+         * Subscribe to Chart and Quotes Service
          * @param {TickerSymbolKeys} symbol
          */
         getChartHistoryAndSubscribeQuotes(symbol: TickerSymbolKeys): void;
         /**
-         *
+         * Subscribe to Quote Service
          * @param {TickerSymbolKeys} symbol
          */
         subscribeQuotes(symbol: TickerSymbolKeys): void;
         /**
-         *
+         * Subscribe to Chart Equity Service
          * @param {TickerSymbolKeys} symbol
          */
         subscribeCharts(symbol: TickerSymbolKeys): void;
         /**
-         *
+         * Subscribe to Option Service
          * @param {TickerSymbolKeys} symbol
          */
         subscribeOptions(symbol: TickerSymbolKeys): void;
         /**
-         * Subscribe to Time & Sales Feed
+         * Subscribe to Time & Sales Equity Service
          * @param {TickerSymbolKeys} symbol
          */
         subscribeTimeAndSales(symbol: TickerSymbolKeys): void;
-        subscribeFutures(symbol?: string): void;
-        subscribeTimeSalesFutures(symbol?: string): void;
-        subscribeFuturesOptions(keys: TickerSymbolKeys): void;
+        /**
+         * Subscribe to Futures Chart History, Chart, Time & Sales & Level One Services
+         * @param {TickerSymbolKeys} symbol
+         */
+        subscribeFutures(symbol?: TickerSymbolKeys): void;
+        /**
+         * Subscribe to Futures Time & Sales Service
+         * @param {TickerSymbolKeys} symbol
+         */
+        subscribeTimeSalesFutures(symbol?: TickerSymbolKeys): void;
+        /**
+         * Subscribe to Level One Futures Options Service
+         * './EW1X20C3510, ./EW1X20C3525'
+         * @param {TickerSymbolKeys} symbol
+         */
+        subscribeFuturesOptions(symbol: TickerSymbolKeys): void;
         /**
          * Subscribe to Actives Feed
          */
@@ -610,17 +626,17 @@ declare module "@allensarkisyan/schwab-td-ameritrade-streamer" {
         subscribeNewsHeadlines(symbol?: TickerSymbolKeys): void;
         setQualityOfService(qoslevel?: number): void;
         /**
-         * Subscribe to Listed Order Book Feed
+         * Subscribe to Listed Order Book Service
          * @param {TickerSymbolKeys} symbol
          */
         subscribeListedBook(symbol: TickerSymbolKeys): void;
         /**
-         * Subscribe to Nasdaq Order Book Feed
+         * Subscribe to Nasdaq Order Book Service
          * @param {TickerSymbolKeys} symbol
          */
         subscribeNasdaqBook(symbol: TickerSymbolKeys): void;
         /**
-         * Subscribe to Options Order Book Feed
+         * Subscribe to Options Order Book Service
          * @param {TickerSymbolKeys} symbol
          */
         subscribeOptionsBook(symbol: TickerSymbolKeys): void;
