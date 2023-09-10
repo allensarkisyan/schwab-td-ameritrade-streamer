@@ -6,7 +6,7 @@
   "author": "Allen Sarkisyan",
   "main": "./dist/cjs/td-streamer.js",
   "module": "./dist/esm/td-streamer.js",
-  "types": "./src/index.d.ts",
+  "types": "./src/@types/index.d.ts",
   "exports": {
     ".": {
       "types": "./src/td-streamer.d.ts",
