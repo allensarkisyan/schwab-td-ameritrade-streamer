@@ -20,6 +20,7 @@ import type {
   TDAmeritradeStreamServiceResponse,
   TDAmeritradeStreamDataResponse,
   TDAmeritradeStreamNotifyResponse,
+  TDAmeritradeStreamEventProcessorEventMessage,
 } from './@types/index.js'
 
 const BID_FIELD_KEYS = Object.keys(FIELDS.BID_FIELDS);
@@ -176,12 +177,12 @@ export class TDAmeritradeStreamEventProcessor {
 
   /**
    * 
-   * @param {Object} TDAmeritradeStreamResponse
+   * @param {TDAmeritradeStreamEventProcessorEventMessage} TDAmeritradeStreamResponse
    * @param {TDAmeritradeStreamServiceResponse} TDAmeritradeStreamResponse.response - Response
    * @param {TDAmeritradeStreamDataResponse[]} TDAmeritradeStreamResponse.data - Response Data
    * @param {TDAmeritradeStreamDataResponse} TDAmeritradeStreamResponse.snapshot - Response Data Snapshot
    */
-  handleMessage({ response, data, snapshot } : { response: TDAmeritradeStreamServiceResponse[], data: TDAmeritradeStreamDataResponse[], snapshot: TDAmeritradeStreamDataResponse }) {
+  handleMessage({ response, data, snapshot } : TDAmeritradeStreamEventProcessorEventMessage) {
     try {
       if (
         response && response[0]

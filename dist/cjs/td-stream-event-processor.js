@@ -107,7 +107,7 @@ class TDAmeritradeStreamEventProcessor {
     }
     /**
      *
-     * @param {Object} TDAmeritradeStreamResponse
+     * @param {TDAmeritradeStreamEventProcessorEventMessage} TDAmeritradeStreamResponse
      * @param {TDAmeritradeStreamServiceResponse} TDAmeritradeStreamResponse.response - Response
      * @param {TDAmeritradeStreamDataResponse[]} TDAmeritradeStreamResponse.data - Response Data
      * @param {TDAmeritradeStreamDataResponse} TDAmeritradeStreamResponse.snapshot - Response Data Snapshot
