@@ -6,9 +6,11 @@
 
 import { xml2js } from 'xml-js';
 
-import type {
-  TDAmeritradeActivityMessage
-} from 'tdameritradestreamer';
+export type TDAmeritradeActivityMessage = {
+  timestamp: Date;
+  type: string;
+  data: string;
+}
 
 const getElementText = (elements: any[] | null, key: string, field: string = 'text') => {
   try {

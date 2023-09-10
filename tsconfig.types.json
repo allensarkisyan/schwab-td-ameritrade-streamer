@@ -5,6 +5,7 @@
     "declaration": true,
     "declarationMap": false,
     "emitDeclarationOnly": true,
+    // "outDir": "./dist/types"
     "outFile": "./dist/tdameritradestreamer.d.ts"
   }
 }

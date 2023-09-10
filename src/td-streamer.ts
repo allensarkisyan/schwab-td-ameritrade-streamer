@@ -12,19 +12,107 @@ import { STATE, EVENT, COMMANDS, SERVICES } from './td-constants.js';
 import { TDAmeritradeStreamEventProcessor } from './td-stream-event-processor.js';
 
 import type {
-  TDAmeritradeStreamerConnectionOptions,
-  TDAmeritradeStreamerCommand,
   TDAmeritradeStreamServiceResponse,
-  TDAmeritradeStreamDataResponse,
-  TDAmeritradeStreamEventProcessorEventMessage,
-  TickerSymbolKeys
-} from 'tdameritradestreamer';
+  TDAmeritradeStreamDataResponse
+} from './td-stream-event-processor.js';
+
+/**
+ * TD Ameritrade Stream Connection Options
+ */
+export type TDAmeritradeStreamerConnectionOptions = {
+  /** Primary Account ID */
+  primaryAccountId: string;
+  /** Account ID to connect */
+  accountId: string;
+  /** Token from streamerInfo */
+  token: string;
+  /** Account CD Domain ID from accounts */
+  accountCdDomainId: string;
+  /** Streamer Socket URL */
+  streamerSocketUrl: string;
+  /** Token Timestamp */
+  tokenTimestamp: Date;
+  /** Token Expiration Time */
+  tokenExpirationTime: Date;
+  /** App ID */
+  appId: string;
+  /** ACL from streamerInfo */
+  acl: string;
+  /** User Group */
+  userGroup: string;
+  /** Access Level */
+  accessLevel: string;
+  /** Company Name */
+  company: string;
+  /** Segment */
+  segment: string;
+  /** Streamer Subscription Keys */
+  streamerSubscriptionKeys: { key: string }[];
+  /** Realtime Quotes */
+  quotes: Record<string, any>;
+}
+
+/**
+ * TD Ameritrade Stream Command
+ */
+export type TDAmeritradeStreamerCommand = {
+  /** Service Name */
+  service: string;
+  /** Command Name */
+  command: string;
+  /** Service Command Parameters */
+  parameters: Record<string, any>;
+}
+
+/** Type for Ticker Symbol Keys */
+export type TickerSymbolKeys = string | string[];
+
+/** Type for Futures Symbol */
+export type FuturesSymbol = string | string[];
+
+export type TDAmeritradeStreamEventProcessorEventMessage = {
+  response: TDAmeritradeStreamServiceResponse[],
+  data: TDAmeritradeStreamDataResponse[],
+  snapshot: TDAmeritradeStreamDataResponse 
+}
 
 const randomID = () => Math.floor(Math.random() * 2000000000);
 
 const jsonToQueryString = (json: object) => Object.keys(json).map((key: string) => `${encodeURIComponent(key)}=${encodeURIComponent(json[key])}`).join('&');
 
 const getKeys = (symbol: string | string[]) => Array.isArray(symbol) ? symbol.join(', ') : symbol;
+
+/**
+ * TD Ameritrade Stream Connection Options
+ * @typedef {Object} TDAmeritradeStreamerConnectionOptions
+ * @property {string} primaryAccountId - Primary Account ID
+ * @property {string} accountId - Account ID to connect
+ * @property {string} token - Token from streamerInfo
+ * @property {string} accountCdDomainId - Account CD Domain ID from accounts
+ * @property {string} streamerSocketUrl - Streamer Socket URL
+ * @property {Date} tokenTimestamp - Token Timestamp
+ * @property {Date} tokenExpirationTime - Token Expiration Time
+ * @property {string} appId - App ID
+ * @property {string} acl - ACL from streamerInfo
+ * @property {string} userGroup - User Group
+ * @property {string} accessLevel - Access Level
+ * @property {string} company - Company Name
+ * @property {string} segment - Segment
+ * @property {Object[]} streamerSubscriptionKeys - Streamer Subscription Keys
+ * @property {string} streamerSubscriptionKeys[].key - Subscription Key
+ * @property {object} quotes - Realtime Quotes
+ */
+
+/**
+ * @typedef {Object} TDAmeritradeStreamerCommand
+ * @property {string} service - Service Name
+ * @property {string} command - Command Name
+ * @property {Object} parameters - Service Command Parameters
+ */
+
+/** @typedef {(string|Array<string>)} TickerSymbolKeys */
+
+/** @typedef {(string|Array<string>)} FuturesSymbol */
 
 export class TDAmeritradeStreamer {
   /** @type {WebSocket} */

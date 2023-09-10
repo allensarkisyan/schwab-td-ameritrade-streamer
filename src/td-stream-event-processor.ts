@@ -16,11 +16,50 @@ import {
   parseCancelMessage,
 } from './td-notifications.js';
 
-import type {
-  TDAmeritradeStreamDataResponse,
-  TDAmeritradeStreamServiceResponse,
-  TDAmeritradeStreamNotifyResponse,
-} from 'tdameritradestreamer';
+/**
+ * TD Ameritrade Stream Service Response
+ */
+export type TDAmeritradeStreamServiceResponse = {
+  /** Service Name */
+  service: string;
+  /** Request ID */
+  requestid: string;
+  /** Command */
+  command: string;
+  /** Timestamp */
+  timestamp: Date;
+  /** Stream Response Content */
+  content: {
+    /** Response Code */
+    code: number;
+    /** Response Message */
+    msg: string;
+  };
+}
+
+/**
+ * TD Ameritrade Stream Data Response
+ */
+export type TDAmeritradeStreamDataResponse = {
+  /** Service Name */
+  service: string;
+  /** Timestamp */
+  timestamp: Date;
+  /** Command */
+  command: string;
+  /** Stream Response Content */
+  content: any;
+  /** Snapshot Content */
+  snapshot?: Record<string, any> | Array<Record<string, any>>;
+}
+
+/**
+ * TD Ameritrade Stream Notify Response
+ */
+export type TDAmeritradeStreamNotifyResponse = {
+  /** Heartbeat */
+  heartbeat: Date;
+}
 
 const BID_FIELD_KEYS = Object.keys(FIELDS.BID_FIELDS);
 const BID_FIELD_VALUES = Object.values(FIELDS.BID_FIELDS);

@@ -10,7 +10,6 @@
     "noImplicitAny": false,
     "baseUrl": ".",
     "outDir": "./dist",
-    "esModuleInterop": true,
-    "typeRoots": ["src/@types", "node_modules/@types"]
+    "esModuleInterop": true
   }
 }
