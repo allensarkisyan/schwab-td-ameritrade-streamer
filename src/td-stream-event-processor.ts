@@ -4,6 +4,7 @@
  * @license MIT Open Source License
  */
 
+import { EventEmitter } from 'eventemitter3';
 import {
   SERVICES,
   FIELDS
@@ -15,6 +16,12 @@ import {
   parseCancelMessage,
 } from './td-notifications.js';
 
+import type {
+  TDAmeritradeStreamDataResponse,
+  TDAmeritradeStreamServiceResponse,
+  TDAmeritradeStreamNotifyResponse,
+} from 'tdameritradestreamer';
+
 const BID_FIELD_KEYS = Object.keys(FIELDS.BID_FIELDS);
 const BID_FIELD_VALUES = Object.values(FIELDS.BID_FIELDS);
 const ASK_FIELD_KEYS = Object.keys(FIELDS.ASK_FIELDS);
@@ -22,12 +29,12 @@ const ASK_FIELD_VALUES = Object.values(FIELDS.ASK_FIELDS);
 const ORDER_BOOK_EXCHANGE_KEYS = Object.keys(FIELDS.ORDER_BOOK_EXCHANGE_FIELDS);
 const ORDER_BOOK_EXCHANGE_VALUES = Object.values(FIELDS.ORDER_BOOK_EXCHANGE_FIELDS);
 
-const chunk = (arr = [], size) => Array.from(
+const chunk = (arr: any[] = [], size: number) => Array.from(
   { length: Math.ceil(arr.length / size) },
   (_, i) => arr.slice(i * size, i * size + size)
 );
 
-const transformMessageData = (data, fieldKeys, fieldValues) => {
+const transformMessageData = (data: any[], fieldKeys: string[], fieldValues: number[]): any[] => {
   return data.map(msg => {
     const keys = Object.keys(msg);
     const vals = Object.values(msg);
@@ -42,19 +49,19 @@ const transformMessageData = (data, fieldKeys, fieldValues) => {
   });
 }
 
-const transformData = (data, fields) => {
+const transformData = (data: TDAmeritradeStreamDataResponse, fields: Readonly<object>) => {
   const fieldKeys = Object.keys(fields);
   const fieldValues = Object.values(fields);
 
   return transformMessageData(data.content, fieldKeys, fieldValues);
 }
 
-const parseActivesMessage = (msg) => {
+const parseActivesMessage = (msg: TDAmeritradeStreamDataResponse) => {
   const msgData = msg.content[0][1].split(';');
 
   const actives = chunk(
     msgData.slice(5)
-    .map(i => i.split(':').slice(3))[1],
+    .map((i: string) => i.split(':').slice(3))[1],
     3,
   )
   .map(([
@@ -70,9 +77,12 @@ const parseActivesMessage = (msg) => {
   return actives;
 }
 
-const parseListedBook = (data) => {
+const parseListedBook = (data: any) => {
   try {
-    const book = transformData(data, FIELDS.LISTED_BOOK);
+    const book: {
+      bids: any[],
+      asks: any[]
+    }[] = transformData(data, FIELDS.LISTED_BOOK);
 
     for (let i = 0; i < book.length; i++) {
       book[i].bids = transformMessageData(
@@ -140,6 +150,13 @@ const parseListedBook = (data) => {
  */
 
 export class TDAmeritradeStreamEventProcessor {
+  /** @type {EventEmitter} */
+  emitter: EventEmitter;
+
+  handleLevelOneFeedUpdate: Function;
+
+  handleLevelOneTimeSaleUpdate: Function;
+
   /**
    * TDAmeritradeStreamEventProcessor - Handle's stream response
    * @constructor
@@ -148,9 +165,9 @@ export class TDAmeritradeStreamEventProcessor {
    * @param {Function} handleLevelOneTimeSaleUpdate 
    */
   constructor(
-    emitter,
-    handleLevelOneFeedUpdate = (data) => {},
-    handleLevelOneTimeSaleUpdate = (data) => {},
+    emitter: EventEmitter,
+    handleLevelOneFeedUpdate: Function = (data: any) => {},
+    handleLevelOneTimeSaleUpdate: Function = (data: any) => {},
   ) {
     this.emitter = emitter;
     this.handleLevelOneFeedUpdate = handleLevelOneFeedUpdate;
@@ -164,7 +181,7 @@ export class TDAmeritradeStreamEventProcessor {
    * @param {TDAmeritradeStreamDataResponse[]} TDAmeritradeStreamResponse.data - Response Data
    * @param {TDAmeritradeStreamDataResponse} TDAmeritradeStreamResponse.snapshot - Response Data Snapshot
    */
-  handleMessage({ response, data, snapshot }) {
+  handleMessage({ response, data, snapshot } : { response: TDAmeritradeStreamServiceResponse[], data: TDAmeritradeStreamDataResponse[], snapshot: TDAmeritradeStreamDataResponse }) {
     try {
       if (
         response && response[0]
@@ -177,7 +194,7 @@ export class TDAmeritradeStreamEventProcessor {
       if (snapshot) {
         this.emitEvent('CHART_SNAPSHOT', snapshot);
       } else if (data) {
-        data?.forEach(msg => {
+        data?.forEach((msg: TDAmeritradeStreamDataResponse) => {
           switch (msg.service) {
             case SERVICES.ACCT_ACTIVITY:
               this.handleAccountActivity(msg);
@@ -247,9 +264,9 @@ export class TDAmeritradeStreamEventProcessor {
   /**
    * 
    * @param {string} evt - Event Name
-   * @param {(Object|string|number|boolean)} [data] - Event Data
+   * @param {(Object|Array|string|number|boolean)} [data] - Event Data
    */
-  emitEvent(evt, data = null) {
+  emitEvent(evt: string, data?: object|symbol|string|number|boolean|null) {
     try {
       this.emitter.emit(evt, data);
     } catch (e) {
@@ -257,7 +274,7 @@ export class TDAmeritradeStreamEventProcessor {
     }
   }
 
-  handleAccountActivity(msg) {
+  handleAccountActivity(msg: TDAmeritradeStreamDataResponse) {
     try {
       const message = {
         timestamp: msg.timestamp,
@@ -288,23 +305,23 @@ export class TDAmeritradeStreamEventProcessor {
     }
   }
 
-  handleQuotes(msg) {
+  handleQuotes(msg: TDAmeritradeStreamDataResponse) {
     const data = transformData(msg, FIELDS.LEVEL_ONE_EQUITY);
     this.emitEvent('QUOTE', data);
   }
 
-  handleTimeSales(msg) {
+  handleTimeSales(msg: TDAmeritradeStreamDataResponse) {
     const data = transformData(msg, FIELDS.TIMESALE);
     this.emitEvent('TIMESALE_EQUITY_UPDATE', data);
     this.handleLevelOneTimeSaleUpdate(data);
   }
 
-  handleOptions(msg) {
+  handleOptions(msg: TDAmeritradeStreamDataResponse) {
     const data = transformData(msg, FIELDS.LEVEL_ONE_OPTION);
     this.emitEvent('OPTION', data);
   }
 
-  handleLevelOneFutures(msg, timeSales = false) {
+  handleLevelOneFutures(msg: TDAmeritradeStreamDataResponse, timeSales: boolean = false) {
     const data = transformData(msg, (timeSales ? FIELDS.TIMESALE : FIELDS.LEVEL_ONE_FUTURES));
 
     if (timeSales) {
@@ -316,35 +333,34 @@ export class TDAmeritradeStreamEventProcessor {
     }
   }
 
-  handleNews(msg) {
+  handleNews(msg: TDAmeritradeStreamDataResponse) {
     const data = transformData(msg, FIELDS.NEWS_HEADLINE);
     this.emitEvent('NEWS_HEADLINE', data);
   }
 
-  handleActivesNasdaq(msg) {
+  handleActivesNasdaq(msg: TDAmeritradeStreamDataResponse) {
     const data = parseActivesMessage(msg);
     this.emitEvent('ACTIVES_NASDAQ', data);
   }
 
-  handleActivesNYSE(msg) {
+  handleActivesNYSE(msg: TDAmeritradeStreamDataResponse) {
     const data = parseActivesMessage(msg);
     this.emitEvent('ACTIVES_NYSE', data);
   }
 
-  handleListedBook(msg) {
+  handleListedBook(msg: TDAmeritradeStreamDataResponse) {
     const data = parseListedBook(msg);
     this.emitEvent('LISTED_BOOK', data);
   }
 
-  handleNasdaqBook(msg) {
+  handleNasdaqBook(msg: TDAmeritradeStreamDataResponse) {
     const data = parseListedBook(msg);
     this.emitEvent('NASDAQ_BOOK', data);
   }
 
-  handleActiveOptions(msg) {
+  handleActiveOptions(msg: TDAmeritradeStreamDataResponse) {
     try {
       const msgData = msg.content[0][1].split(';');
-      // const activeOptions = chunk(msg.content[0][1].split(';').slice(5).map(i => i.split(':').slice(3))[1], 4).map(([symbol, description, volume, percentChange]) => ({ symbol, description, volume, percentChange }))
       const activeOptions = chunk(
         msgData.slice(5)
         .reverse()

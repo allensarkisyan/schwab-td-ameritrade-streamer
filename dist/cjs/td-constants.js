@@ -1,16 +1,19 @@
+"use strict";
 /**
  * @author Allen Sarkisyan
  * @copyright 2019 - 2023 XT-TX
  * @license MIT Open Source License
  */
-export const STATE = Object.freeze({
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FIELDS = exports.ORDER_BOOK_EXCHANGE_FIELDS = exports.ASK_FIELDS = exports.BID_FIELDS = exports.OPTIONS_BOOK = exports.NASDAQ_BOOK = exports.LISTED_BOOK = exports.LEVEL_ONE_OPTION = exports.LEVEL_ONE_FUTURES = exports.LEVEL_ONE_EQUITY = exports.TIMESALE = exports.NEWS_HEADLINE = exports.CHART_OPTIONS = exports.CHART_FUTURES = exports.CHART_EQUITY = exports.ACCT_ACTIVITY = exports.QOS = exports.SERVICES = exports.COMMANDS = exports.ERROR = exports.EVENT = exports.STATE = void 0;
+exports.STATE = Object.freeze({
     CONNECTING: 'connecting',
     CONNECTED: 'connected',
     AUTHENTICATED: 'authenticated',
     DISCONNECTING: 'disconnecting',
     DISCONNECTED: 'disconnected',
 });
-export const EVENT = Object.freeze({
+exports.EVENT = Object.freeze({
     STATE_CHANGE: 'state_change',
     MESSAGE: 'message',
     ACCOUNT_ACTIVITY: 'account_activity',
@@ -34,7 +37,7 @@ export const EVENT = Object.freeze({
     FUTURES_OPTIONS_BOOK: 'futures_options_book',
     ERROR: 'error',
 });
-export const ERROR = Object.freeze({
+exports.ERROR = Object.freeze({
     UNKNOWN: 'unknown_error',
     UNKNOWN_MESSAGE: 'unknown_message',
     UNKNOWN_RESPONSE: 'unknown_response',
@@ -44,7 +47,7 @@ export const ERROR = Object.freeze({
     CONNECTION_REFUSED: 'connection_refused',
     AUTHENTICATION_FAILED: 'authentication_failed',
 });
-export const COMMANDS = Object.freeze({
+exports.COMMANDS = Object.freeze({
     LOGIN: 'LOGIN',
     STREAM: 'STREAM',
     QOS: 'QOS',
@@ -55,7 +58,7 @@ export const COMMANDS = Object.freeze({
     LOGOUT: 'LOGOUT',
     GET: 'GET',
 });
-export const SERVICES = Object.freeze({
+exports.SERVICES = Object.freeze({
     ACCT_ACTIVITY: 'ACCT_ACTIVITY',
     ADMIN: 'ADMIN',
     ACTIVES_NASDAQ: 'ACTIVES_NASDAQ',
@@ -86,7 +89,7 @@ export const SERVICES = Object.freeze({
     TIMESALE_FOREX: 'TIMESALE_FOREX',
     TIMESALE_OPTIONS: 'TIMESALE_OPTIONS',
 });
-export const QOS = Object.freeze({
+exports.QOS = Object.freeze({
     express: 0,
     realtime: 1,
     fast: 2,
@@ -94,13 +97,13 @@ export const QOS = Object.freeze({
     slow: 4,
     delayed: 5,
 });
-export const ACCT_ACTIVITY = Object.freeze({
+exports.ACCT_ACTIVITY = Object.freeze({
     subscriptionKey: 0,
     accountNumber: 1,
     messageType: 2,
     messageData: 3,
 });
-export const CHART_EQUITY = Object.freeze({
+exports.CHART_EQUITY = Object.freeze({
     key: 0,
     openPrice: 1,
     highPrice: 2,
@@ -111,7 +114,7 @@ export const CHART_EQUITY = Object.freeze({
     chartTime: 7,
     chartDay: 8,
 });
-export const CHART_FUTURES = Object.freeze({
+exports.CHART_FUTURES = Object.freeze({
     key: 0,
     chartTime: 1,
     openPrice: 2,
@@ -120,7 +123,7 @@ export const CHART_FUTURES = Object.freeze({
     closePrice: 5,
     volume: 6,
 });
-export const CHART_OPTIONS = Object.freeze({
+exports.CHART_OPTIONS = Object.freeze({
     key: 0,
     chartTime: 1,
     openPrice: 2,
@@ -129,7 +132,7 @@ export const CHART_OPTIONS = Object.freeze({
     closePrice: 5,
     volume: 6,
 });
-export const NEWS_HEADLINE = Object.freeze({
+exports.NEWS_HEADLINE = Object.freeze({
     symbol: 0,
     errorCode: 1,
     storyDatetime: 2,
@@ -142,14 +145,14 @@ export const NEWS_HEADLINE = Object.freeze({
     isHot: 9,
     storySource: 10,
 });
-export const TIMESALE = Object.freeze({
+exports.TIMESALE = Object.freeze({
     symbol: 0,
     tradeTime: 1,
     lastPrice: 2,
     lastSize: 3,
     lastSequence: 4,
 });
-export const LEVEL_ONE_EQUITY = Object.freeze({
+exports.LEVEL_ONE_EQUITY = Object.freeze({
     symbol: 0,
     bidPrice: 1,
     askPrice: 2,
@@ -204,7 +207,7 @@ export const LEVEL_ONE_EQUITY = Object.freeze({
     tradeTimeInLong: 51,
     regularMarketTradeTimeInLong: 52,
 });
-export const LEVEL_ONE_FUTURES = Object.freeze({
+exports.LEVEL_ONE_FUTURES = Object.freeze({
     symbol: 0,
     bidPrice: 1,
     askPrice: 2,
@@ -242,7 +245,7 @@ export const LEVEL_ONE_FUTURES = Object.freeze({
     futureActiveSymbol: 34,
     futureExpirationDate: 35,
 });
-export const LEVEL_ONE_OPTION = Object.freeze({
+exports.LEVEL_ONE_OPTION = Object.freeze({
     symbol: 0,
     description: 1,
     bidPrice: 2,
@@ -280,56 +283,56 @@ export const LEVEL_ONE_OPTION = Object.freeze({
     expirationType: 40,
     mark: 41,
 });
-export const LISTED_BOOK = Object.freeze({
+exports.LISTED_BOOK = Object.freeze({
     symbol: 0,
     bookTime: 1,
     bids: 2,
     asks: 3,
 });
-export const NASDAQ_BOOK = Object.freeze({
+exports.NASDAQ_BOOK = Object.freeze({
     symbol: 0,
     bookTime: 1,
     bids: 2,
     asks: 3,
 });
-export const OPTIONS_BOOK = Object.freeze({
+exports.OPTIONS_BOOK = Object.freeze({
     symbol: 0,
     bookTime: 1,
     bids: 2,
     asks: 3,
 });
-export const BID_FIELDS = Object.freeze({
+exports.BID_FIELDS = Object.freeze({
     price: 0,
     totalVolume: 1,
     numBids: 2,
     bids: 3,
 });
-export const ASK_FIELDS = Object.freeze({
+exports.ASK_FIELDS = Object.freeze({
     price: 0,
     totalVolume: 1,
     numAsks: 2,
     asks: 3,
 });
-export const ORDER_BOOK_EXCHANGE_FIELDS = Object.freeze({
+exports.ORDER_BOOK_EXCHANGE_FIELDS = Object.freeze({
     exchange: 0,
     volume: 1,
     sequence: 2,
 });
-export const FIELDS = Object.freeze({
-    QOS,
-    ACCT_ACTIVITY,
-    CHART_EQUITY,
-    CHART_FUTURES,
-    CHART_OPTIONS,
-    NEWS_HEADLINE,
-    TIMESALE,
-    LEVEL_ONE_EQUITY,
-    LEVEL_ONE_FUTURES,
-    LEVEL_ONE_OPTION,
-    LISTED_BOOK,
-    NASDAQ_BOOK,
-    OPTIONS_BOOK,
-    BID_FIELDS,
-    ASK_FIELDS,
-    ORDER_BOOK_EXCHANGE_FIELDS,
+exports.FIELDS = Object.freeze({
+    QOS: exports.QOS,
+    ACCT_ACTIVITY: exports.ACCT_ACTIVITY,
+    CHART_EQUITY: exports.CHART_EQUITY,
+    CHART_FUTURES: exports.CHART_FUTURES,
+    CHART_OPTIONS: exports.CHART_OPTIONS,
+    NEWS_HEADLINE: exports.NEWS_HEADLINE,
+    TIMESALE: exports.TIMESALE,
+    LEVEL_ONE_EQUITY: exports.LEVEL_ONE_EQUITY,
+    LEVEL_ONE_FUTURES: exports.LEVEL_ONE_FUTURES,
+    LEVEL_ONE_OPTION: exports.LEVEL_ONE_OPTION,
+    LISTED_BOOK: exports.LISTED_BOOK,
+    NASDAQ_BOOK: exports.NASDAQ_BOOK,
+    OPTIONS_BOOK: exports.OPTIONS_BOOK,
+    BID_FIELDS: exports.BID_FIELDS,
+    ASK_FIELDS: exports.ASK_FIELDS,
+    ORDER_BOOK_EXCHANGE_FIELDS: exports.ORDER_BOOK_EXCHANGE_FIELDS,
 });
