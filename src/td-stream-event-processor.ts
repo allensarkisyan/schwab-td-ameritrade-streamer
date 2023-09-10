@@ -73,7 +73,7 @@ const chunk = (arr: any[] = [], size: number) => Array.from(
   (_, i) => arr.slice(i * size, i * size + size)
 );
 
-const transformMessageData = (data: any[], fieldKeys: string[], fieldValues: number[]): any[] => {
+const transformMessageData = (data: any[], fieldKeys: string[], fieldValues: any[]): any[] => {
   return data.map(msg => {
     const keys = Object.keys(msg);
     const vals = Object.values(msg);

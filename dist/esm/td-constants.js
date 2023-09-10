@@ -3,318 +3,360 @@
  * @copyright 2019 - 2023 XT-TX
  * @license MIT Open Source License
  */
-export const STATE = Object.freeze({
-    CONNECTING: 'connecting',
-    CONNECTED: 'connected',
-    AUTHENTICATED: 'authenticated',
-    DISCONNECTING: 'disconnecting',
-    DISCONNECTED: 'disconnected',
-});
-export const EVENT = Object.freeze({
-    STATE_CHANGE: 'state_change',
-    MESSAGE: 'message',
-    ACCOUNT_ACTIVITY: 'account_activity',
-    CHART: 'chart',
-    CHART_EQUITY: 'chart_equity',
-    CHART_FUTURES: 'chart_futures',
-    CHART_OPTIONS: 'chart_options',
-    NEWS_HEADLINE: 'news_headline',
-    TIMESALE: 'timesale',
-    TIMESALE_EQUITY: 'timesale_equity',
-    TIMESALE_FUTURES: 'timesale_futures',
-    TIMESALE_OPTIONS: 'timesale_options',
-    TIMESALE_FOREX: 'timesale_forex',
-    LEVEL_ONE_EQUITY: 'level_one_equity',
-    LEVEL_ONE_FUTURES: 'level_one_futures',
-    CHART_HISTORY_FUTURES: 'chart_history_futures',
-    FUTURES_BOOK: 'futures_book',
-    LISTED_BOOK: 'listed_book',
-    NASDAQ_BOOK: 'nasdaq_book',
-    OPTIONS_BOOK: 'options_book',
-    FUTURES_OPTIONS_BOOK: 'futures_options_book',
-    ERROR: 'error',
-});
-export const ERROR = Object.freeze({
-    UNKNOWN: 'unknown_error',
-    UNKNOWN_MESSAGE: 'unknown_message',
-    UNKNOWN_RESPONSE: 'unknown_response',
-    UNKNOWN_NOTIFICATION: 'unknown_notification',
-    UNKNOWN_DATA: 'unknown_data',
-    INVALID_MESSAGE: 'invalid_message',
-    CONNECTION_REFUSED: 'connection_refused',
-    AUTHENTICATION_FAILED: 'authentication_failed',
-});
-export const COMMANDS = Object.freeze({
-    LOGIN: 'LOGIN',
-    STREAM: 'STREAM',
-    QOS: 'QOS',
-    SUBS: 'SUBS',
-    ADD: 'ADD',
-    UNSUBS: 'UNSUBS',
-    VIEW: 'VIEW',
-    LOGOUT: 'LOGOUT',
-    GET: 'GET',
-});
-export const SERVICES = Object.freeze({
-    ACCT_ACTIVITY: 'ACCT_ACTIVITY',
-    ADMIN: 'ADMIN',
-    ACTIVES_NASDAQ: 'ACTIVES_NASDAQ',
-    ACTIVES_NYSE: 'ACTIVES_NYSE',
-    ACTIVES_OTCBB: 'ACTIVES_OTCBB',
-    ACTIVES_OPTIONS: 'ACTIVES_OPTIONS',
-    FOREX_BOOK: 'FOREX_BOOK',
-    FUTURES_BOOK: 'FUTURES_BOOK',
-    LISTED_BOOK: 'LISTED_BOOK',
-    NASDAQ_BOOK: 'NASDAQ_BOOK',
-    OPTIONS_BOOK: 'OPTIONS_BOOK',
-    FUTURES_OPTIONS_BOOK: 'FUTURES_OPTIONS_BOOK',
-    CHART_EQUITY: 'CHART_EQUITY',
-    CHART_FUTURES: 'CHART_FUTURES',
-    CHART_HISTORY_FUTURES: 'CHART_HISTORY_FUTURES',
-    QUOTE: 'QUOTE',
-    LEVELONE_FUTURES: 'LEVELONE_FUTURES',
-    LEVELONE_FOREX: 'LEVELONE_FOREX',
-    LEVELONE_FUTURES_OPTIONS: 'LEVELONE_FUTURES_OPTIONS',
-    OPTION: 'OPTION',
-    LEVELTWO_FUTURES: 'LEVELTWO_FUTURES',
-    NEWS_HEADLINE: 'NEWS_HEADLINE',
-    NEWS_STORY: 'NEWS_STORY',
-    NEWS_HEADLINE_LIST: 'NEWS_HEADLINE_LIST',
-    STREAMER_SERVER: 'STREAMER_SERVER',
-    TIMESALE_EQUITY: 'TIMESALE_EQUITY',
-    TIMESALE_FUTURES: 'TIMESALE_FUTURES',
-    TIMESALE_FOREX: 'TIMESALE_FOREX',
-    TIMESALE_OPTIONS: 'TIMESALE_OPTIONS',
-});
-export const QOS = Object.freeze({
-    express: 0,
-    realtime: 1,
-    fast: 2,
-    moderate: 3,
-    slow: 4,
-    delayed: 5,
-});
-export const ACCT_ACTIVITY = Object.freeze({
-    subscriptionKey: 0,
-    accountNumber: 1,
-    messageType: 2,
-    messageData: 3,
-});
-export const CHART_EQUITY = Object.freeze({
-    key: 0,
-    openPrice: 1,
-    highPrice: 2,
-    lowPrice: 3,
-    closePrice: 4,
-    volume: 5,
-    sequence: 6,
-    chartTime: 7,
-    chartDay: 8,
-});
-export const CHART_FUTURES = Object.freeze({
-    key: 0,
-    chartTime: 1,
-    openPrice: 2,
-    highPrice: 3,
-    lowPrice: 4,
-    closePrice: 5,
-    volume: 6,
-});
-export const CHART_OPTIONS = Object.freeze({
-    key: 0,
-    chartTime: 1,
-    openPrice: 2,
-    highPrice: 3,
-    lowPrice: 4,
-    closePrice: 5,
-    volume: 6,
-});
-export const NEWS_HEADLINE = Object.freeze({
-    symbol: 0,
-    errorCode: 1,
-    storyDatetime: 2,
-    headlineId: 3,
-    status: 4,
-    headline: 5,
-    storyId: 6,
-    countForKeyword: 7,
-    keywordArray: 8,
-    isHot: 9,
-    storySource: 10,
-});
-export const TIMESALE = Object.freeze({
-    symbol: 0,
-    tradeTime: 1,
-    lastPrice: 2,
-    lastSize: 3,
-    lastSequence: 4,
-});
-export const LEVEL_ONE_EQUITY = Object.freeze({
-    symbol: 0,
-    bidPrice: 1,
-    askPrice: 2,
-    lastPrice: 3,
-    bidSize: 4,
-    askSize: 5,
-    askID: 6,
-    bidID: 7,
-    totalVolume: 8,
-    lastSize: 9,
-    tradeTime: 10,
-    quoteTime: 11,
-    highPrice: 12,
-    lowPrice: 13,
-    bidTick: 14,
-    closePrice: 15,
-    exchangeID: 16,
-    marginable: 17,
-    shortable: 18,
-    // islandBid: 19,
-    // islandAsk: 20,
-    // islandVolume: 21,
-    quoteDay: 22,
-    tradeDay: 23,
-    volatility: 24,
-    description: 25,
-    lastID: 26,
-    digits: 27,
-    openPrice: 28,
-    netChange: 29,
-    '52WeekHigh': 30,
-    '52WeekLow': 31,
-    peRatio: 32,
-    dividendAmount: 33,
-    dividendYield: 34,
-    // islandBidSize: 35,
-    // islandAskSize: 36,
-    nav: 37,
-    fundPrice: 38,
-    exchangeName: 39,
-    dividendDate: 40,
-    regularMarketQuote: 41,
-    regularMarketTrade: 42,
-    regularMarketLastPrice: 43,
-    regularMarketLastSize: 44,
-    regularMarketTradeTime: 45,
-    regularMarketTradeDay: 46,
-    regularMarketNetChange: 47,
-    securityStatus: 48,
-    mark: 49,
-    quoteTimeInLong: 50,
-    tradeTimeInLong: 51,
-    regularMarketTradeTimeInLong: 52,
-});
-export const LEVEL_ONE_FUTURES = Object.freeze({
-    symbol: 0,
-    bidPrice: 1,
-    askPrice: 2,
-    lastPrice: 3,
-    bidSize: 4,
-    askSize: 5,
-    askID: 6,
-    bidID: 7,
-    totalVolume: 8,
-    lastSize: 9,
-    quoteTime: 10,
-    tradeTime: 11,
-    highPrice: 12,
-    lowPrice: 13,
-    closePrice: 14,
-    exchangeID: 15,
-    description: 16,
-    lastID: 17,
-    openPrice: 18,
-    netChange: 19,
-    futurePercentChange: 20,
-    exhangeName: 21,
-    securityStatus: 22,
-    openInterest: 23,
-    mark: 24,
-    tick: 25,
-    tickAmount: 26,
-    product: 27,
-    futurePriceFormat: 28,
-    futureTradingHours: 29,
-    futureIsTradable: 30,
-    futureMultiplier: 31,
-    futureIsActive: 32,
-    futureSettlementPrice: 33,
-    futureActiveSymbol: 34,
-    futureExpirationDate: 35,
-});
-export const LEVEL_ONE_OPTION = Object.freeze({
-    symbol: 0,
-    description: 1,
-    bidPrice: 2,
-    askPrice: 3,
-    lastPrice: 4,
-    highPrice: 5,
-    lowPrice: 6,
-    closePrice: 7,
-    totalVolume: 8,
-    openInterest: 9,
-    volatility: 10,
-    quoteTime: 11,
-    tradeTime: 12,
-    intrinsicValue: 13,
-    openPrice: 19,
-    bidSize: 20,
-    askSize: 21,
-    lastSize: 22,
-    netChange: 23,
-    strikePrice: 24,
-    contractType: 25,
-    underlying: 26,
-    expirationMonth: 27,
-    timeValue: 29,
-    expirationDay: 30,
-    dte: 31,
-    delta: 32,
-    gamma: 33,
-    theta: 34,
-    vega: 35,
-    rho: 36,
-    securityStatus: 37,
-    theoreticalOptionValue: 38,
-    underlyingPrice: 39,
-    expirationType: 40,
-    mark: 41,
-});
-export const LISTED_BOOK = Object.freeze({
-    symbol: 0,
-    bookTime: 1,
-    bids: 2,
-    asks: 3,
-});
-export const NASDAQ_BOOK = Object.freeze({
-    symbol: 0,
-    bookTime: 1,
-    bids: 2,
-    asks: 3,
-});
-export const OPTIONS_BOOK = Object.freeze({
-    symbol: 0,
-    bookTime: 1,
-    bids: 2,
-    asks: 3,
-});
-export const BID_FIELDS = Object.freeze({
-    price: 0,
-    totalVolume: 1,
-    numBids: 2,
-    bids: 3,
-});
-export const ASK_FIELDS = Object.freeze({
-    price: 0,
-    totalVolume: 1,
-    numAsks: 2,
-    asks: 3,
-});
-export const ORDER_BOOK_EXCHANGE_FIELDS = Object.freeze({
-    exchange: 0,
-    volume: 1,
-    sequence: 2,
-});
+export var STATE;
+(function (STATE) {
+    STATE["CONNECTING"] = "connecting";
+    STATE["CONNECTED"] = "connected";
+    STATE["AUTHENTICATED"] = "authenticated";
+    STATE["DISCONNECTING"] = "disconnecting";
+    STATE["DISCONNECTED"] = "disconnected";
+})(STATE || (STATE = {}));
+;
+export var EVENT;
+(function (EVENT) {
+    EVENT["STATE_CHANGE"] = "state_change";
+    EVENT["MESSAGE"] = "message";
+    EVENT["ACCOUNT_ACTIVITY"] = "account_activity";
+    EVENT["CHART"] = "chart";
+    EVENT["CHART_EQUITY"] = "chart_equity";
+    EVENT["CHART_FUTURES"] = "chart_futures";
+    EVENT["CHART_OPTIONS"] = "chart_options";
+    EVENT["NEWS_HEADLINE"] = "news_headline";
+    EVENT["TIMESALE"] = "timesale";
+    EVENT["TIMESALE_EQUITY"] = "timesale_equity";
+    EVENT["TIMESALE_FUTURES"] = "timesale_futures";
+    EVENT["TIMESALE_OPTIONS"] = "timesale_options";
+    EVENT["TIMESALE_FOREX"] = "timesale_forex";
+    EVENT["LEVEL_ONE_EQUITY"] = "level_one_equity";
+    EVENT["LEVEL_ONE_FUTURES"] = "level_one_futures";
+    EVENT["CHART_HISTORY_FUTURES"] = "chart_history_futures";
+    EVENT["FUTURES_BOOK"] = "futures_book";
+    EVENT["LISTED_BOOK"] = "listed_book";
+    EVENT["NASDAQ_BOOK"] = "nasdaq_book";
+    EVENT["OPTIONS_BOOK"] = "options_book";
+    EVENT["FUTURES_OPTIONS_BOOK"] = "futures_options_book";
+    EVENT["ERROR"] = "error";
+})(EVENT || (EVENT = {}));
+;
+export var ERROR;
+(function (ERROR) {
+    ERROR["UNKNOWN"] = "unknown_error";
+    ERROR["UNKNOWN_MESSAGE"] = "unknown_message";
+    ERROR["UNKNOWN_RESPONSE"] = "unknown_response";
+    ERROR["UNKNOWN_NOTIFICATION"] = "unknown_notification";
+    ERROR["UNKNOWN_DATA"] = "unknown_data";
+    ERROR["INVALID_MESSAGE"] = "invalid_message";
+    ERROR["CONNECTION_REFUSED"] = "connection_refused";
+    ERROR["AUTHENTICATION_FAILED"] = "authentication_failed";
+})(ERROR || (ERROR = {}));
+;
+export var COMMANDS;
+(function (COMMANDS) {
+    COMMANDS["LOGIN"] = "LOGIN";
+    COMMANDS["STREAM"] = "STREAM";
+    COMMANDS["QOS"] = "QOS";
+    COMMANDS["SUBS"] = "SUBS";
+    COMMANDS["ADD"] = "ADD";
+    COMMANDS["UNSUBS"] = "UNSUBS";
+    COMMANDS["VIEW"] = "VIEW";
+    COMMANDS["LOGOUT"] = "LOGOUT";
+    COMMANDS["GET"] = "GET";
+})(COMMANDS || (COMMANDS = {}));
+;
+export var SERVICES;
+(function (SERVICES) {
+    SERVICES["ACCT_ACTIVITY"] = "ACCT_ACTIVITY";
+    SERVICES["ADMIN"] = "ADMIN";
+    SERVICES["ACTIVES_NASDAQ"] = "ACTIVES_NASDAQ";
+    SERVICES["ACTIVES_NYSE"] = "ACTIVES_NYSE";
+    SERVICES["ACTIVES_OTCBB"] = "ACTIVES_OTCBB";
+    SERVICES["ACTIVES_OPTIONS"] = "ACTIVES_OPTIONS";
+    SERVICES["FOREX_BOOK"] = "FOREX_BOOK";
+    SERVICES["FUTURES_BOOK"] = "FUTURES_BOOK";
+    SERVICES["LISTED_BOOK"] = "LISTED_BOOK";
+    SERVICES["NASDAQ_BOOK"] = "NASDAQ_BOOK";
+    SERVICES["OPTIONS_BOOK"] = "OPTIONS_BOOK";
+    SERVICES["FUTURES_OPTIONS_BOOK"] = "FUTURES_OPTIONS_BOOK";
+    SERVICES["CHART_EQUITY"] = "CHART_EQUITY";
+    SERVICES["CHART_FUTURES"] = "CHART_FUTURES";
+    SERVICES["CHART_HISTORY_FUTURES"] = "CHART_HISTORY_FUTURES";
+    SERVICES["QUOTE"] = "QUOTE";
+    SERVICES["LEVELONE_FUTURES"] = "LEVELONE_FUTURES";
+    SERVICES["LEVELONE_FOREX"] = "LEVELONE_FOREX";
+    SERVICES["LEVELONE_FUTURES_OPTIONS"] = "LEVELONE_FUTURES_OPTIONS";
+    SERVICES["OPTION"] = "OPTION";
+    SERVICES["LEVELTWO_FUTURES"] = "LEVELTWO_FUTURES";
+    SERVICES["NEWS_HEADLINE"] = "NEWS_HEADLINE";
+    SERVICES["NEWS_STORY"] = "NEWS_STORY";
+    SERVICES["NEWS_HEADLINE_LIST"] = "NEWS_HEADLINE_LIST";
+    SERVICES["STREAMER_SERVER"] = "STREAMER_SERVER";
+    SERVICES["TIMESALE_EQUITY"] = "TIMESALE_EQUITY";
+    SERVICES["TIMESALE_FUTURES"] = "TIMESALE_FUTURES";
+    SERVICES["TIMESALE_FOREX"] = "TIMESALE_FOREX";
+    SERVICES["TIMESALE_OPTIONS"] = "TIMESALE_OPTIONS";
+})(SERVICES || (SERVICES = {}));
+;
+export var QOS;
+(function (QOS) {
+    QOS[QOS["express"] = 0] = "express";
+    QOS[QOS["realtime"] = 1] = "realtime";
+    QOS[QOS["fast"] = 2] = "fast";
+    QOS[QOS["moderate"] = 3] = "moderate";
+    QOS[QOS["slow"] = 4] = "slow";
+    QOS[QOS["delayed"] = 5] = "delayed";
+})(QOS || (QOS = {}));
+;
+export var ACCT_ACTIVITY;
+(function (ACCT_ACTIVITY) {
+    ACCT_ACTIVITY[ACCT_ACTIVITY["subscriptionKey"] = 0] = "subscriptionKey";
+    ACCT_ACTIVITY[ACCT_ACTIVITY["accountNumber"] = 1] = "accountNumber";
+    ACCT_ACTIVITY[ACCT_ACTIVITY["messageType"] = 2] = "messageType";
+    ACCT_ACTIVITY[ACCT_ACTIVITY["messageData"] = 3] = "messageData";
+})(ACCT_ACTIVITY || (ACCT_ACTIVITY = {}));
+;
+export var CHART_EQUITY;
+(function (CHART_EQUITY) {
+    CHART_EQUITY[CHART_EQUITY["key"] = 0] = "key";
+    CHART_EQUITY[CHART_EQUITY["openPrice"] = 1] = "openPrice";
+    CHART_EQUITY[CHART_EQUITY["highPrice"] = 2] = "highPrice";
+    CHART_EQUITY[CHART_EQUITY["lowPrice"] = 3] = "lowPrice";
+    CHART_EQUITY[CHART_EQUITY["closePrice"] = 4] = "closePrice";
+    CHART_EQUITY[CHART_EQUITY["volume"] = 5] = "volume";
+    CHART_EQUITY[CHART_EQUITY["sequence"] = 6] = "sequence";
+    CHART_EQUITY[CHART_EQUITY["chartTime"] = 7] = "chartTime";
+    CHART_EQUITY[CHART_EQUITY["chartDay"] = 8] = "chartDay";
+})(CHART_EQUITY || (CHART_EQUITY = {}));
+;
+export var CHART_FUTURES;
+(function (CHART_FUTURES) {
+    CHART_FUTURES[CHART_FUTURES["key"] = 0] = "key";
+    CHART_FUTURES[CHART_FUTURES["chartTime"] = 1] = "chartTime";
+    CHART_FUTURES[CHART_FUTURES["openPrice"] = 2] = "openPrice";
+    CHART_FUTURES[CHART_FUTURES["highPrice"] = 3] = "highPrice";
+    CHART_FUTURES[CHART_FUTURES["lowPrice"] = 4] = "lowPrice";
+    CHART_FUTURES[CHART_FUTURES["closePrice"] = 5] = "closePrice";
+    CHART_FUTURES[CHART_FUTURES["volume"] = 6] = "volume";
+})(CHART_FUTURES || (CHART_FUTURES = {}));
+;
+export var CHART_OPTIONS;
+(function (CHART_OPTIONS) {
+    CHART_OPTIONS[CHART_OPTIONS["key"] = 0] = "key";
+    CHART_OPTIONS[CHART_OPTIONS["chartTime"] = 1] = "chartTime";
+    CHART_OPTIONS[CHART_OPTIONS["openPrice"] = 2] = "openPrice";
+    CHART_OPTIONS[CHART_OPTIONS["highPrice"] = 3] = "highPrice";
+    CHART_OPTIONS[CHART_OPTIONS["lowPrice"] = 4] = "lowPrice";
+    CHART_OPTIONS[CHART_OPTIONS["closePrice"] = 5] = "closePrice";
+    CHART_OPTIONS[CHART_OPTIONS["volume"] = 6] = "volume";
+})(CHART_OPTIONS || (CHART_OPTIONS = {}));
+;
+export var NEWS_HEADLINE;
+(function (NEWS_HEADLINE) {
+    NEWS_HEADLINE[NEWS_HEADLINE["symbol"] = 0] = "symbol";
+    NEWS_HEADLINE[NEWS_HEADLINE["errorCode"] = 1] = "errorCode";
+    NEWS_HEADLINE[NEWS_HEADLINE["storyDatetime"] = 2] = "storyDatetime";
+    NEWS_HEADLINE[NEWS_HEADLINE["headlineId"] = 3] = "headlineId";
+    NEWS_HEADLINE[NEWS_HEADLINE["status"] = 4] = "status";
+    NEWS_HEADLINE[NEWS_HEADLINE["headline"] = 5] = "headline";
+    NEWS_HEADLINE[NEWS_HEADLINE["storyId"] = 6] = "storyId";
+    NEWS_HEADLINE[NEWS_HEADLINE["countForKeyword"] = 7] = "countForKeyword";
+    NEWS_HEADLINE[NEWS_HEADLINE["keywordArray"] = 8] = "keywordArray";
+    NEWS_HEADLINE[NEWS_HEADLINE["isHot"] = 9] = "isHot";
+    NEWS_HEADLINE[NEWS_HEADLINE["storySource"] = 10] = "storySource";
+})(NEWS_HEADLINE || (NEWS_HEADLINE = {}));
+;
+export var TIMESALE;
+(function (TIMESALE) {
+    TIMESALE[TIMESALE["symbol"] = 0] = "symbol";
+    TIMESALE[TIMESALE["tradeTime"] = 1] = "tradeTime";
+    TIMESALE[TIMESALE["lastPrice"] = 2] = "lastPrice";
+    TIMESALE[TIMESALE["lastSize"] = 3] = "lastSize";
+    TIMESALE[TIMESALE["lastSequence"] = 4] = "lastSequence";
+})(TIMESALE || (TIMESALE = {}));
+;
+export var LEVEL_ONE_EQUITY;
+(function (LEVEL_ONE_EQUITY) {
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["symbol"] = 0] = "symbol";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["bidPrice"] = 1] = "bidPrice";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["askPrice"] = 2] = "askPrice";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["lastPrice"] = 3] = "lastPrice";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["bidSize"] = 4] = "bidSize";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["askSize"] = 5] = "askSize";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["askID"] = 6] = "askID";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["bidID"] = 7] = "bidID";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["totalVolume"] = 8] = "totalVolume";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["lastSize"] = 9] = "lastSize";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["tradeTime"] = 10] = "tradeTime";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["quoteTime"] = 11] = "quoteTime";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["highPrice"] = 12] = "highPrice";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["lowPrice"] = 13] = "lowPrice";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["bidTick"] = 14] = "bidTick";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["closePrice"] = 15] = "closePrice";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["exchangeID"] = 16] = "exchangeID";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["marginable"] = 17] = "marginable";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["shortable"] = 18] = "shortable";
+    // islandBid = 19,
+    // islandAsk = 20,
+    // islandVolume = 21,
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["quoteDay"] = 22] = "quoteDay";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["tradeDay"] = 23] = "tradeDay";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["volatility"] = 24] = "volatility";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["description"] = 25] = "description";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["lastID"] = 26] = "lastID";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["digits"] = 27] = "digits";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["openPrice"] = 28] = "openPrice";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["netChange"] = 29] = "netChange";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["52WeekHigh"] = 30] = "52WeekHigh";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["52WeekLow"] = 31] = "52WeekLow";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["peRatio"] = 32] = "peRatio";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["dividendAmount"] = 33] = "dividendAmount";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["dividendYield"] = 34] = "dividendYield";
+    // islandBidSize = 35,
+    // islandAskSize = 36,
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["nav"] = 37] = "nav";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["fundPrice"] = 38] = "fundPrice";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["exchangeName"] = 39] = "exchangeName";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["dividendDate"] = 40] = "dividendDate";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["regularMarketQuote"] = 41] = "regularMarketQuote";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["regularMarketTrade"] = 42] = "regularMarketTrade";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["regularMarketLastPrice"] = 43] = "regularMarketLastPrice";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["regularMarketLastSize"] = 44] = "regularMarketLastSize";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["regularMarketTradeTime"] = 45] = "regularMarketTradeTime";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["regularMarketTradeDay"] = 46] = "regularMarketTradeDay";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["regularMarketNetChange"] = 47] = "regularMarketNetChange";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["securityStatus"] = 48] = "securityStatus";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["mark"] = 49] = "mark";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["quoteTimeInLong"] = 50] = "quoteTimeInLong";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["tradeTimeInLong"] = 51] = "tradeTimeInLong";
+    LEVEL_ONE_EQUITY[LEVEL_ONE_EQUITY["regularMarketTradeTimeInLong"] = 52] = "regularMarketTradeTimeInLong";
+})(LEVEL_ONE_EQUITY || (LEVEL_ONE_EQUITY = {}));
+;
+export var LEVEL_ONE_FUTURES;
+(function (LEVEL_ONE_FUTURES) {
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["symbol"] = 0] = "symbol";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["bidPrice"] = 1] = "bidPrice";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["askPrice"] = 2] = "askPrice";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["lastPrice"] = 3] = "lastPrice";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["bidSize"] = 4] = "bidSize";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["askSize"] = 5] = "askSize";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["askID"] = 6] = "askID";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["bidID"] = 7] = "bidID";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["totalVolume"] = 8] = "totalVolume";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["lastSize"] = 9] = "lastSize";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["quoteTime"] = 10] = "quoteTime";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["tradeTime"] = 11] = "tradeTime";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["highPrice"] = 12] = "highPrice";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["lowPrice"] = 13] = "lowPrice";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["closePrice"] = 14] = "closePrice";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["exchangeID"] = 15] = "exchangeID";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["description"] = 16] = "description";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["lastID"] = 17] = "lastID";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["openPrice"] = 18] = "openPrice";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["netChange"] = 19] = "netChange";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["futurePercentChange"] = 20] = "futurePercentChange";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["exhangeName"] = 21] = "exhangeName";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["securityStatus"] = 22] = "securityStatus";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["openInterest"] = 23] = "openInterest";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["mark"] = 24] = "mark";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["tick"] = 25] = "tick";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["tickAmount"] = 26] = "tickAmount";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["product"] = 27] = "product";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["futurePriceFormat"] = 28] = "futurePriceFormat";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["futureTradingHours"] = 29] = "futureTradingHours";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["futureIsTradable"] = 30] = "futureIsTradable";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["futureMultiplier"] = 31] = "futureMultiplier";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["futureIsActive"] = 32] = "futureIsActive";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["futureSettlementPrice"] = 33] = "futureSettlementPrice";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["futureActiveSymbol"] = 34] = "futureActiveSymbol";
+    LEVEL_ONE_FUTURES[LEVEL_ONE_FUTURES["futureExpirationDate"] = 35] = "futureExpirationDate";
+})(LEVEL_ONE_FUTURES || (LEVEL_ONE_FUTURES = {}));
+;
+export var LEVEL_ONE_OPTION;
+(function (LEVEL_ONE_OPTION) {
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["symbol"] = 0] = "symbol";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["description"] = 1] = "description";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["bidPrice"] = 2] = "bidPrice";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["askPrice"] = 3] = "askPrice";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["lastPrice"] = 4] = "lastPrice";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["highPrice"] = 5] = "highPrice";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["lowPrice"] = 6] = "lowPrice";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["closePrice"] = 7] = "closePrice";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["totalVolume"] = 8] = "totalVolume";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["openInterest"] = 9] = "openInterest";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["volatility"] = 10] = "volatility";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["quoteTime"] = 11] = "quoteTime";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["tradeTime"] = 12] = "tradeTime";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["intrinsicValue"] = 13] = "intrinsicValue";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["openPrice"] = 19] = "openPrice";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["bidSize"] = 20] = "bidSize";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["askSize"] = 21] = "askSize";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["lastSize"] = 22] = "lastSize";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["netChange"] = 23] = "netChange";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["strikePrice"] = 24] = "strikePrice";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["contractType"] = 25] = "contractType";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["underlying"] = 26] = "underlying";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["expirationMonth"] = 27] = "expirationMonth";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["timeValue"] = 29] = "timeValue";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["expirationDay"] = 30] = "expirationDay";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["dte"] = 31] = "dte";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["delta"] = 32] = "delta";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["gamma"] = 33] = "gamma";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["theta"] = 34] = "theta";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["vega"] = 35] = "vega";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["rho"] = 36] = "rho";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["securityStatus"] = 37] = "securityStatus";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["theoreticalOptionValue"] = 38] = "theoreticalOptionValue";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["underlyingPrice"] = 39] = "underlyingPrice";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["expirationType"] = 40] = "expirationType";
+    LEVEL_ONE_OPTION[LEVEL_ONE_OPTION["mark"] = 41] = "mark";
+})(LEVEL_ONE_OPTION || (LEVEL_ONE_OPTION = {}));
+;
+export var LISTED_BOOK;
+(function (LISTED_BOOK) {
+    LISTED_BOOK[LISTED_BOOK["symbol"] = 0] = "symbol";
+    LISTED_BOOK[LISTED_BOOK["bookTime"] = 1] = "bookTime";
+    LISTED_BOOK[LISTED_BOOK["bids"] = 2] = "bids";
+    LISTED_BOOK[LISTED_BOOK["asks"] = 3] = "asks";
+})(LISTED_BOOK || (LISTED_BOOK = {}));
+;
+export var NASDAQ_BOOK;
+(function (NASDAQ_BOOK) {
+    NASDAQ_BOOK[NASDAQ_BOOK["symbol"] = 0] = "symbol";
+    NASDAQ_BOOK[NASDAQ_BOOK["bookTime"] = 1] = "bookTime";
+    NASDAQ_BOOK[NASDAQ_BOOK["bids"] = 2] = "bids";
+    NASDAQ_BOOK[NASDAQ_BOOK["asks"] = 3] = "asks";
+})(NASDAQ_BOOK || (NASDAQ_BOOK = {}));
+;
+export var OPTIONS_BOOK;
+(function (OPTIONS_BOOK) {
+    OPTIONS_BOOK[OPTIONS_BOOK["symbol"] = 0] = "symbol";
+    OPTIONS_BOOK[OPTIONS_BOOK["bookTime"] = 1] = "bookTime";
+    OPTIONS_BOOK[OPTIONS_BOOK["bids"] = 2] = "bids";
+    OPTIONS_BOOK[OPTIONS_BOOK["asks"] = 3] = "asks";
+})(OPTIONS_BOOK || (OPTIONS_BOOK = {}));
+;
+export var BID_FIELDS;
+(function (BID_FIELDS) {
+    BID_FIELDS[BID_FIELDS["price"] = 0] = "price";
+    BID_FIELDS[BID_FIELDS["totalVolume"] = 1] = "totalVolume";
+    BID_FIELDS[BID_FIELDS["numBids"] = 2] = "numBids";
+    BID_FIELDS[BID_FIELDS["bids"] = 3] = "bids";
+})(BID_FIELDS || (BID_FIELDS = {}));
+;
+export var ASK_FIELDS;
+(function (ASK_FIELDS) {
+    ASK_FIELDS[ASK_FIELDS["price"] = 0] = "price";
+    ASK_FIELDS[ASK_FIELDS["totalVolume"] = 1] = "totalVolume";
+    ASK_FIELDS[ASK_FIELDS["numAsks"] = 2] = "numAsks";
+    ASK_FIELDS[ASK_FIELDS["asks"] = 3] = "asks";
+})(ASK_FIELDS || (ASK_FIELDS = {}));
+;
+export var ORDER_BOOK_EXCHANGE_FIELDS;
+(function (ORDER_BOOK_EXCHANGE_FIELDS) {
+    ORDER_BOOK_EXCHANGE_FIELDS[ORDER_BOOK_EXCHANGE_FIELDS["exchange"] = 0] = "exchange";
+    ORDER_BOOK_EXCHANGE_FIELDS[ORDER_BOOK_EXCHANGE_FIELDS["volume"] = 1] = "volume";
+    ORDER_BOOK_EXCHANGE_FIELDS[ORDER_BOOK_EXCHANGE_FIELDS["sequence"] = 2] = "sequence";
+})(ORDER_BOOK_EXCHANGE_FIELDS || (ORDER_BOOK_EXCHANGE_FIELDS = {}));
+;
 export const FIELDS = Object.freeze({
     QOS,
     ACCT_ACTIVITY,
