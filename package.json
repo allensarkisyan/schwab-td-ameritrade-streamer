@@ -6,16 +6,34 @@
   "author": "Allen Sarkisyan",
   "main": "./dist/cjs/td-streamer.js",
   "module": "./dist/esm/td-streamer.js",
-  "types": "./dist/tdameritradestreamer.d.ts",
+  "types": "./dist/types/*",
   "exports": {
     ".": {
       "import": "./dist/esm/td-streamer.js",
-      "require": "./dist/cjs/td-streamer.js"
+      "require": "./dist/cjs/td-streamer.js",
+      "types": "./dist/types/td-streamer.d.ts"
+    },
+    "./td-streamer": {
+      "import": "./dist/esm/td-streamer.js",
+      "require": "./dist/cjs/td-streamer.js",
+      "types": "./dist/types/td-streamer.d.ts"
     },
     "./td-constants": {
       "import": "./dist/esm/td-constants.js",
-      "require": "./dist/cjs/td-constants.js"
-    }
+      "require": "./dist/cjs/td-constants.js",
+      "types": "./dist/types/td-constants.d.ts"
+    },
+    "./td-notifications": {
+      "import": "./dist/esm/td-notifications.js",
+      "require": "./dist/cjs/td-notifications.js",
+      "types": "./dist/types/td-notifications.d.ts"
+    },
+    "./td-stream-event-processor": {
+      "import": "./dist/esm/td-stream-event-processor.js",
+      "require": "./dist/cjs/td-stream-event-processor.js",
+      "types": "./dist/types/td-stream-event-processor.d.ts"
+    },
+    "./types/*": "./dist/types/*"
   },
   "scripts": {
     "build:rollup": "rollup --config",
