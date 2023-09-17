@@ -39,7 +39,7 @@ export type TDAmeritradeStreamerConnectionOptions = {
     key: string;
   }[];
   /** Realtime Quotes */
-  quotes: Record<string, any>;
+  quotes: Record<string, boolean>;
 };
 
 /**

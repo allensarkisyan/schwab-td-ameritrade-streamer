@@ -7,13 +7,7 @@ import { EventEmitter } from 'eventemitter3';
 import ws from 'isomorphic-ws';
 import { STATE, EVENT, COMMANDS, SERVICES } from './td-constants.js';
 import { TDAmeritradeStreamEventProcessor } from './td-stream-event-processor.js';
-const randomID = () => Math.floor(Math.random() * 2000000000);
-const jsonToQueryString = (json) =>
-  Object.keys(json)
-    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(json[key])}`)
-    .join('&');
-const getKeys = (symbol) =>
-  Array.isArray(symbol) ? symbol.join(', ') : symbol;
+import { randomID, jsonToQueryString, getKeys } from './utils.js';
 /**
  * TD Ameritrade Stream Connection Options
  * @typedef {Object} TDAmeritradeStreamerConnectionOptions
@@ -90,22 +84,34 @@ export class TDAmeritradeStreamer {
     this.#connect();
   }
   #connect() {
-    this.#socket = new ws(
-      `wss://${this.#streamerConnectionOptions?.streamerSocketUrl}/ws`,
-    );
-    if (!this.#socket) {
-      throw new Error('TDAmeritradeStreamer WebSocket Connection Failed.');
+    if (!this.#streamerConnectionOptions?.streamerSocketUrl) {
+      throw new Error('Missing Streamer Socket URL.');
     }
-    this.#socket.onopen = () => this.#emitter.emit(STATE.CONNECTED);
-    this.#socket.onclose = () => this.#emitter.emit(STATE.DISCONNECTING);
-    this.#socket.onmessage = (evt) => {
-      try {
-        const data = JSON.parse(evt.data);
-        this.#emitter.emit(EVENT.MESSAGE, data);
-      } catch (e) {
-        console.log('TDAmeritradeStreamer error', e);
+    try {
+      let connectionEndpoint =
+        this.#streamerConnectionOptions?.streamerSocketUrl;
+      if (!/^(ws|wss)\:\/\//.test(connectionEndpoint)) {
+        connectionEndpoint = `wss://${connectionEndpoint}/ws`;
       }
-    };
+      this.#socket = new ws(connectionEndpoint);
+      if (!this.#socket) {
+        throw new Error('TDAmeritradeStreamer WebSocket Connection Failed.');
+      }
+      this.#socket.onopen = () => this.#emitter.emit(STATE.CONNECTED);
+      this.#socket.onclose = () => this.#emitter.emit(STATE.DISCONNECTING);
+      this.#socket.onmessage = (evt) => {
+        try {
+          const data = JSON.parse(evt.data);
+          this.#emitter.emit(EVENT.MESSAGE, data);
+        } catch (e) {
+          console.log('TDAmeritradeStreamer error', e?.message);
+        }
+      };
+    } catch (e) {
+      throw new Error(
+        e?.message || 'TDAmeritradeStreamer WebSocket Connection Failed.',
+      );
+    }
   }
   /**
    * Send requests to TD Ameritrades WebSocket server
@@ -121,13 +127,10 @@ export class TDAmeritradeStreamer {
       }));
       this.#socket?.send(JSON.stringify({ requests }));
     } catch (e) {
-      console.log('TDAmeritradeStreamer sendRequest error', e);
+      console.log('TDAmeritradeStreamer sendRequest error', e?.message);
     }
   }
   #login() {
-    if (!this.#streamerConnectionOptions) {
-      return;
-    }
     const credential = jsonToQueryString({
       userid: this.#streamerConnectionOptions?.accountId,
       token: this.#streamerConnectionOptions?.token,
@@ -421,4 +424,22 @@ export class TDAmeritradeStreamer {
       },
     ]);
   }
+}
+/**
+ * Creates a new instance of TD Ameritrade Streamer
+ * @param {TDAmeritradeStreamerConnectionOptions} streamerConnectionOptions - API Client Configuration
+ * @param {Function} handleLevelOneFeedUpdate - Level one feed callback
+ * @param {Function} handleLevelOneTimeSaleUpdate - Level one time & sales callback
+ * @returns {TDAmeritradeStreamer}
+ */
+export function createTDAmeritradeStreamer(
+  streamerConnectionOptions,
+  handleLevelOneFeedUpdate = (data) => {},
+  handleLevelOneTimeSaleUpdate = (data) => {},
+) {
+  return new TDAmeritradeStreamer(
+    streamerConnectionOptions,
+    handleLevelOneFeedUpdate,
+    handleLevelOneTimeSaleUpdate,
+  );
 }

@@ -99,7 +99,7 @@ export const parseOrderFillMessage = (msg: TDAmeritradeActivityMessage) => {
   try {
     const { xmlData, response } = parseMessage(msg);
 
-    if (!xmlData) { return; }
+    if (!xmlData) { return null; }
 
     const execution = xmlData.find(i => i.name === 'ExecutionInformation')?.elements;
     const contraInformation = xmlData.find(i => i.name === 'ContraInformation')?.elements[0]?.elements;
@@ -132,6 +132,8 @@ export const parseOrderFillMessage = (msg: TDAmeritradeActivityMessage) => {
 export const parseCancelMessage = (msg: TDAmeritradeActivityMessage) => {
   try {
     const { xmlData, response } = parseMessage(msg);
+
+    if (!xmlData) { return null; }
 
     const cancelledQuantity = getElementText(xmlData, 'CancelledQuantity');
     const orderDestination = getElementText(xmlData, 'OrderDestination');

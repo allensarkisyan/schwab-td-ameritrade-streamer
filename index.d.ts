@@ -371,7 +371,7 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer/@types' {
       key: string;
     }[];
     /** Realtime Quotes */
-    quotes: Record<string, any>;
+    quotes: Record<string, boolean>;
   };
   /**
    * TD Ameritrade Stream Command
@@ -451,6 +451,33 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-notifications' 
   export const parseOrderFillMessage: (msg: TDAmeritradeActivityMessage) => any;
   export const parseCancelMessage: (msg: TDAmeritradeActivityMessage) => any;
 }
+declare module '@allensarkisyan/schwab-td-ameritrade-streamer/utils' {
+  import type { TDAmeritradeStreamDataResponse } from '@allensarkisyan/schwab-td-ameritrade-streamer/@types';
+  export const randomID: () => number;
+  export const jsonToQueryString: <TObj extends object>(json: TObj) => string;
+  export const getKeys: (symbol: string | string[]) => string;
+  export const chunk: (arr?: any[], size?: number) => any[][];
+  export const transformMessageData: (
+    data: any[],
+    fieldKeys: string[],
+    fieldValues: any[],
+  ) => any[];
+  export const transformData: (
+    data: TDAmeritradeStreamDataResponse,
+    fields: Readonly<object>,
+  ) => any[];
+  export const parseActivesMessage: (msg: TDAmeritradeStreamDataResponse) => {
+    symbol: any;
+    volume: any;
+    percentChange: any;
+  }[];
+  export const parseListedBook: (data: any) =>
+    | {
+        bids: any[];
+        asks: any[];
+      }[]
+    | null;
+}
 declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-processor' {
   /**
    * @author Allen Sarkisyan
@@ -459,7 +486,6 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-pr
    */
   import { EventEmitter } from 'eventemitter3';
   import type {
-    TDAmeritradeStreamServiceResponse,
     TDAmeritradeStreamDataResponse,
     TDAmeritradeStreamEventProcessorEventMessage,
   } from '@allensarkisyan/schwab-td-ameritrade-streamer/@types';
@@ -512,7 +538,11 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-pr
      * @param {TDAmeritradeStreamDataResponse[]} TDAmeritradeStreamResponse.data - Response Data
      * @param {TDAmeritradeStreamDataResponse} TDAmeritradeStreamResponse.snapshot - Response Data Snapshot
      */
-    handleMessage({ response, data, snapshot }: TDAmeritradeStreamEventProcessorEventMessage): void;
+    handleMessage({
+      response,
+      data,
+      snapshot,
+    }: TDAmeritradeStreamEventProcessorEventMessage): void;
     /**
      *
      * @param {string} evt - Event Name
@@ -541,7 +571,6 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-pr
 declare module '@allensarkisyan/schwab-td-ameritrade-streamer' {
   import type {
     TDAmeritradeStreamerConnectionOptions,
-    TDAmeritradeStreamerCommand,
     TickerSymbolKeys,
   } from '@allensarkisyan/schwab-td-ameritrade-streamer/@types';
   /**
@@ -661,4 +690,16 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer' {
      */
     subscribeOptionsBook(symbol: TickerSymbolKeys): void;
   }
+  /**
+   * Creates a new instance of TD Ameritrade Streamer
+   * @param {TDAmeritradeStreamerConnectionOptions} streamerConnectionOptions - API Client Configuration
+   * @param {Function} handleLevelOneFeedUpdate - Level one feed callback
+   * @param {Function} handleLevelOneTimeSaleUpdate - Level one time & sales callback
+   * @returns {TDAmeritradeStreamer}
+   */
+  export function createTDAmeritradeStreamer(
+    streamerConnectionOptions: TDAmeritradeStreamerConnectionOptions,
+    handleLevelOneFeedUpdate?: Function,
+    handleLevelOneTimeSaleUpdate?: Function,
+  ): TDAmeritradeStreamer;
 }

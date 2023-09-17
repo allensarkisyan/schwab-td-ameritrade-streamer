@@ -6,37 +6,19 @@
   "author": "Allen Sarkisyan",
   "main": "./dist/cjs/td-streamer.js",
   "module": "./dist/esm/td-streamer.js",
-  "types": "./dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "require": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/cjs/td-streamer.js"
-      },
-      "import": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/esm/td-streamer.js"
-      },
-      "default": "./dist/esm/td-streamer.js"
-    },
-    "./td-constants": {
-      "require": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/cjs/td-constants.js"
-      },
-      "import": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/esm/td-constants.js"
-      },
-      "default": "./dist/esm/td-constants.js"
-    }
+  "types": "./index.d.ts",
+  "license": "MIT",
+  "homepage": "https://github.com/allensarkisyan/schwab-td-ameritrade-streamer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/allensarkisyan/schwab-td-ameritrade-streamer.git"
   },
   "scripts": {
-    "build:rollup": "rollup --config",
     "build:types": "tsc --declaration --project tsconfig.types.json",
-    "build:esm": "tsc --project tsconfig.esm.json",
-    "build:cjs": "tsc --project tsconfig.cjs.json",
-    "build": "npm run build:types && npm run build:esm && npm run build:cjs && cd dist && prettier . --write"
+    "build:esm": "tsc --project tsconfig.json --module esnext --outDir ./dist/esm",
+    "build:cjs": "tsc --project tsconfig.json --module commonjs --outDir ./dist/cjs",
+    "build": "npm run build:types && npm run build:esm && npm run build:cjs && prettier ./index.d.ts --write && cd dist && prettier . --write",
+    "test": "jest --verbose --coverage"
   },
   "dependencies": {
     "eventemitter3": "5.0.1",
@@ -45,12 +27,11 @@
     "xml-js": "1.6.11"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "25.0.4",
-    "@rollup/plugin-node-resolve": "15.2.1",
     "@types/node": "20.6.0",
+    "jest": "29.7.0",
     "prettier": "3.0.3",
-    "rollup": "3.29.0",
-    "typescript": "5.2.2"
+    "typescript": "5.2.2",
+    "uWebSockets.js": "uNetworking/uWebSockets.js#v20.31.0"
   },
   "prettier": {
     "semi": true,
@@ -59,5 +40,32 @@
     "printWidth": 80,
     "tabWidth": 2,
     "arrowParens": "always"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./index.d.ts",
+        "default": "./dist/cjs/td-streamer.js"
+      },
+      "import": {
+        "types": "./index.d.ts",
+        "default": "./dist/esm/td-streamer.js"
+      },
+      "default": "./dist/esm/td-streamer.js"
+    },
+    "./td-constants": {
+      "require": {
+        "types": "./index.d.ts",
+        "default": "./dist/cjs/td-constants.js"
+      },
+      "import": {
+        "types": "./index.d.ts",
+        "default": "./dist/esm/td-constants.js"
+      },
+      "default": "./dist/esm/td-constants.js"
+    }
   }
 }

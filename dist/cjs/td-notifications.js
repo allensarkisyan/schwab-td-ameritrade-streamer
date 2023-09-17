@@ -95,7 +95,7 @@ const parseOrderFillMessage = (msg) => {
   try {
     const { xmlData, response } = parseMessage(msg);
     if (!xmlData) {
-      return;
+      return null;
     }
     const execution = xmlData.find(
       (i) => i.name === 'ExecutionInformation',
@@ -128,6 +128,9 @@ exports.parseOrderFillMessage = parseOrderFillMessage;
 const parseCancelMessage = (msg) => {
   try {
     const { xmlData, response } = parseMessage(msg);
+    if (!xmlData) {
+      return null;
+    }
     const cancelledQuantity = getElementText(xmlData, 'CancelledQuantity');
     const orderDestination = getElementText(xmlData, 'OrderDestination');
     return {

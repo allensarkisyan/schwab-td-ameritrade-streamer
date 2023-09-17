@@ -10,18 +10,12 @@ var __importDefault =
     return mod && mod.__esModule ? mod : { default: mod };
   };
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.TDAmeritradeStreamer = void 0;
+exports.createTDAmeritradeStreamer = exports.TDAmeritradeStreamer = void 0;
 const eventemitter3_1 = require('eventemitter3');
 const isomorphic_ws_1 = __importDefault(require('isomorphic-ws'));
 const td_constants_js_1 = require('./td-constants.js');
 const td_stream_event_processor_js_1 = require('./td-stream-event-processor.js');
-const randomID = () => Math.floor(Math.random() * 2000000000);
-const jsonToQueryString = (json) =>
-  Object.keys(json)
-    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(json[key])}`)
-    .join('&');
-const getKeys = (symbol) =>
-  Array.isArray(symbol) ? symbol.join(', ') : symbol;
+const utils_js_1 = require('./utils.js');
 /**
  * TD Ameritrade Stream Connection Options
  * @typedef {Object} TDAmeritradeStreamerConnectionOptions
@@ -101,24 +95,36 @@ class TDAmeritradeStreamer {
     this.#connect();
   }
   #connect() {
-    this.#socket = new isomorphic_ws_1.default(
-      `wss://${this.#streamerConnectionOptions?.streamerSocketUrl}/ws`,
-    );
-    if (!this.#socket) {
-      throw new Error('TDAmeritradeStreamer WebSocket Connection Failed.');
+    if (!this.#streamerConnectionOptions?.streamerSocketUrl) {
+      throw new Error('Missing Streamer Socket URL.');
     }
-    this.#socket.onopen = () =>
-      this.#emitter.emit(td_constants_js_1.STATE.CONNECTED);
-    this.#socket.onclose = () =>
-      this.#emitter.emit(td_constants_js_1.STATE.DISCONNECTING);
-    this.#socket.onmessage = (evt) => {
-      try {
-        const data = JSON.parse(evt.data);
-        this.#emitter.emit(td_constants_js_1.EVENT.MESSAGE, data);
-      } catch (e) {
-        console.log('TDAmeritradeStreamer error', e);
+    try {
+      let connectionEndpoint =
+        this.#streamerConnectionOptions?.streamerSocketUrl;
+      if (!/^(ws|wss)\:\/\//.test(connectionEndpoint)) {
+        connectionEndpoint = `wss://${connectionEndpoint}/ws`;
       }
-    };
+      this.#socket = new isomorphic_ws_1.default(connectionEndpoint);
+      if (!this.#socket) {
+        throw new Error('TDAmeritradeStreamer WebSocket Connection Failed.');
+      }
+      this.#socket.onopen = () =>
+        this.#emitter.emit(td_constants_js_1.STATE.CONNECTED);
+      this.#socket.onclose = () =>
+        this.#emitter.emit(td_constants_js_1.STATE.DISCONNECTING);
+      this.#socket.onmessage = (evt) => {
+        try {
+          const data = JSON.parse(evt.data);
+          this.#emitter.emit(td_constants_js_1.EVENT.MESSAGE, data);
+        } catch (e) {
+          console.log('TDAmeritradeStreamer error', e?.message);
+        }
+      };
+    } catch (e) {
+      throw new Error(
+        e?.message || 'TDAmeritradeStreamer WebSocket Connection Failed.',
+      );
+    }
   }
   /**
    * Send requests to TD Ameritrades WebSocket server
@@ -128,20 +134,17 @@ class TDAmeritradeStreamer {
     try {
       const requests = commands?.map((cmd) => ({
         ...cmd,
-        requestid: randomID(),
+        requestid: (0, utils_js_1.randomID)(),
         account: this.#streamerConnectionOptions?.accountId,
         source: this.#streamerConnectionOptions?.appId,
       }));
       this.#socket?.send(JSON.stringify({ requests }));
     } catch (e) {
-      console.log('TDAmeritradeStreamer sendRequest error', e);
+      console.log('TDAmeritradeStreamer sendRequest error', e?.message);
     }
   }
   #login() {
-    if (!this.#streamerConnectionOptions) {
-      return;
-    }
-    const credential = jsonToQueryString({
+    const credential = (0, utils_js_1.jsonToQueryString)({
       userid: this.#streamerConnectionOptions?.accountId,
       token: this.#streamerConnectionOptions?.token,
       company: this.#streamerConnectionOptions?.company,
@@ -207,7 +210,7 @@ class TDAmeritradeStreamer {
    * @param {TickerSymbolKeys} symbol
    */
   getChartHistoryAndSubscribeQuotes(symbol) {
-    const keys = getKeys(symbol);
+    const keys = (0, utils_js_1.getKeys)(symbol);
     this.subscribeQuotes(keys);
     this.subscribeCharts(keys);
   }
@@ -216,7 +219,7 @@ class TDAmeritradeStreamer {
    * @param {TickerSymbolKeys} symbol
    */
   subscribeQuotes(symbol) {
-    const keys = getKeys(symbol);
+    const keys = (0, utils_js_1.getKeys)(symbol);
     const fields =
       '0,1,2,3,4,5,8,9,10,11,12,13,15,17,18,24,28,29,30,31,48,49,50,51';
     this.#sendRequest([
@@ -232,7 +235,7 @@ class TDAmeritradeStreamer {
    * @param {TickerSymbolKeys} symbol
    */
   subscribeCharts(symbol) {
-    const keys = getKeys(symbol);
+    const keys = (0, utils_js_1.getKeys)(symbol);
     const fields = '0,1,2,3,4,5,6,7,8';
     this.#sendRequest([
       {
@@ -247,7 +250,7 @@ class TDAmeritradeStreamer {
    * @param {TickerSymbolKeys} symbol
    */
   subscribeOptions(symbol) {
-    const keys = getKeys(symbol);
+    const keys = (0, utils_js_1.getKeys)(symbol);
     const fields =
       '0,1,2,3,4,5,6,7,8,9,10,11,12,13,19,20,21,22,23,24,25,26,27,29,30,31,32,33,34,35,36,37,38,39,40,41';
     this.#sendRequest([
@@ -263,7 +266,7 @@ class TDAmeritradeStreamer {
    * @param {TickerSymbolKeys} symbol
    */
   subscribeTimeAndSales(symbol) {
-    const keys = getKeys(symbol);
+    const keys = (0, utils_js_1.getKeys)(symbol);
     const fields = '0,1,2,3,4';
     this.#sendRequest([
       {
@@ -283,7 +286,7 @@ class TDAmeritradeStreamer {
    * @param {TickerSymbolKeys} symbol
    */
   subscribeFutures(symbol = '/ES') {
-    const keys = getKeys(symbol);
+    const keys = (0, utils_js_1.getKeys)(symbol);
     const fields = '0,1,2,3,4,5,8,9,10,11,12,13,14,18,23';
     this.#sendRequest([
       {
@@ -313,7 +316,7 @@ class TDAmeritradeStreamer {
    * @param {TickerSymbolKeys} symbol
    */
   subscribeTimeSalesFutures(symbol = '/ES') {
-    const keys = getKeys(symbol);
+    const keys = (0, utils_js_1.getKeys)(symbol);
     this.#sendRequest([
       {
         service: td_constants_js_1.SERVICES.TIMESALE_FUTURES,
@@ -328,7 +331,7 @@ class TDAmeritradeStreamer {
    * @param {TickerSymbolKeys} symbol
    */
   subscribeFuturesOptions(symbol) {
-    const keys = getKeys(symbol);
+    const keys = (0, utils_js_1.getKeys)(symbol);
     const fields = '0,1,2,3,4,5,8,9,10,11,12,13,14,18,23';
     this.#sendRequest([
       {
@@ -365,7 +368,7 @@ class TDAmeritradeStreamer {
    * @param {TickerSymbolKeys} symbol
    */
   subscribeNewsHeadlines(symbol = '*ALL*') {
-    const keys = getKeys(symbol);
+    const keys = (0, utils_js_1.getKeys)(symbol);
     this.#sendRequest([
       {
         service: td_constants_js_1.SERVICES.NEWS_HEADLINE,
@@ -394,7 +397,7 @@ class TDAmeritradeStreamer {
    * @param {TickerSymbolKeys} symbol
    */
   subscribeListedBook(symbol) {
-    const keys = getKeys(symbol);
+    const keys = (0, utils_js_1.getKeys)(symbol);
     const fields = '0,1,2,3';
     this.#sendRequest([
       {
@@ -409,7 +412,7 @@ class TDAmeritradeStreamer {
    * @param {TickerSymbolKeys} symbol
    */
   subscribeNasdaqBook(symbol) {
-    const keys = getKeys(symbol);
+    const keys = (0, utils_js_1.getKeys)(symbol);
     const fields = '0,1,2,3';
     this.#sendRequest([
       {
@@ -424,7 +427,7 @@ class TDAmeritradeStreamer {
    * @param {TickerSymbolKeys} symbol
    */
   subscribeOptionsBook(symbol) {
-    const keys = getKeys(symbol);
+    const keys = (0, utils_js_1.getKeys)(symbol);
     const fields = '0,1,2,3';
     this.#sendRequest([
       {
@@ -436,3 +439,22 @@ class TDAmeritradeStreamer {
   }
 }
 exports.TDAmeritradeStreamer = TDAmeritradeStreamer;
+/**
+ * Creates a new instance of TD Ameritrade Streamer
+ * @param {TDAmeritradeStreamerConnectionOptions} streamerConnectionOptions - API Client Configuration
+ * @param {Function} handleLevelOneFeedUpdate - Level one feed callback
+ * @param {Function} handleLevelOneTimeSaleUpdate - Level one time & sales callback
+ * @returns {TDAmeritradeStreamer}
+ */
+function createTDAmeritradeStreamer(
+  streamerConnectionOptions,
+  handleLevelOneFeedUpdate = (data) => {},
+  handleLevelOneTimeSaleUpdate = (data) => {},
+) {
+  return new TDAmeritradeStreamer(
+    streamerConnectionOptions,
+    handleLevelOneFeedUpdate,
+    handleLevelOneTimeSaleUpdate,
+  );
+}
+exports.createTDAmeritradeStreamer = createTDAmeritradeStreamer;
