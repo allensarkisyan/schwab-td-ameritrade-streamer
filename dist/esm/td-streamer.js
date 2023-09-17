@@ -8,37 +8,6 @@ import ws from 'isomorphic-ws';
 import { STATE, EVENT, COMMANDS, SERVICES } from './td-constants.js';
 import { TDAmeritradeStreamEventProcessor } from './td-stream-event-processor.js';
 import { randomID, jsonToQueryString, getKeys } from './utils.js';
-/**
- * TD Ameritrade Stream Connection Options
- * @typedef {Object} TDAmeritradeStreamerConnectionOptions
- * @property {string} primaryAccountId - Primary Account ID
- * @property {string} accountId - Account ID to connect
- * @property {string} token - Token from streamerInfo
- * @property {string} accountCdDomainId - Account CD Domain ID from accounts
- * @property {string} streamerSocketUrl - Streamer Socket URL
- * @property {Date} tokenTimestamp - Token Timestamp
- * @property {Date} tokenExpirationTime - Token Expiration Time
- * @property {string} appId - App ID
- * @property {string} acl - ACL from streamerInfo
- * @property {string} userGroup - User Group
- * @property {string} accessLevel - Access Level
- * @property {string} company - Company Name
- * @property {string} segment - Segment
- * @property {Object[]} streamerSubscriptionKeys - Streamer Subscription Keys
- * @property {string} streamerSubscriptionKeys[].key - Subscription Key
- * @property {object} quotes - Realtime Quotes
- */
-/**
- * @typedef {Object} TDAmeritradeStreamerCommand
- * @property {string} service - Service Name
- * @property {string} command - Command Name
- * @property {Object} parameters - Service Command Parameters
- */
-/**
- * Single Symbol, Comma Seperated Symbols or Array of Symbols ("SPY" | "SPY, QQQ" | ["SPY", "QQQ"])
- * @typedef {(string|string[])} TickerSymbolKeys
- */
-/** @typedef {(string|string[])} FuturesSymbol */
 export class TDAmeritradeStreamer {
   /** @type {WebSocket} */
   #socket;

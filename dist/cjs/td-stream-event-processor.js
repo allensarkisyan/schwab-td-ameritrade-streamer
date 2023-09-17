@@ -9,31 +9,6 @@ exports.TDAmeritradeStreamEventProcessor = void 0;
 const td_constants_js_1 = require('./td-constants.js');
 const td_notifications_js_1 = require('./td-notifications.js');
 const utils_js_1 = require('./utils.js');
-/**
- * TD Ameritrade Stream Response
- * @typedef {Object} TDAmeritradeStreamServiceResponse
- * @property {string} service - Service Name.
- * @property {string} requestid - Request ID.
- * @property {string} command - Command.
- * @property {Date} timestamp - Timestamp.
- * @property {Object} content - Stream Response Content.
- * @property {number} content.code - Response Code.
- * @property {string} content.msg - Response Message.
- */
-/**
- * TD Ameritrade Data Response
- * @typedef {Object} TDAmeritradeStreamDataResponse
- * @property {string} service - Service Name.
- * @property {Date} timestamp - Timestamp.
- * @property {string} command - Command.
- * @property {Array<Object>|Object} content - Stream Response Content.
- * @property {Array<Object>|Object} snapshot? - Snapshot Data.
- */
-/**
- * TD Ameritrade Stream Notify Response
- * @typedef {Object} TDAmeritradeStreamNotifyResponse
- * @property {Date} heartbeat - Heartbeat.
- */
 class TDAmeritradeStreamEventProcessor {
   /** @type {EventEmitter} */
   emitter;

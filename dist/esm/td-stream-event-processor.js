@@ -15,31 +15,6 @@ import {
   parseActivesMessage,
   parseListedBook,
 } from './utils.js';
-/**
- * TD Ameritrade Stream Response
- * @typedef {Object} TDAmeritradeStreamServiceResponse
- * @property {string} service - Service Name.
- * @property {string} requestid - Request ID.
- * @property {string} command - Command.
- * @property {Date} timestamp - Timestamp.
- * @property {Object} content - Stream Response Content.
- * @property {number} content.code - Response Code.
- * @property {string} content.msg - Response Message.
- */
-/**
- * TD Ameritrade Data Response
- * @typedef {Object} TDAmeritradeStreamDataResponse
- * @property {string} service - Service Name.
- * @property {Date} timestamp - Timestamp.
- * @property {string} command - Command.
- * @property {Array<Object>|Object} content - Stream Response Content.
- * @property {Array<Object>|Object} snapshot? - Snapshot Data.
- */
-/**
- * TD Ameritrade Stream Notify Response
- * @typedef {Object} TDAmeritradeStreamNotifyResponse
- * @property {Date} heartbeat - Heartbeat.
- */
 export class TDAmeritradeStreamEventProcessor {
   /** @type {EventEmitter} */
   emitter;

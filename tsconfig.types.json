@@ -1,12 +1,12 @@
 {
   "extends": "./tsconfig.json",
+  "exclude": ["node_modules", "src/@types/jsdoc.js"],
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "declaration": true,
     "declarationMap": false,
     "emitDeclarationOnly": true,
-    // "outDir": "./dist/types"
-    "outFile": "./dist/types/index.d.ts"
+    "outFile": "./index.d.ts"
   }
 }
