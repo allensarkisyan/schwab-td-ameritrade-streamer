@@ -12,13 +12,12 @@ import type {
 
 const getElementText = (elements: any[] | null, key: string, field: string = 'text') => {
   try {
-    if (!elements || !elements?.length) { return null; }
+    if (!elements?.length) { return null; }
 
     const text = elements?.find(({ name }) => (name === key))?.elements[0][field];
 
     return text;
   } catch (e) {
-    console.log(e);
     return null;
   }
 }
@@ -59,7 +58,6 @@ const parseOrderData = (data: any[] = []) => {
       // openClose,
     };
   } catch (e) {
-    console.log(e);
     return null; 
   }
 }
@@ -80,8 +78,8 @@ const parseMessage = ({ timestamp, type, data }) : { xmlData: null|any[], respon
         ...orderData
       }
     };
-  } catch (e) {
-    console.log('parseMessage Error', e)
+  } catch (e: any) {
+    console.log('parseMessage Error', e?.message);
     return { xmlData: null, response: null };
   }
 };
@@ -124,7 +122,6 @@ export const parseOrderFillMessage = (msg: TDAmeritradeActivityMessage) => {
   
     return parsedResponse; 
   } catch (e) {
-    console.log(e);
     return null;
   }
 };
@@ -144,7 +141,6 @@ export const parseCancelMessage = (msg: TDAmeritradeActivityMessage) => {
       orderDestination
     }; 
   } catch (e) {
-    console.log(e);
     return null;
   }
 };

@@ -1,3 +1,8 @@
+---
+slug: /
+---
+# README
+
 # JavaScript / TypeScript TD Ameritrade Streamer - WebSocket client
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)

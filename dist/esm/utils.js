@@ -67,27 +67,27 @@ export const parseActivesMessage = (msg) => {
 export const parseListedBook = (data) => {
   try {
     const book = transformData(data, FIELDS.LISTED_BOOK);
-    for (let i = 0; i < book.length; i++) {
-      book[i].bids = transformMessageData(
-        book[i].bids,
+    for (const priceLevel of book) {
+      priceLevel.bids = transformMessageData(
+        priceLevel.bids,
         BID_FIELD_KEYS,
         BID_FIELD_VALUES,
       );
-      book[i].asks = transformMessageData(
-        book[i].asks,
+      priceLevel.asks = transformMessageData(
+        priceLevel.asks,
         ASK_FIELD_KEYS,
         ASK_FIELD_VALUES,
       );
-      for (let x = 0; x < book[i].bids.length; x++) {
-        book[i].bids[x].bids = transformMessageData(
-          book[i].bids[x].bids,
+      for (const bid of priceLevel.bids) {
+        bid.bids = transformMessageData(
+          bid.bids,
           ORDER_BOOK_EXCHANGE_KEYS,
           ORDER_BOOK_EXCHANGE_VALUES,
         );
       }
-      for (let x = 0; x < book[i].asks.length; x++) {
-        book[i].asks[x].asks = transformMessageData(
-          book[i].asks[x].asks,
+      for (const ask of priceLevel.asks) {
+        ask.asks = transformMessageData(
+          ask.asks,
           ORDER_BOOK_EXCHANGE_KEYS,
           ORDER_BOOK_EXCHANGE_VALUES,
         );

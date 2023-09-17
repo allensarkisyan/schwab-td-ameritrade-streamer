@@ -489,6 +489,12 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-pr
     TDAmeritradeStreamDataResponse,
     TDAmeritradeStreamEventProcessorEventMessage,
   } from '@allensarkisyan/schwab-td-ameritrade-streamer/@types';
+  /**
+   * Represents the TDAmeritradeStreamEventProcessor class for processing stream messages / events.
+   *
+   * @module TDAmeritradeStreamEventProcessor
+   * @class
+   */
   export class TDAmeritradeStreamEventProcessor {
     /** @type {EventEmitter} */
     emitter: EventEmitter;
@@ -496,10 +502,11 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-pr
     handleLevelOneTimeSaleUpdate: Function;
     /**
      * TDAmeritradeStreamEventProcessor - Handle's stream response
+     *
      * @constructor
-     * @param {EventEmitter} emitter
-     * @param {Function} handleLevelOneFeedUpdate
-     * @param {Function} handleLevelOneTimeSaleUpdate
+     * @param {EventEmitter} emitter - an instance of EventEmitter
+     * @param {Function} [handleLevelOneFeedUpdate] - Custom L1 feed data callback
+     * @param {Function} [handleLevelOneTimeSaleUpdate] - Custom L1 time & sales feed data callback
      */
     constructor(
       emitter: EventEmitter,
@@ -512,6 +519,9 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-pr
      * @param {TDAmeritradeStreamServiceResponse} TDAmeritradeStreamResponse.response - Response
      * @param {TDAmeritradeStreamDataResponse[]} TDAmeritradeStreamResponse.data - Response Data
      * @param {TDAmeritradeStreamDataResponse} TDAmeritradeStreamResponse.snapshot - Response Data Snapshot
+     * @fires TDAmeritradeStreamer#AUTHORIZED
+     * @fires TDAmeritradeStreamer#CHART_SNAPSHOT
+     * @fires TDAmeritradeStreamer#CHART_UPDATE
      */
     handleMessage({
       response,
@@ -519,6 +529,7 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-pr
       snapshot,
     }: TDAmeritradeStreamEventProcessorEventMessage): void;
     /**
+     * Emits Events
      *
      * @param {string} evt - Event Name
      * @param {(Object|Array|string|number|boolean)} [data] - Event Data
@@ -527,19 +538,86 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-pr
       evt: string,
       data?: object | symbol | string | number | boolean | null,
     ): void;
+    /**
+     * Handles Account Activity
+     *
+     * @param {TDAmeritradeStreamDataResponse} msg - Stream Data Response
+     * @fires TDAmeritradeStreamer#ACCT_ACTIVITY
+     */
     handleAccountActivity(msg: TDAmeritradeStreamDataResponse): void;
+    /**
+     * Handles Quotes
+     *
+     * @param {TDAmeritradeStreamDataResponse} msg - Stream Data Response
+     * @fires TDAmeritradeStreamer#QUOTE
+     */
     handleQuotes(msg: TDAmeritradeStreamDataResponse): void;
+    /**
+     * Handles Time & Sales
+     *
+     * @param {TDAmeritradeStreamDataResponse} msg - Stream Data Response
+     * @fires TDAmeritradeStreamer#TIMESALE_EQUITY_UPDATE
+     */
     handleTimeSales(msg: TDAmeritradeStreamDataResponse): void;
+    /**
+     * Handles Options
+     *
+     * @param {TDAmeritradeStreamDataResponse} msg - Stream Data Response
+     * @fires TDAmeritradeStreamer#OPTION
+     */
     handleOptions(msg: TDAmeritradeStreamDataResponse): void;
+    /**
+     * Handles Futures Level One / Time & Sales
+     *
+     * @param {TDAmeritradeStreamDataResponse} msg - Stream Data Response
+     * @fires TDAmeritradeStreamer#TIMESALE_FUTURES_UPDATE
+     * @fires TDAmeritradeStreamer#LEVELONE_FUTURES_UPDATE
+     */
     handleLevelOneFutures(
       msg: TDAmeritradeStreamDataResponse,
       timeSales?: boolean,
     ): void;
+    /**
+     * Handle News Headlines
+     *
+     * @param {TDAmeritradeStreamDataResponse} msg
+     * @fires TDAmeritradeStreamer#NEWS_HEADLINE
+     */
     handleNews(msg: TDAmeritradeStreamDataResponse): void;
+    /**
+     * Handle Nasdaq Active Equities
+     *
+     * @param {TDAmeritradeStreamDataResponse} msg
+     * @fires TDAmeritradeStreamer#ACTIVES_NASDAQ
+     */
     handleActivesNasdaq(msg: TDAmeritradeStreamDataResponse): void;
+    /**
+     * Handle NYSE Active Equities
+     *
+     * @param {TDAmeritradeStreamDataResponse} msg
+     * @fires TDAmeritradeStreamer#ACTIVES_NYSE
+     */
     handleActivesNYSE(msg: TDAmeritradeStreamDataResponse): void;
+    /**
+     * Handle Nasdaq Order Book
+     *
+     * @param {TDAmeritradeStreamDataResponse} msg
+     * @fires TDAmeritradeStreamer#LISTED_BOOK
+     */
     handleListedBook(msg: TDAmeritradeStreamDataResponse): void;
+    /**
+     * Handle Nasdaq Order Book
+     *
+     * @param {TDAmeritradeStreamDataResponse} msg
+     * @fires TDAmeritradeStreamer#NASDAQ_BOOK
+     */
     handleNasdaqBook(msg: TDAmeritradeStreamDataResponse): void;
+    /**
+     * Handle Active Options
+     *
+     * @param {TDAmeritradeStreamDataResponse} msg
+     * @fires TDAmeritradeStreamer#ACTIVES_OPTIONS
+     */
     handleActiveOptions(msg: TDAmeritradeStreamDataResponse): void;
   }
 }
@@ -548,20 +626,40 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer' {
     TDAmeritradeStreamerConnectionOptions,
     TickerSymbolKeys,
   } from '@allensarkisyan/schwab-td-ameritrade-streamer/@types';
+  /**
+   * Represents the TDAmeritradeStreamer class for handling streaming.
+   *
+   * @module TDAmeritradeStreamer
+   * @class
+   */
   export class TDAmeritradeStreamer {
     #private;
     /**
      * @constructor
-     * @param {TDAmeritradeStreamerConnectionOptions} streamerConnectionOptions
-     * @param {Function} handleLevelOneFeedUpdate
-     * @param {Function} handleLevelOneTimeSaleUpdate
+     * @param {TDAmeritradeStreamerConnectionOptions} streamerConnectionOptions - Streamer Connection Options
+     * @param {Function} [handleLevelOneFeedUpdate] - Custom L1 feed data callback
+     * @param {Function} [handleLevelOneTimeSaleUpdate] - Custom L1 time & sales feed data callback
      */
     constructor(
       streamerConnectionOptions: TDAmeritradeStreamerConnectionOptions,
       handleLevelOneFeedUpdate?: Function,
       handleLevelOneTimeSaleUpdate?: Function,
     );
+    /**
+     * EventEmitter on event handler
+     *
+     * @param {string} evt - Event Name
+     * @param {string} method - Method
+     * @param {*} context - Context
+     */
     on(evt: string, method: any, context?: any): void;
+    /**
+     * EventEmitter addListener handler
+     *
+     * @param {string} evt - Event Name
+     * @param {string} method - Method
+     * @param {*} context - Context
+     */
     add(evt: string, method: any, context?: any): void;
     /**
      * Subscribe to Account Activity Service
@@ -617,6 +715,18 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer' {
      * @param {TickerSymbolKeys} symbol
      */
     subscribeNewsHeadlines(symbol?: TickerSymbolKeys): void;
+    /**
+     * Set Quality of Service Level
+     *
+     * 0 = Express(500 ms)
+     * 1 = Real - Time(750 ms) default value for http binary protocol
+     * 2 = Fast(1, 000 ms) default value for websocket and http asynchronous protocol
+     * 3 = Moderate(1, 500 ms)
+     * 4 = Slow(3, 000 ms)
+     * 5 = Delayed(5, 000 ms)
+     *
+     * @param {number} qoslevel - Quality of Service level
+     */
     setQualityOfService(qoslevel?: number): void;
     /**
      * Subscribe to Listed Order Book Service

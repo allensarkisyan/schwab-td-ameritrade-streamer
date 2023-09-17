@@ -28,6 +28,12 @@ import {
   parseListedBook,
 } from './utils.js';
 
+/**
+ * Represents the TDAmeritradeStreamEventProcessor class for processing stream messages / events.
+ * 
+ * @module TDAmeritradeStreamEventProcessor
+ * @class
+ */
 export class TDAmeritradeStreamEventProcessor {
   /** @type {EventEmitter} */
   emitter: EventEmitter;
@@ -38,10 +44,11 @@ export class TDAmeritradeStreamEventProcessor {
 
   /**
    * TDAmeritradeStreamEventProcessor - Handle's stream response
+   * 
    * @constructor
-   * @param {EventEmitter} emitter 
-   * @param {Function} handleLevelOneFeedUpdate 
-   * @param {Function} handleLevelOneTimeSaleUpdate 
+   * @param {EventEmitter} emitter - an instance of EventEmitter
+   * @param {Function} [handleLevelOneFeedUpdate] - Custom L1 feed data callback
+   * @param {Function} [handleLevelOneTimeSaleUpdate] - Custom L1 time & sales feed data callback
    */
   constructor(
     emitter: EventEmitter,
@@ -59,6 +66,9 @@ export class TDAmeritradeStreamEventProcessor {
    * @param {TDAmeritradeStreamServiceResponse} TDAmeritradeStreamResponse.response - Response
    * @param {TDAmeritradeStreamDataResponse[]} TDAmeritradeStreamResponse.data - Response Data
    * @param {TDAmeritradeStreamDataResponse} TDAmeritradeStreamResponse.snapshot - Response Data Snapshot
+   * @fires TDAmeritradeStreamer#AUTHORIZED
+   * @fires TDAmeritradeStreamer#CHART_SNAPSHOT
+   * @fires TDAmeritradeStreamer#CHART_UPDATE
    */
   handleMessage({ response, data, snapshot } : TDAmeritradeStreamEventProcessorEventMessage) {
     try {
@@ -135,12 +145,13 @@ export class TDAmeritradeStreamEventProcessor {
           }
         });
       }
-    } catch (e) {
-      console.log('TDAmeriTradeStreamer handleMessage Error', e);
+    } catch (e: any) {
+      console.log('TDAmeritradeStreamer handleMessage Error', e?.message || 'AN UNKNOWN ERROR HAS OCCURRED.');
     }
   }
 
   /**
+   * Emits Events
    * 
    * @param {string} evt - Event Name
    * @param {(Object|Array|string|number|boolean)} [data] - Event Data
@@ -148,11 +159,17 @@ export class TDAmeritradeStreamEventProcessor {
   emitEvent(evt: string, data?: object|symbol|string|number|boolean|null) {
     try {
       this.emitter.emit(evt, data);
-    } catch (e) {
-      console.log('TDAmeriTradeStreamer emitEvent error', e);
+    } catch (e: any) {
+      console.log('TDAmeritradeStreamer emitEvent error', e?.message || 'AN UNKNOWN ERROR HAS OCCURRED.');
     }
   }
 
+  /**
+   * Handles Account Activity
+   * 
+   * @param {TDAmeritradeStreamDataResponse} msg - Stream Data Response
+   * @fires TDAmeritradeStreamer#ACCT_ACTIVITY
+   */
   handleAccountActivity(msg: TDAmeritradeStreamDataResponse) {
     try {
       const message = {
@@ -179,27 +196,53 @@ export class TDAmeritradeStreamEventProcessor {
       if (parsedMessage) {
         this.emitEvent('ACCT_ACTIVITY', parsedMessage);
       } 
-    } catch (e) {
-      console.log('TDAmeriTradeStreamer handleAccountActivity error', e);
+    } catch (e: any) {
+      console.log('TDAmeritradeStreamer handleAccountActivity error', e?.message || 'AN UNKNOWN ERROR HAS OCCURRED.');
     }
   }
 
+  /**
+   * Handles Quotes
+   * 
+   * @param {TDAmeritradeStreamDataResponse} msg - Stream Data Response
+   * @fires TDAmeritradeStreamer#QUOTE
+   */
   handleQuotes(msg: TDAmeritradeStreamDataResponse) {
     const data = transformData(msg, FIELDS.LEVEL_ONE_EQUITY);
     this.emitEvent('QUOTE', data);
   }
 
+  /**
+   * Handles Time & Sales
+   * 
+   * @param {TDAmeritradeStreamDataResponse} msg - Stream Data Response
+   * @fires TDAmeritradeStreamer#TIMESALE_EQUITY_UPDATE
+   */
   handleTimeSales(msg: TDAmeritradeStreamDataResponse) {
     const data = transformData(msg, FIELDS.TIMESALE);
     this.emitEvent('TIMESALE_EQUITY_UPDATE', data);
     this.handleLevelOneTimeSaleUpdate(data);
   }
 
+  /**
+   * Handles Options
+   * 
+   * @param {TDAmeritradeStreamDataResponse} msg - Stream Data Response
+   * @fires TDAmeritradeStreamer#OPTION
+   */
   handleOptions(msg: TDAmeritradeStreamDataResponse) {
     const data = transformData(msg, FIELDS.LEVEL_ONE_OPTION);
     this.emitEvent('OPTION', data);
   }
 
+
+  /**
+   * Handles Futures Level One / Time & Sales
+   * 
+   * @param {TDAmeritradeStreamDataResponse} msg - Stream Data Response
+   * @fires TDAmeritradeStreamer#TIMESALE_FUTURES_UPDATE
+   * @fires TDAmeritradeStreamer#LEVELONE_FUTURES_UPDATE
+   */
   handleLevelOneFutures(msg: TDAmeritradeStreamDataResponse, timeSales: boolean = false) {
     const data = transformData(msg, (timeSales ? FIELDS.TIMESALE : FIELDS.LEVEL_ONE_FUTURES));
 
@@ -212,31 +255,67 @@ export class TDAmeritradeStreamEventProcessor {
     }
   }
 
+  /**
+   * Handle News Headlines
+   * 
+   * @param {TDAmeritradeStreamDataResponse} msg 
+   * @fires TDAmeritradeStreamer#NEWS_HEADLINE
+   */
   handleNews(msg: TDAmeritradeStreamDataResponse) {
     const data = transformData(msg, FIELDS.NEWS_HEADLINE);
     this.emitEvent('NEWS_HEADLINE', data);
   }
 
+  /**
+   * Handle Nasdaq Active Equities
+   * 
+   * @param {TDAmeritradeStreamDataResponse} msg 
+   * @fires TDAmeritradeStreamer#ACTIVES_NASDAQ
+   */
   handleActivesNasdaq(msg: TDAmeritradeStreamDataResponse) {
     const data = parseActivesMessage(msg);
     this.emitEvent('ACTIVES_NASDAQ', data);
   }
 
+  /**
+   * Handle NYSE Active Equities
+   * 
+   * @param {TDAmeritradeStreamDataResponse} msg 
+   * @fires TDAmeritradeStreamer#ACTIVES_NYSE
+   */
   handleActivesNYSE(msg: TDAmeritradeStreamDataResponse) {
     const data = parseActivesMessage(msg);
     this.emitEvent('ACTIVES_NYSE', data);
   }
 
+  /**
+   * Handle Nasdaq Order Book
+   * 
+   * @param {TDAmeritradeStreamDataResponse} msg 
+   * @fires TDAmeritradeStreamer#LISTED_BOOK
+   */
   handleListedBook(msg: TDAmeritradeStreamDataResponse) {
     const data = parseListedBook(msg);
     this.emitEvent('LISTED_BOOK', data);
   }
 
+  /**
+   * Handle Nasdaq Order Book
+   * 
+   * @param {TDAmeritradeStreamDataResponse} msg 
+   * @fires TDAmeritradeStreamer#NASDAQ_BOOK
+   */
   handleNasdaqBook(msg: TDAmeritradeStreamDataResponse) {
     const data = parseListedBook(msg);
     this.emitEvent('NASDAQ_BOOK', data);
   }
 
+  /**
+   * Handle Active Options
+   * 
+   * @param {TDAmeritradeStreamDataResponse} msg 
+   * @fires TDAmeritradeStreamer#ACTIVES_OPTIONS
+   */
   handleActiveOptions(msg: TDAmeritradeStreamDataResponse) {
     try {
       const msgData = msg.content[0][1].split(';');
@@ -259,10 +338,10 @@ export class TDAmeritradeStreamEventProcessor {
         percentChange
       }))
   
-      var calls = activeOptions.filter(i => /Call/gim.test(i.description));
-      var puts = activeOptions.filter(i => /Put/gim.test(i.description));
+      const calls = activeOptions.filter(i => /Call/gim.test(i.description));
+      const puts = activeOptions.filter(i => /Put/gim.test(i.description));
   
-      var spy = {
+      const spy = {
         calls: calls.filter(i => /SPY/gim.test(i.description)),
         puts: puts.filter(i => /SPY/gim.test(i.description)),
         totalCalls: 0,
@@ -272,30 +351,30 @@ export class TDAmeritradeStreamEventProcessor {
       const spyCalls = new Map();
       const spyPuts = new Map();
   
-      for (let i = 0; i < spy.calls.length; i++) {
-        if (spyCalls.has(spy.calls[i].symbol)) {
-          spyCalls.set(spy.calls[i].symbol, {
-            ...spy.calls[i],
-            volume: spyCalls.get(spy.calls[i].symbol).volume + Number(spy.calls[i].volume)
+      for (const call of spy.calls) {
+        if (spyCalls.has(call.symbol)) {
+          spyCalls.set(call.symbol, {
+            ...call,
+            volume: spyCalls.get(call.symbol).volume + Number(call.volume)
           });
         } else {
-          spyCalls.set(spy.calls[i].symbol, {
-            ...spy.calls[i],
-            volume: Number(spy.calls[i].volume)
+          spyCalls.set(call.symbol, {
+            ...call,
+            volume: Number(call.volume)
           });
         }
       }
   
-      for (let i = 0; i < spy.puts.length; i++) {
-        if (spyPuts.has(spy.puts[i].symbol)) {
-          spyPuts.set(spy.puts[i].symbol, {
-            ...spy.puts[i],
-            volume: spyPuts.get(spy.puts[i].symbol).volume + Number(spy.puts[i].volume)
+      for (const put of spy.puts) {
+        if (spyPuts.has(put.symbol)) {
+          spyPuts.set(put.symbol, {
+            ...put,
+            volume: spyPuts.get(put.symbol).volume + Number(put.volume)
           });
         } else {
-          spyPuts.set(spy.puts[i].symbol, {
-            ...spy.puts[i],
-            volume: Number(spy.puts[i].volume)
+          spyPuts.set(put.symbol, {
+            ...put,
+            volume: Number(put.volume)
           });
         }
       }
@@ -318,8 +397,8 @@ export class TDAmeritradeStreamEventProcessor {
         calls: calls.filter(i => !/SPY/gim.test(i.description)),
         puts: puts.filter(i => !/SPY/gim.test(i.description)),
       }); 
-    } catch (e) {
-      console.log('TDAmeritradeStreamer handleActiveOptions error', e);
+    } catch (e: any) {
+      console.log('TDAmeritradeStreamer handleActiveOptions error', e?.message || 'AN UNKNOWN ERROR HAS OCCURRED.');
     }
   }
 }

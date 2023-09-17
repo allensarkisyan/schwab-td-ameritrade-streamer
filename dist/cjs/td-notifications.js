@@ -12,13 +12,12 @@ exports.parseCancelMessage =
 const xml_js_1 = require('xml-js');
 const getElementText = (elements, key, field = 'text') => {
   try {
-    if (!elements || !elements?.length) {
+    if (!elements?.length) {
       return null;
     }
     const text = elements?.find(({ name }) => name === key)?.elements[0][field];
     return text;
   } catch (e) {
-    console.log(e);
     return null;
   }
 };
@@ -58,7 +57,6 @@ const parseOrderData = (data = []) => {
       // openClose,
     };
   } catch (e) {
-    console.log(e);
     return null;
   }
 };
@@ -78,7 +76,7 @@ const parseMessage = ({ timestamp, type, data }) => {
       },
     };
   } catch (e) {
-    console.log('parseMessage Error', e);
+    console.log('parseMessage Error', e?.message);
     return { xmlData: null, response: null };
   }
 };
@@ -120,7 +118,6 @@ const parseOrderFillMessage = (msg) => {
     }
     return parsedResponse;
   } catch (e) {
-    console.log(e);
     return null;
   }
 };
@@ -139,7 +136,6 @@ const parseCancelMessage = (msg) => {
       orderDestination,
     };
   } catch (e) {
-    console.log(e);
     return null;
   }
 };

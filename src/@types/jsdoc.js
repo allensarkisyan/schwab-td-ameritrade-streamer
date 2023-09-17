@@ -66,3 +66,108 @@
  * @typedef {Object} TDAmeritradeStreamNotifyResponse
  * @property {Date} heartbeat - Heartbeat.
  */
+
+/**
+ * Emitted when `AUTHORIZED` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#AUTHORIZED
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `ACCT_ACTIVITY` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#ACCT_ACTIVITY
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `QUOTE` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#QUOTE
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `TIMESALE_EQUITY_UPDATE` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#TIMESALE_EQUITY_UPDATE
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `OPTION` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#OPTION
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `TIMESALE_FUTURES_UPDATE` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#TIMESALE_FUTURES_UPDATE
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `LEVELONE_FUTURES_UPDATE` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#LEVELONE_FUTURES_UPDATE
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `NEWS_HEADLINE` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#NEWS_HEADLINE
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `ACTIVES_NASDAQ` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#ACTIVES_NASDAQ
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `ACTIVES_NYSE` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#ACTIVES_NYSE
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `ACTIVES_OPTIONS` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#ACTIVES_OPTIONS
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `LISTED_BOOK` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#LISTED_BOOK
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `NASDAQ_BOOK` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#NASDAQ_BOOK
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `CHART_SNAPSHOT` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#CHART_SNAPSHOT
+ * @param {Object} data - Stream Event Data
+ */
+
+/**
+ * Emitted when `CHART_UPDATE` streamer event is emitted.
+ *
+ * @event TDAmeritradeStreamer#CHART_UPDATE
+ * @param {Object} data - Stream Event Data
+ */

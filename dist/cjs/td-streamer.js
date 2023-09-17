@@ -16,6 +16,29 @@ const isomorphic_ws_1 = __importDefault(require('isomorphic-ws'));
 const td_constants_js_1 = require('./td-constants.js');
 const td_stream_event_processor_js_1 = require('./td-stream-event-processor.js');
 const utils_js_1 = require('./utils.js');
+const requiredStreamerConnectionOptions = [
+  'streamerSocketUrl',
+  'accountId',
+  'token',
+  'company',
+  'segment',
+  'accountCdDomainId',
+  'userGroup',
+  'accessLevel',
+  'tokenTimestamp',
+  'appId',
+  'acl',
+  'streamerSubscriptionKeys',
+  'primaryAccountId',
+  'tokenExpirationTime',
+  'quotes',
+];
+/**
+ * Represents the TDAmeritradeStreamer class for handling streaming.
+ *
+ * @module TDAmeritradeStreamer
+ * @class
+ */
 class TDAmeritradeStreamer {
   /** @type {WebSocket} */
   #socket;
@@ -27,24 +50,38 @@ class TDAmeritradeStreamer {
   #streamEventProcessor;
   /**
    * @constructor
-   * @param {TDAmeritradeStreamerConnectionOptions} streamerConnectionOptions
-   * @param {Function} handleLevelOneFeedUpdate
-   * @param {Function} handleLevelOneTimeSaleUpdate
+   * @param {TDAmeritradeStreamerConnectionOptions} streamerConnectionOptions - Streamer Connection Options
+   * @param {Function} [handleLevelOneFeedUpdate] - Custom L1 feed data callback
+   * @param {Function} [handleLevelOneTimeSaleUpdate] - Custom L1 time & sales feed data callback
    */
   constructor(
     streamerConnectionOptions,
     handleLevelOneFeedUpdate = (data) => {},
     handleLevelOneTimeSaleUpdate = (data) => {},
   ) {
+    if (!streamerConnectionOptions) {
+      throw new Error('Missing TDAmeritradeStreamerConnectionOptions');
+    }
+    const connectionOptions = Object.keys(streamerConnectionOptions);
+    const missingOptions = [];
+    for (let opt of requiredStreamerConnectionOptions) {
+      if (!connectionOptions.includes(opt)) {
+        missingOptions.push(opt);
+      }
+    }
+    if (missingOptions.length) {
+      throw new Error(
+        `TDAmeritradeStreamer Missing Connection Options: [${missingOptions.join(
+          ', ',
+        )}]`,
+      );
+    }
     console.log(
       'TDAmeritradeStreamer',
       streamerConnectionOptions?.primaryAccountId,
       streamerConnectionOptions?.tokenExpirationTime,
       streamerConnectionOptions?.quotes,
     );
-    if (!streamerConnectionOptions) {
-      throw new Error('Missing TDAmeritradeStreamerConnectionOptions');
-    }
     this.#streamerConnectionOptions = streamerConnectionOptions;
     this.#emitter = new eventemitter3_1.EventEmitter();
     this.#socket = null;
@@ -70,7 +107,7 @@ class TDAmeritradeStreamer {
     try {
       let connectionEndpoint =
         this.#streamerConnectionOptions?.streamerSocketUrl;
-      if (!/^(ws|wss)\:\/\//.test(connectionEndpoint)) {
+      if (!/^(ws|wss):\/\//.test(connectionEndpoint)) {
         connectionEndpoint = `wss://${connectionEndpoint}/ws`;
       }
       this.#socket = new isomorphic_ws_1.default(connectionEndpoint);
@@ -97,6 +134,8 @@ class TDAmeritradeStreamer {
   }
   /**
    * Send requests to TD Ameritrades WebSocket server
+   *
+   * @private
    * @param {TDAmeritradeStreamerCommand[]} commands - Streamer commands to send
    */
   #sendRequest(commands = []) {
@@ -154,9 +193,23 @@ class TDAmeritradeStreamer {
       },
     ]);
   }
+  /**
+   * EventEmitter on event handler
+   *
+   * @param {string} evt - Event Name
+   * @param {string} method - Method
+   * @param {*} context - Context
+   */
   on(evt, method, context) {
     this.#emitter.on(evt, method, context);
   }
+  /**
+   * EventEmitter addListener handler
+   *
+   * @param {string} evt - Event Name
+   * @param {string} method - Method
+   * @param {*} context - Context
+   */
   add(evt, method, context) {
     this.#emitter.addListener(evt, method, context);
   }
@@ -346,13 +399,22 @@ class TDAmeritradeStreamer {
       },
     ]);
   }
-  // 0 = Express(500 ms)
-  // 1 = Real - Time(750 ms) default value for http binary protocol
-  // 2 = Fast(1, 000 ms) default value for websocket and http asynchronous protocol
-  // 3 = Moderate(1, 500 ms)
-  // 4 = Slow(3, 000 ms)
-  // 5 = Delayed(5, 000 ms)
+  /**
+   * Set Quality of Service Level
+   *
+   * 0 = Express(500 ms)
+   * 1 = Real - Time(750 ms) default value for http binary protocol
+   * 2 = Fast(1, 000 ms) default value for websocket and http asynchronous protocol
+   * 3 = Moderate(1, 500 ms)
+   * 4 = Slow(3, 000 ms)
+   * 5 = Delayed(5, 000 ms)
+   *
+   * @param {number} qoslevel - Quality of Service level
+   */
   setQualityOfService(qoslevel = 0) {
+    if (qoslevel < 0 || qoslevel > 5) {
+      return;
+    }
     this.#sendRequest([
       {
         service: td_constants_js_1.SERVICES.ADMIN,
