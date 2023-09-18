@@ -1,7 +1,7 @@
 {
   "name": "@allensarkisyan/schwab-td-ameritrade-streamer",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "type": "module",
   "author": "Allen Sarkisyan",
   "main": "./dist/cjs/td-streamer.js",
@@ -14,7 +14,7 @@
     "url": "https://github.com/allensarkisyan/schwab-td-ameritrade-streamer.git"
   },
   "bugs": "https://github.com/allensarkisyan/schwab-td-ameritrade-streamer/issues",
-  "description": "Charles Schwab / TD Ameritrade - JavaScript / TypeScript API Client Implementation",
+  "description": "Charles Schwab / TD Ameritrade - JavaScript / TypeScript Streamer - WebSocket Client",
   "keywords": [
     "TD Ameritrade",
     "Charles Schwab",
