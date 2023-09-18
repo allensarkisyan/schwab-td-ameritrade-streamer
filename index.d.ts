@@ -645,6 +645,7 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer' {
       handleLevelOneFeedUpdate?: Function,
       handleLevelOneTimeSaleUpdate?: Function,
     );
+    disconnect: () => void;
     /**
      * EventEmitter on event handler
      *

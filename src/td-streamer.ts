@@ -114,10 +114,6 @@ export class TDAmeritradeStreamer {
   }
 
   #connect(): void {
-    if (!this.#streamerConnectionOptions?.streamerSocketUrl) {
-      throw new Error('Missing Streamer Socket URL.');
-    }
-
     try {
       let connectionEndpoint = this.#streamerConnectionOptions?.streamerSocketUrl;
   
@@ -144,6 +140,10 @@ export class TDAmeritradeStreamer {
     } catch (e: any) {
       throw new Error(e?.message || 'TDAmeritradeStreamer WebSocket Connection Failed.');
     }
+  }
+
+  disconnect = () => {
+    this.#socket?.close();
   }
 
   /**

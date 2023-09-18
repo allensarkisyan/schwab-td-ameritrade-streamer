@@ -64,6 +64,16 @@ describe('TDAmeritradeStreamEventProcessor', () => {
       done();
     });
 
+    it('should log an error if emitter is missing', async () => {
+      const result = new TDAmeritradeStreamEventProcessor();
+      result.emitEvent();
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining('TDAmeritradeStreamer emitEvent error'),
+        "Cannot read properties of undefined (reading 'emit')",
+      );
+    });
+
     it('console.log NOT_IMPLEMENTED for services not implemented or available', async () => {
       streamEventProcessor.handleMessage({
         data: [{ service: 'FUTURES_BOOK', content: [null] }],
@@ -87,16 +97,6 @@ describe('TDAmeritradeStreamEventProcessor', () => {
       expect(consoleSpy).toHaveBeenCalledWith(
         'NOT_IMPLEMENTED - OPTIONS_BOOK',
         { content: [null], service: 'OPTIONS_BOOK' },
-      );
-    });
-
-    it('should log an error if emitter is missing', async () => {
-      const result = new TDAmeritradeStreamEventProcessor();
-      result.emitEvent();
-
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining('TDAmeriTradeStreamer emitEvent error'),
-        TypeError("Cannot read properties of undefined (reading 'emit')"),
       );
     });
 

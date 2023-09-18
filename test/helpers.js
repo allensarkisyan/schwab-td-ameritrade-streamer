@@ -9,6 +9,7 @@ const mockRequestId = (data) => ({
 })
 
 const streamerConnectionOptions = {
+  primaryAccountId: 'TEST',
   accountId: 'TEST',
   token: 'TEST',
   company: 'TEST',
@@ -17,9 +18,13 @@ const streamerConnectionOptions = {
   userGroup: 'TEST',
   accessLevel: 'TEST',
   authorized: 'Y',
-  tokenTimestamp: new Date().getTime(),
+  tokenTimestamp: 1604688024586,
+  tokenExpirationTime: 1604688024586,
   appId: 'TEST',
   acl: 'TEST',
+  quotes: {
+    NASDAQ: true
+  },
 
   streamerSubscriptionKeys: [
     { key: 'TEST' }

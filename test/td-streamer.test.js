@@ -32,12 +32,12 @@ describe('TDAmeritradeStreamer', () => {
 
     it('should throw an Error if missing `streamerSocketUrl`', async () => {
       expect(() => new TDAmeritradeStreamer(streamerConnectionOptions)).toThrow(
-        'Missing Streamer Socket URL.',
+        'TDAmeritradeStreamer Missing Connection Options: [streamerSocketUrl]',
       );
     });
 
     // it('should throw an Error if passed an invalid `streamerSocketUrl`', async () => {
-    //   expect(() => new TDAmeritradeStreamer({ ...streamerConnectionOptions, streamerSocketUrl: 'localhost:3003' })).toThrow('TDAmeritradeStreamer WebSocket Connection Failed.');
+    //   expect(() => new TDAmeritradeStreamer({ ...streamerConnectionOptions, streamerSocketUrl: 'ws:/localhost:3003/invalid' })).toThrow('TDAmeritradeStreamer WebSocket Connection Failed.');
     // });
 
     // it('should create new instance of TDAmeritradeStreamer without ws/wss protocol', async () => {
@@ -45,41 +45,6 @@ describe('TDAmeritradeStreamer', () => {
 
     //   expect(true).toEqual(result instanceof TDAmeritradeStreamer);
     // });
-
-    it('should create new instance of TDAmeritradeStreamer with createTDAmeritradeStreamer', async () => {
-      const result = createTDAmeritradeStreamer({
-        ...streamerConnectionOptions,
-        streamerSocketUrl: 'ws://localhost:3003/ws',
-      });
-
-      expect(true).toEqual(result instanceof TDAmeritradeStreamer);
-    });
-
-    it('should allow custom handleLevelOneFeedUpdate / handleLevelOneTimeSaleUpdate ', async () => {
-      const levelOneUpdate = (d) => {
-        return d;
-      };
-      const levelOneTimeSales = (d) => {
-        return d;
-      };
-
-      const result = createTDAmeritradeStreamer(
-        {
-          ...streamerConnectionOptions,
-          streamerSocketUrl: 'ws://localhost:3003/ws',
-        },
-        levelOneUpdate,
-        levelOneTimeSales,
-      );
-
-      result.on('LEVELONE_FUTURES_UPDATE', (data) => {
-        expect(levelOneUpdate).toHaveBeenCalled();
-      });
-
-      result.on('TIMESALE_FUTURES_UPDATE', (data) => {
-        expect(levelOneTimeSales).toHaveBeenCalled();
-      });
-    });
   });
 
   describe('TDAmeritradeStreamer subscriptions', () => {
@@ -133,14 +98,60 @@ describe('TDAmeritradeStreamer', () => {
 
     afterAll((done) => {
       // await (fetch('http://localhost:3003/shutdown'))
-      us_listen_socket_close(listenSocket);
-      done();
+      setTimeout(() => {
+        tdStreamer.disconnect();
+        us_listen_socket_close(listenSocket);
+        done();
+      }, 1000);
     });
 
     it('should create new instance of TDAmeritradeStreamer', async () => {
-      // const result = new TDAmeritradeStreamer({ ...streamerConnectionOptions, streamerSocketUrl: 'ws://localhost:3003/ws' });
-
       expect(true).toEqual(tdStreamer instanceof TDAmeritradeStreamer);
+    });
+
+    it('should allow custom handleLevelOneFeedUpdate / handleLevelOneTimeSaleUpdate ', (done) => {
+      const levelOneUpdate = (d) => {
+        return d;
+      };
+      const levelOneTimeSales = (d) => {
+        return d;
+      };
+
+      const result = createTDAmeritradeStreamer(
+        {
+          ...streamerConnectionOptions,
+          streamerSocketUrl: 'ws://localhost:3003/ws',
+        },
+        levelOneUpdate,
+        levelOneTimeSales,
+      );
+
+      result.on('LEVELONE_FUTURES_UPDATE', (data) => {
+        expect(levelOneUpdate).toHaveBeenCalled();
+      });
+
+      result.on('TIMESALE_FUTURES_UPDATE', (data) => {
+        expect(levelOneTimeSales).toHaveBeenCalled();
+      });
+      
+      setTimeout(() => {
+        result.disconnect();
+        done();
+      }, 1000);
+    });
+
+    it('should set default handleLevelOneFeedUpdate / handleLevelOneTimeSaleUpdate values', (done) => {
+      const result = createTDAmeritradeStreamer(
+        {
+          ...streamerConnectionOptions,
+          streamerSocketUrl: 'ws://localhost:3003/ws',
+        },
+      );
+
+      setTimeout(() => {
+        result.disconnect();
+        done();
+      }, 1000);
     });
 
     it('getKeys should handle ticker symbols', async () => {
@@ -206,12 +217,32 @@ describe('TDAmeritradeStreamer', () => {
     });
 
     it('handles setQualityOfService(qoslevel)', async () => {
-      tdStreamer.on('OPTIONS_BOOK', (data) => {
+      tdStreamer.on('QOS', (data) => {
         expect(mockRequestId(data));
       });
 
+      tdStreamer.setQualityOfService(10);
+
+      tdStreamer.setQualityOfService();
+
       tdStreamer.setQualityOfService(0);
     });
+
+    // it('handles setQualityOfService default', async () => {
+    //   tdStreamer.on('QOS', (data) => {
+    //     expect(mockRequestId(data));
+    //   });
+
+    //   tdStreamer.setQualityOfService();
+    // });
+
+    // it('handles setQualityOfService', async () => {
+    //   tdStreamer.on('QOS', (data) => {
+    //     expect(mockRequestId(data));
+    //   });
+
+    //   tdStreamer.setQualityOfService(10);
+    // });
 
     it('handles subscribeAccountActivity', async () => {
       tdStreamer.on('ACCT_ACTIVITY', (data) => {
@@ -227,6 +258,14 @@ describe('TDAmeritradeStreamer', () => {
       });
 
       tdStreamer.subscribeNewsHeadlines('TEST');
+    });
+
+    it('handles subscribeNewsHeadlines *ALL*', async () => {
+      tdStreamer.on('NEWS_HEADLINE', (data) => {
+        expect(mockRequestId(data));
+      });
+
+      tdStreamer.subscribeNewsHeadlines();
     });
 
     it('handles subscribeQuotes(symbol)', async () => {

@@ -90,9 +90,6 @@ export class TDAmeritradeStreamer {
     this.#connect();
   }
   #connect() {
-    if (!this.#streamerConnectionOptions?.streamerSocketUrl) {
-      throw new Error('Missing Streamer Socket URL.');
-    }
     try {
       let connectionEndpoint =
         this.#streamerConnectionOptions?.streamerSocketUrl;
@@ -119,6 +116,9 @@ export class TDAmeritradeStreamer {
       );
     }
   }
+  disconnect = () => {
+    this.#socket?.close();
+  };
   /**
    * Send requests to TD Ameritrades WebSocket server
    *
