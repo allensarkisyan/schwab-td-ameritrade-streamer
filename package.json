@@ -14,7 +14,10 @@
     "url": "https://github.com/allensarkisyan/schwab-td-ameritrade-streamer.git"
   },
   "bugs": "https://github.com/allensarkisyan/schwab-td-ameritrade-streamer/issues",
+  "description": "Charles Schwab / TD Ameritrade - JavaScript / TypeScript API Client Implementation",
   "keywords": [
+    "TD Ameritrade",
+    "Charles Schwab",
     "Stocks",
     "Trading",
     "Options",
@@ -22,9 +25,7 @@
     "Market Data",
     "Financial Data",
     "Streaming Data",
-    "Fintech",
-    "TD Ameritrade",
-    "Charles Schwab"
+    "Fintech"
   ],
   "scripts": {
     "build:types": "tsc --declaration --project tsconfig.types.json",
