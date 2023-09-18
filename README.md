@@ -7,6 +7,8 @@
 
 This is an unofficial JavaScript/TypeScript WebSocket client implementation for the Charles Schwab / TD Ameritrade Streaming APIs. It allows developers to interact with TD Ameritrade's services and access streaming financial data programmatically. Please note that this implementation is not affiliated with or endorsed by Charles Schwab and/or TD Ameritrade.
 
+### TD Ameritrade API SDK Client [@allensarkisyan/schwab-td-ameritrade-api](https://github.com/allensarkisyan/schwab-td-ameritrade-api)
+
 ## Features
 
 - MIT Licensed: This project is fully open source and available under the MIT License.
@@ -94,7 +96,7 @@ const tdStreamer = createTDAmeritradeStreamer(streamerConnectionOptions);
 ```
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
 
 MIT License
 
