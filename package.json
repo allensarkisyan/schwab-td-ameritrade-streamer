@@ -18,6 +18,7 @@
   "keywords": [
     "TD Ameritrade",
     "Charles Schwab",
+    "TypeScript",
     "Stocks",
     "Trading",
     "Options",
@@ -57,7 +58,7 @@
     "arrowParens": "always"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "exports": {
     ".": {
