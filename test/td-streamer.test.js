@@ -11,13 +11,15 @@ const {
   createTDAmeritradeStreamer,
 } = require('../dist/cjs/td-streamer.js');
 
-const { getKeys, chunk } = require('../dist/cjs/utils.js');
+const { getKeys, chunk, parseListedBook } = require('../dist/cjs/utils.js');
 
 const {
   streamerConnectionOptions,
   mockRequestId,
   handleArrayBuffer,
   LEVELONE_FUTURES_NOTIFICATION,
+  LISTED_BOOK_NOTIFICATION,
+  NASDAQ_BOOK_NOTIFICATION,
 } = require('./helpers.js');
 
 const { SSLApp, App, us_listen_socket_close } = require('uWebSockets.js');
@@ -59,31 +61,32 @@ describe('TDAmeritradeStreamer', () => {
       //   key_file_name: 'localhost+2-key.pem',
       //   cert_file_name: 'localhost+2.pem',
       // })
-      server = App().ws('/ws', {
-        open: (ws) => {
-          ws.send(
-            JSON.stringify({
-              data: [LEVELONE_FUTURES_NOTIFICATION],
-            }),
-          );
-        },
-        message: (ws, message, isBinary) => {
-          const evt = JSON.parse(handleArrayBuffer(message));
-          ws.send(message);
-        },
-      })
-      .get('/shutdown', (res, req) => {
-        if (listenSocket) {
-          us_listen_socket_close(listenSocket);
-        } else {
-          res.close();
-        }
-      })
-      .listen(3003, (socket) => {
-        if (socket) {
-          listenSocket = socket;
-        }
-      });
+      server = App()
+        .ws('/ws', {
+          open: (ws) => {
+            ws.send(
+              JSON.stringify({
+                data: [LEVELONE_FUTURES_NOTIFICATION],
+              }),
+            );
+          },
+          message: (ws, message, isBinary) => {
+            const evt = JSON.parse(handleArrayBuffer(message));
+            ws.send(message);
+          },
+        })
+        .get('/shutdown', (res, req) => {
+          if (listenSocket) {
+            us_listen_socket_close(listenSocket);
+          } else {
+            res.close();
+          }
+        })
+        .listen(3003, (socket) => {
+          if (socket) {
+            listenSocket = socket;
+          }
+        });
 
       tdStreamer = new TDAmeritradeStreamer({
         ...streamerConnectionOptions,
@@ -133,7 +136,7 @@ describe('TDAmeritradeStreamer', () => {
       result.on('TIMESALE_FUTURES_UPDATE', (data) => {
         expect(levelOneTimeSales).toHaveBeenCalled();
       });
-      
+
       setTimeout(() => {
         result.disconnect();
         done();
@@ -141,12 +144,10 @@ describe('TDAmeritradeStreamer', () => {
     });
 
     it('should set default handleLevelOneFeedUpdate / handleLevelOneTimeSaleUpdate values', (done) => {
-      const result = createTDAmeritradeStreamer(
-        {
-          ...streamerConnectionOptions,
-          streamerSocketUrl: 'ws://localhost:3003/ws',
-        },
-      );
+      const result = createTDAmeritradeStreamer({
+        ...streamerConnectionOptions,
+        streamerSocketUrl: 'ws://localhost:3003/ws',
+      });
 
       setTimeout(() => {
         result.disconnect();
@@ -190,6 +191,83 @@ describe('TDAmeritradeStreamer', () => {
       expect(chunked3).toEqual([[1, 2, 3], [4]]);
       expect(chunked4).toEqual([[1, 2, 3, 4]]);
       expect(chunked5).toEqual([[1, 2, 3, 4]]);
+    });
+
+    it('parseListedBook should handle errors', async () => {
+      const shouldError = parseListedBook();
+
+      expect(shouldError).toEqual(null);
+    });
+
+    it('parseListedBook should handle parsing LISTED_BOOK messages', async () => {
+      const expected = [
+        {
+          asks: [
+            {
+              asks: [{ exchange: 'TEST', sequence: 100, volume: 123 }],
+              numAsks: 1,
+              price: 1,
+              totalVolume: 100,
+            },
+          ],
+          bids: [
+            {
+              bids: [{ exchange: 'TEST', sequence: 100, volume: 123 }],
+              numBids: 1,
+              price: 1,
+              totalVolume: 100,
+            },
+          ],
+          bookTime: 1604688140960,
+          key: 'TEST',
+        },
+        { asks: [], bids: [], bookTime: 1604688140960, key: 'TEST' },
+      ];
+
+      const result = parseListedBook(LISTED_BOOK_NOTIFICATION);
+
+      expect(result).toEqual(expected);
+    });
+
+    it('parseListedBook should handle parsing NASDAQ_BOOK messages', async () => {
+      const expected = [
+        {
+          asks: [
+            {
+              asks: [{ exchange: 'TEST', sequence: 123, volume: 300 }],
+              numAsks: 1,
+              price: 266.03,
+              totalVolume: 300,
+            },
+            {
+              asks: [{ exchange: 'TEST', sequence: 123, volume: 100 }],
+              numAsks: 1,
+              price: 266.3,
+              totalVolume: 100,
+            },
+          ],
+          bids: [
+            {
+              bids: [{ exchange: 'TEST', sequence: 123, volume: 100 }],
+              numBids: 1,
+              price: 265.76,
+              totalVolume: 100,
+            },
+            {
+              bids: [{ exchange: 'TEST', sequence: 123, volume: 400 }],
+              numBids: 1,
+              price: 265.28,
+              totalVolume: 400,
+            },
+          ],
+          bookTime: 1695110474023,
+          key: 'TEST',
+        },
+      ];
+
+      const result = parseListedBook(NASDAQ_BOOK_NOTIFICATION);
+
+      expect(result).toEqual(expected);
     });
 
     it('handles subscribeActives and subscribing to events by .on || .add', async () => {

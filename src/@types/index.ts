@@ -118,3 +118,14 @@ export type TDAmeritradeActivityMessage = {
   type: string;
   data: string;
 };
+
+export type ActiveOption = {
+  /** The symbol of the active option. */
+  symbol: string;
+  /** The description of the active option. */
+  description: string;
+  /** The volume of the active option. */
+  volume: number;
+  /** The percentage change of the active option. */
+  percentChange: number;
+};

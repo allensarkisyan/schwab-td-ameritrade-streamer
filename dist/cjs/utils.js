@@ -5,7 +5,10 @@
  * @license MIT Open Source License
  */
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.parseListedBook =
+exports.isPut =
+  exports.isCall =
+  exports.isSPY =
+  exports.parseListedBook =
   exports.parseActivesMessage =
   exports.transformData =
   exports.transformMessageData =
@@ -122,8 +125,13 @@ const parseListedBook = (data) => {
     }
     return book;
   } catch (e) {
-    console.log(e);
     return null;
   }
 };
 exports.parseListedBook = parseListedBook;
+const isSPY = (description) => /SPY/gim.test(description);
+exports.isSPY = isSPY;
+const isCall = (description) => /Call/gim.test(description);
+exports.isCall = isCall;
+const isPut = (description) => /Put/gim.test(description);
+exports.isPut = isPut;

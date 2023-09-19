@@ -15,6 +15,7 @@ const {
   ACTIVES_NYSE_NOTIFICATION,
   ACTIVES_OPTIONS_NOTIFICATION,
   QUOTE_NOTIFICATION,
+  OPTION_NOTIFICATION,
   TIMESALE_EQUITY_NOTIFICATION,
   NEWS_HEADLINE_NOTIFICATION,
   MESSAGE_STREAM,
@@ -23,6 +24,8 @@ const {
   LEVELONE_FUTURES_NOTIFICATION,
   TIMESALE_FUTURES_NOTIFICATION,
   LEVELONE_FUTURES_OPTIONS_NOTIFICATION,
+  LISTED_BOOK_NOTIFICATION,
+  NASDAQ_BOOK_NOTIFICATION,
   FUTURES_MESSAGE_STREAM,
 } = require('./helpers.js');
 
@@ -72,6 +75,14 @@ describe('TDAmeritradeStreamEventProcessor', () => {
         expect.stringContaining('TDAmeritradeStreamer emitEvent error'),
         "Cannot read properties of undefined (reading 'emit')",
       );
+    });
+
+    it('should log an error if handleMessage input is invalid', async () => {
+      const mock = jest.fn(streamEventProcessor.handleMessage);
+
+      mock({ response: [{ command: 'ERROR' }] });
+
+      expect(mock).toThrow(Error);
     });
 
     it('console.log NOT_IMPLEMENTED for services not implemented or available', async () => {
@@ -177,6 +188,58 @@ describe('TDAmeritradeStreamEventProcessor', () => {
         cancelledQuantity: '10',
         orderDestination: 'BEST',
       });
+    });
+
+    it('should handle SERVICES.OPTION', async () => {
+      streamEventProcessor.handleMessage({
+        data: [OPTION_NOTIFICATION],
+      });
+
+      expect(spy).toHaveBeenCalled();
+
+      expect(spy).toHaveBeenCalledWith('OPTION', [
+        {
+          askPrice: 1.79,
+          askSize: 101,
+          assetMainType: 'OPTION',
+          bidPrice: 1.78,
+          bidSize: 1,
+          closePrice: 1.02,
+          contractType: 'C',
+          cusip: 'TEST',
+          delayed: false,
+          delta: 0.4034,
+          description: 'TEST Sep 29 2023 180 Call (Weekly)',
+          dte: 10,
+          expirationDay: 29,
+          expirationMonth: 9,
+          expirationType: 'S',
+          gamma: 0.0613,
+          highPrice: 2.44,
+          intrinsicValue: -2.03,
+          key: 'TEST_092923C180',
+          lastPrice: 1.78,
+          lastSize: 1,
+          lowPrice: 1.2,
+          mark: 1.785,
+          netChange: 0.76,
+          openInterest: 11320,
+          openPrice: 1.2,
+          quoteTime: 57599,
+          rho: 0.0224,
+          securityStatus: 'Normal',
+          strikePrice: 180,
+          theoreticalOptionValue: 1.785,
+          theta: -0.1169,
+          timeValue: 1.78,
+          totalVolume: 31426,
+          tradeTime: 57590,
+          underlying: 'TEST',
+          underlyingPrice: 177.97,
+          vega: 0.1232,
+          volatility: 19.8389,
+        },
+      ]);
     });
 
     it('should handle SERVICES.ACTIVES_NASDAQ', async () => {
@@ -339,6 +402,28 @@ describe('TDAmeritradeStreamEventProcessor', () => {
         'NOT_IMPLEMENTED - CHART_EQUITY',
         null,
       );
+    });
+
+    it('should handle SERVICES.LISTED_BOOK', async () => {
+      streamEventProcessor.handleMessage({
+        data: [LISTED_BOOK_NOTIFICATION],
+      });
+
+      // expect(consoleSpy).toHaveBeenCalledWith(
+      //   'NOT_IMPLEMENTED - CHART_EQUITY',
+      //   null,
+      // );
+    });
+
+    it('should handle SERVICES.NASDAQ_BOOK', async () => {
+      streamEventProcessor.handleMessage({
+        data: [NASDAQ_BOOK_NOTIFICATION],
+      });
+
+      // expect(consoleSpy).toHaveBeenCalledWith(
+      //   'NOT_IMPLEMENTED - CHART_EQUITY',
+      //   null,
+      // );
     });
 
     it('should handle SERVICES.TIMESALE_FUTURES', async () => {

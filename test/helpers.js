@@ -5,8 +5,11 @@
  */
 
 const mockRequestId = (data) => ({
-  requests: data?.requests?.map(i => { i.requestid = 123; return i; })
-})
+  requests: data?.requests?.map((i) => {
+    i.requestid = 123;
+    return i;
+  }),
+});
 
 const streamerConnectionOptions = {
   primaryAccountId: 'TEST',
@@ -23,12 +26,10 @@ const streamerConnectionOptions = {
   appId: 'TEST',
   acl: 'TEST',
   quotes: {
-    NASDAQ: true
+    NASDAQ: true,
   },
 
-  streamerSubscriptionKeys: [
-    { key: 'TEST' }
-  ]
+  streamerSubscriptionKeys: [{ key: 'TEST' }],
 
   // streamerSocketUrl: false
   // primaryAccountId: 'TEST',
@@ -238,6 +239,55 @@ const ACTIVES_OPTIONS_NOTIFICATION = {
   ],
 };
 
+const OPTION_NOTIFICATION = {
+  service: 'OPTION',
+  timestamp: 1695114682562,
+  command: 'SUBS',
+  content: [
+    {
+      1: 'TEST Sep 29 2023 180 Call (Weekly)',
+      2: 1.78,
+      3: 1.79,
+      4: 1.78,
+      5: 2.44,
+      6: 1.2,
+      7: 1.02,
+      8: 31426,
+      9: 11320,
+      10: 19.8389,
+      11: 57599,
+      12: 57590,
+      13: -2.03,
+      19: 1.2,
+      20: 1,
+      21: 101,
+      22: 1,
+      23: 0.76,
+      24: 180,
+      25: 'C',
+      26: 'TEST',
+      27: 9,
+      29: 1.78,
+      30: 29,
+      31: 10,
+      32: 0.4034,
+      33: 0.0613,
+      34: -0.1169,
+      35: 0.1232,
+      36: 0.0224,
+      37: 'Normal',
+      38: 1.785,
+      39: 177.97,
+      40: 'S',
+      41: 1.785,
+      key: 'TEST_092923C180',
+      delayed: false,
+      assetMainType: 'OPTION',
+      cusip: 'TEST',
+    },
+  ],
+};
+
 const QUOTE_NOTIFICATION = {
   service: 'QUOTE',
   timestamp: 1604688196659,
@@ -410,6 +460,121 @@ const LEVELONE_FUTURES_OPTIONS_NOTIFICATION = {
   ],
 };
 
+const LISTED_BOOK_NOTIFICATION = {
+  service: 'LISTED_BOOK',
+  timestamp: 1604688143582,
+  command: 'SUBS',
+  content: [
+    {
+      1: 1604688140960,
+      2: [
+        {
+          0: 1,
+          1: 100,
+          2: 1,
+          3: [
+            {
+              0: 'TEST',
+              1: 123,
+              2: 100,
+            },
+          ],
+        },
+      ],
+      3: [
+        {
+          0: 1,
+          1: 100,
+          2: 1,
+          3: [
+            {
+              0: 'TEST',
+              1: 123,
+              2: 100,
+            },
+          ],
+        },
+      ],
+      key: 'TEST',
+    },
+    {
+      1: 1604688140960,
+      2: [],
+      3: [],
+      key: 'TEST',
+    },
+  ],
+};
+
+const NASDAQ_BOOK_NOTIFICATION = {
+  service: 'NASDAQ_BOOK',
+  timestamp: 1695110474189,
+  command: 'SUBS',
+  content: [
+    {
+      1: 1695110474023,
+      2: [
+        {
+          0: 265.76,
+          1: 100,
+          2: 1,
+          3: [
+            {
+              0: 'TEST',
+              1: 100,
+              2: 123,
+            },
+          ],
+        },
+        {
+          0: 265.28,
+          1: 400,
+          2: 1,
+          3: [
+            {
+              0: 'TEST',
+              1: 400,
+              2: 123,
+            },
+          ],
+        },
+      ],
+      3: [
+        {
+          0: 266.03,
+          1: 300,
+          2: 1,
+          3: [
+            {
+              0: 'TEST',
+              1: 300,
+              2: 123,
+            },
+          ],
+        },
+        {
+          0: 266.3,
+          1: 100,
+          2: 1,
+          3: [
+            {
+              0: 'TEST',
+              1: 100,
+              2: 123,
+            },
+          ],
+        },
+      ],
+      key: 'TEST',
+    },
+  ],
+};
+
+// const NASDAQ_BOOK_NOTIFICATION = {
+//   ...LISTED_BOOK_NOTIFICATION,
+//   service: 'NASDAQ_BOOK'
+// };
+
 const FUTURES_MESSAGE_STREAM = [
   {
     data: [
@@ -429,10 +594,13 @@ const MESSAGE_STREAM = [
       ACTIVES_NASDAQ_NOTIFICATION,
       ACTIVES_NYSE_NOTIFICATION,
       QUOTE_NOTIFICATION,
+      OPTION_NOTIFICATION,
       TIMESALE_EQUITY_NOTIFICATION,
       NEWS_HEADLINE_NOTIFICATION,
       ORDER_FILL_NOTIFICATION,
       CANCEL_ORDER_NOTIFICATION,
+      LISTED_BOOK_NOTIFICATION,
+      NASDAQ_BOOK_NOTIFICATION,
       ...FUTURES_MESSAGE_STREAM[0].data,
     ],
   },
@@ -453,6 +621,7 @@ module.exports = {
   ACTIVES_NYSE_NOTIFICATION,
   ACTIVES_OPTIONS_NOTIFICATION,
   QUOTE_NOTIFICATION,
+  OPTION_NOTIFICATION,
   TIMESALE_EQUITY_NOTIFICATION,
   NEWS_HEADLINE_NOTIFICATION,
   CHART_FUTURES_NOTIFICATION,
@@ -460,6 +629,8 @@ module.exports = {
   LEVELONE_FUTURES_NOTIFICATION,
   TIMESALE_FUTURES_NOTIFICATION,
   LEVELONE_FUTURES_OPTIONS_NOTIFICATION,
+  LISTED_BOOK_NOTIFICATION,
+  NASDAQ_BOOK_NOTIFICATION,
   FUTURES_MESSAGE_STREAM,
   MESSAGE_STREAM,
-}
+};

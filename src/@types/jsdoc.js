@@ -68,6 +68,16 @@
  */
 
 /**
+ * Represents an active option.
+ *
+ * @typedef {Object} ActiveOption
+ * @property {string} symbol - The symbol of the active option.
+ * @property {string} description - The description of the active option.
+ * @property {number} volume - The volume of the active option.
+ * @property {number} percentChange - The percentage change of the active option.
+ */
+
+/**
  * Emitted when `AUTHORIZED` streamer event is emitted.
  *
  * @event TDAmeritradeStreamer#AUTHORIZED
