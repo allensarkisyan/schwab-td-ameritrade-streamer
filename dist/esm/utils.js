@@ -95,7 +95,9 @@ export const parseListedBook = (data) => {
     }
     return book;
   } catch (e) {
-    console.log(e);
     return null;
   }
 };
+export const isSPY = (description) => /SPY/gim.test(description);
+export const isCall = (description) => /Call/gim.test(description);
+export const isPut = (description) => /Put/gim.test(description);

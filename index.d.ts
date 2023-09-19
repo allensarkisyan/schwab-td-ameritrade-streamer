@@ -442,6 +442,16 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer/@types' {
     type: string;
     data: string;
   };
+  export type ActiveOption = {
+    /** The symbol of the active option. */
+    symbol: string;
+    /** The description of the active option. */
+    description: string;
+    /** The volume of the active option. */
+    volume: number;
+    /** The percentage change of the active option. */
+    percentChange: number;
+  };
 }
 declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-notifications' {
   import type { TDAmeritradeActivityMessage } from '@allensarkisyan/schwab-td-ameritrade-streamer/@types';
@@ -471,12 +481,15 @@ declare module '@allensarkisyan/schwab-td-ameritrade-streamer/utils' {
     volume: any;
     percentChange: any;
   }[];
-  export const parseListedBook: (data: any) =>
+  export const parseListedBook: (data: TDAmeritradeStreamDataResponse) =>
     | {
         bids: any[];
         asks: any[];
       }[]
     | null;
+  export const isSPY: (description: string) => boolean;
+  export const isCall: (description: string) => boolean;
+  export const isPut: (description: string) => boolean;
 }
 declare module '@allensarkisyan/schwab-td-ameritrade-streamer/td-stream-event-processor' {
   /**

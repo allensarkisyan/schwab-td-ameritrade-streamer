@@ -19,6 +19,7 @@ import {
 import type {
   TDAmeritradeStreamDataResponse,
   TDAmeritradeStreamEventProcessorEventMessage,
+  ActiveOption,
 } from './@types/index.js'
 
 import {
@@ -26,6 +27,9 @@ import {
   transformData,
   parseActivesMessage,
   parseListedBook,
+  isSPY,
+  isCall,
+  isPut,
 } from './utils.js';
 
 /**
@@ -319,10 +323,10 @@ export class TDAmeritradeStreamEventProcessor {
   handleActiveOptions(msg: TDAmeritradeStreamDataResponse) {
     try {
       const msgData = msg.content[0][1].split(';');
-      const activeOptions = chunk(
+      const activeOptions: ActiveOption[] = chunk(
         msgData.slice(5)
         .reverse()
-        .map(i => i.split(':').slice(3))
+        .map((i: string) => i.split(':').slice(3))
         .flat(),
         4,
       )
@@ -338,12 +342,12 @@ export class TDAmeritradeStreamEventProcessor {
         percentChange
       }))
   
-      const calls = activeOptions.filter(i => /Call/gim.test(i.description));
-      const puts = activeOptions.filter(i => /Put/gim.test(i.description));
+      const calls: ActiveOption[] = activeOptions.filter(i => isCall(i.description));
+      const puts: ActiveOption[] = activeOptions.filter(i => isPut(i.description));
   
       const spy = {
-        calls: calls.filter(i => /SPY/gim.test(i.description)),
-        puts: puts.filter(i => /SPY/gim.test(i.description)),
+        calls: calls.filter(i => isSPY(i.description)),
+        puts: puts.filter(i => isSPY(i.description)),
         totalCalls: 0,
         totalPuts: 0,
       };
@@ -394,8 +398,8 @@ export class TDAmeritradeStreamEventProcessor {
   
       this.emitEvent('ACTIVES_OPTIONS', {
         spy,
-        calls: calls.filter(i => !/SPY/gim.test(i.description)),
-        puts: puts.filter(i => !/SPY/gim.test(i.description)),
+        calls: calls.filter(i => !isSPY(i.description)),
+        puts: puts.filter(i => !isSPY(i.description)),
       }); 
     } catch (e: any) {
       console.log('TDAmeritradeStreamer handleActiveOptions error', e?.message || 'AN UNKNOWN ERROR HAS OCCURRED.');

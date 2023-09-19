@@ -14,6 +14,9 @@ import {
   transformData,
   parseActivesMessage,
   parseListedBook,
+  isSPY,
+  isCall,
+  isPut,
 } from './utils.js';
 /**
  * Represents the TDAmeritradeStreamEventProcessor class for processing stream messages / events.
@@ -316,11 +319,11 @@ export class TDAmeritradeStreamEventProcessor {
         volume,
         percentChange,
       }));
-      const calls = activeOptions.filter((i) => /Call/gim.test(i.description));
-      const puts = activeOptions.filter((i) => /Put/gim.test(i.description));
+      const calls = activeOptions.filter((i) => isCall(i.description));
+      const puts = activeOptions.filter((i) => isPut(i.description));
       const spy = {
-        calls: calls.filter((i) => /SPY/gim.test(i.description)),
-        puts: puts.filter((i) => /SPY/gim.test(i.description)),
+        calls: calls.filter((i) => isSPY(i.description)),
+        puts: puts.filter((i) => isSPY(i.description)),
         totalCalls: 0,
         totalPuts: 0,
       };
@@ -364,8 +367,8 @@ export class TDAmeritradeStreamEventProcessor {
       }, 0);
       this.emitEvent('ACTIVES_OPTIONS', {
         spy,
-        calls: calls.filter((i) => !/SPY/gim.test(i.description)),
-        puts: puts.filter((i) => !/SPY/gim.test(i.description)),
+        calls: calls.filter((i) => !isSPY(i.description)),
+        puts: puts.filter((i) => !isSPY(i.description)),
       });
     } catch (e) {
       console.log(

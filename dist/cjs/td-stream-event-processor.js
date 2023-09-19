@@ -330,11 +330,15 @@ class TDAmeritradeStreamEventProcessor {
         volume,
         percentChange,
       }));
-      const calls = activeOptions.filter((i) => /Call/gim.test(i.description));
-      const puts = activeOptions.filter((i) => /Put/gim.test(i.description));
+      const calls = activeOptions.filter((i) =>
+        (0, utils_js_1.isCall)(i.description),
+      );
+      const puts = activeOptions.filter((i) =>
+        (0, utils_js_1.isPut)(i.description),
+      );
       const spy = {
-        calls: calls.filter((i) => /SPY/gim.test(i.description)),
-        puts: puts.filter((i) => /SPY/gim.test(i.description)),
+        calls: calls.filter((i) => (0, utils_js_1.isSPY)(i.description)),
+        puts: puts.filter((i) => (0, utils_js_1.isSPY)(i.description)),
         totalCalls: 0,
         totalPuts: 0,
       };
@@ -378,8 +382,8 @@ class TDAmeritradeStreamEventProcessor {
       }, 0);
       this.emitEvent('ACTIVES_OPTIONS', {
         spy,
-        calls: calls.filter((i) => !/SPY/gim.test(i.description)),
-        puts: puts.filter((i) => !/SPY/gim.test(i.description)),
+        calls: calls.filter((i) => !(0, utils_js_1.isSPY)(i.description)),
+        puts: puts.filter((i) => !(0, utils_js_1.isSPY)(i.description)),
       });
     } catch (e) {
       console.log(

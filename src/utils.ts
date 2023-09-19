@@ -94,7 +94,7 @@ export const parseActivesMessage = (msg: TDAmeritradeStreamDataResponse) => {
   return actives;
 }
 
-export const parseListedBook = (data: any) => {
+export const parseListedBook = (data: TDAmeritradeStreamDataResponse) => {
   try {
     const book: {
       bids: any[],
@@ -133,7 +133,12 @@ export const parseListedBook = (data: any) => {
   
     return book;
   } catch (e) {
-    console.log(e);
     return null;
   }
 }
+
+export const isSPY = (description: string) => /SPY/gim.test(description);
+
+export const isCall = (description: string) => /Call/gim.test(description);
+
+export const isPut = (description: string) => /Put/gim.test(description);
