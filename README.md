@@ -7,6 +7,7 @@
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/allensarkisyan/schwab-td-ameritrade-streamer/badge)](https://securityscorecards.dev/viewer/?uri=github.com/allensarkisyan/schwab-td-ameritrade-streamer)
 ![GitHub issues](https://img.shields.io/github/issues/allensarkisyan/schwab-td-ameritrade-streamer)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/allensarkisyan/schwab-td-ameritrade-streamer/tests.yml?label=tests)
+[![codecov](https://codecov.io/gh/allensarkisyan/schwab-td-ameritrade-streamer/graph/badge.svg?token=Q1LGUU3M8Q)](https://codecov.io/gh/allensarkisyan/schwab-td-ameritrade-streamer)
 
 ## Overview
 
