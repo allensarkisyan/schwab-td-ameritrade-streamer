@@ -10,6 +10,7 @@ slug: /
 ![Last Commit](https://img.shields.io/github/last-commit/allensarkisyan/schwab-td-ameritrade-streamer)
 ![CodeQL](https://github.com/allensarkisyan/schwab-td-ameritrade-streamer/workflows/CodeQL/badge.svg?branch=main)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/allensarkisyan/schwab-td-ameritrade-streamer/badge)](https://securityscorecards.dev/viewer/?uri=github.com/allensarkisyan/schwab-td-ameritrade-streamer)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/7856/badge)](https://www.bestpractices.dev/projects/7856)
 ![GitHub issues](https://img.shields.io/github/issues/allensarkisyan/schwab-td-ameritrade-streamer)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/allensarkisyan/schwab-td-ameritrade-streamer/tests.yml?label=tests)
 [![codecov](https://codecov.io/gh/allensarkisyan/schwab-td-ameritrade-streamer/graph/badge.svg?token=Q1LGUU3M8Q)](https://codecov.io/gh/allensarkisyan/schwab-td-ameritrade-streamer)
